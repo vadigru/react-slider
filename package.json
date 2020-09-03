@@ -1,0 +1,57 @@
+{
+  "name": "slider",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Testing task - Slider for Scandiweb",
+  "author": "Vadim Grunenko",
+  "scripts": {
+    "editorconfig": "editorconfig-cli",
+    "stylelint": "stylelint \"./markup/**/*.css\" --syntax css",
+    "eslint": "eslint --ext .jsx --ext .js src/",
+    "test": "npm run eslint",
+    "build": "webpack --mode production",
+    "start": "webpack-dev-server"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 3 version"
+  ],
+  "devDependencies": {
+    "@babel/core": "7.11.1",
+    "@babel/preset-env": "7.11.0",
+    "@babel/preset-react": "7.10.4",
+    "autoprefixer": "9.8.6",
+    "babel-loader": "8.1.0",
+    "css-loader": "4.2.2",
+    "cssnano": "4.1.10",
+    "editorconfig": "0.15.3",
+    "eslint": "7.7.0",
+    "eslint-config-htmlacademy": "0.5.2",
+    "eslint-plugin-react": "7.20.6",
+    "mini-css-extract-plugin": "0.11.0",
+    "node-sass": "4.14.1",
+    "postcss-loader": "3.0.0",
+    "sass-loader": "10.0.1",
+    "stylelint": "13.6.1",
+    "stylelint-config-recommended": "3.0.0",
+    "webpack": "4.44.1",
+    "webpack-cli": "3.3.12",
+    "webpack-dev-server": "3.11.0"
+  },
+  "editorconfig-cli": [
+    "*.json",
+    "*.js",
+    "markup/*.html",
+    "markup/**/*.js",
+    "markup/img/**/*.svg",
+    "markup/css/**/*.css"
+  ],
+  "engines": {
+    "node": "12.x"
+  },
+  "dependencies": {
+    "prop-types": "15.7.2",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
+  }
+}
