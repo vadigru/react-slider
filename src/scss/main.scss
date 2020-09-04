@@ -9,7 +9,7 @@ body {
 }
 
 .slider__buttons {
-  position: relative;
+  // position: absolute;
   display: flex;
   justify-content: space-between;
 }
@@ -24,11 +24,11 @@ body {
   background-color: transparent;
   border: 0;
   color: white;
-  bottom: 3px;
+  top: 50%;
 }
 
 .slider__button-prev {
-  left: 20px
+  left: 20px;
 }
 
 .slider__button-next {
@@ -58,8 +58,10 @@ body {
   height: 600px;
 }
 
-.slide__text {
+.slide__quote {
   position: absolute;
+  display: flex;
+  flex-direction: column;
   color: white;
   font-size: 35px;
   padding: 50px;
@@ -68,7 +70,7 @@ body {
 .slide__text-only {
   color: white;
   font-size: 35px;
-  padding: 50px;
+  padding: 80px;
   text-align: center;
 }
 
@@ -86,9 +88,15 @@ body {
 }
 
 .slider__indicators {
+  position: absolute;
+  bottom: 10px;
+  left: calc(50% - 80px);
   display: flex;
   justify-content: center;
   align-items: center;
+  &--with-caption {
+    bottom: 60px;
+  }
 }
 
 .slide__indicator {
@@ -98,7 +106,7 @@ body {
   }
   width: 30px;
   height: 30px;
-  // border: 2px solid #212121;
+  background-color: white;
   border-radius: 25px;
   margin: 5px;
   display: flex;

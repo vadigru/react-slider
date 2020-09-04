@@ -1,5 +1,8 @@
 import React from "react";
+// import PropTypes from "prop-types";
+import Arrows from "../arrows/arrows.jsx";
 import slides from "../slides/slides.jsx";
+import SlideIndicators from "../slide-indicators/slide-indicators.jsx";
 
 class App extends React.Component {
   constructor(props) {
@@ -7,7 +10,8 @@ class App extends React.Component {
 
     this.state = {
       activeSlide: 0,
-      isInfinte: true
+      isInfinte: true,
+      caption: true
     };
 
     this._handlPrevSlideClick = this._handlPrevSlideClick.bind(this);
@@ -62,48 +66,32 @@ class App extends React.Component {
         <section className="slider">
           <h1>SLIDER</h1>
           {slides.map((Slide, index) => {
+            const active = this.state.activeSlide === index ? `slide__item--active` : ``;
             return (
               <div key={index} className="slide">
-                <Slide id={index} activeSlide={this.state.activeSlide}/>
+                <div className={`slide__item ${active}`} id={index}>
+                  <Slide id={index} activeSlide={this.state.activeSlide} caption={this.state.caption} />
+                </div>
               </div>
             );
           })}
-          <div className="slider__buttons">
-            <button className="slider__button slider__button-prev" onClick={() => this._handlPrevSlideClick(this.state.activeSlide)}>
-              <svg className="slider__prev-icon" viewBox="0 0 20 20">
-                <path fill="#ffffff" d="M8.388,10.049l4.76-4.873c0.303-0.31,0.297-0.804-0.012-1.105c-0.309-0.304-0.803-0.293-1.105,0.012L6.726,9.516c-0.303,0.31-0.296,0.805,0.012,1.105l5.433,5.307c0.152,0.148,0.35,0.223,0.547,0.223c0.203,0,0.406-0.08,0.559-0.236c0.303-0.309,0.295-0.803-0.012-1.104L8.388,10.049z"></path>
-              </svg>
-            </button>
-            <button className="slider__button slider__button-next" onClick={() => this._handlNextSlideClick(this.state.activeSlide)}>
-              <svg className="slider__next-icon" viewBox="0 0 20 20">
-                <path fill="#ffffff" d="M11.611,10.049l-4.76-4.873c-0.303-0.31-0.297-0.804,0.012-1.105c0.309-0.304,0.803-0.293,1.105,0.012l5.306,5.433c0.304,0.31,0.296,0.805-0.012,1.105L7.83,15.928c-0.152,0.148-0.35,0.223-0.547,0.223c-0.203,0-0.406-0.08-0.559-0.236c-0.303-0.309-0.295-0.803,0.012-1.104L11.611,10.049z"></path>
-              </svg>
-            </button>
-          </div>
-          <div className="slider__indicators">
-            {slides.map((item, index) => {
-              return (
-                <div
-                  key={index}
-                  className={`slide__indicator ${index === this.state.activeSlide ? `slide__indicator--active` : ``}`}
-                  id={index}
-                  onClick={(evt) => this._handleSlideIndicatorClick(evt)}
-                >
-                  <div
-                    className={`slide__indicator-inner ${index === this.state.activeSlide ? `slide__indicator-inner--active` : ``}`}
-                    id={index}
-                    onClick={(evt) => this._handleSlideIndicatorClick(evt)}
-                  >
-                    {index + 1}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <Arrows
+            activeSlide={this.state.activeSlide}
+            onLeftArrowClick={this._handlPrevSlideClick}
+            onRightArrowClick={this._handlNextSlideClick}
+          />
+          <SlideIndicators
+            caption={this.state.caption}
+            activeSlide={this.state.activeSlide}
+            onIndicatorDotClick={this._handleSlideIndicatorClick}
+          />
         </section>
       </main>
     );
   }
 }
 
-export default React.memo(App);
+App.propTypes = {
+};
+
+export default App;
