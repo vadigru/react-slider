@@ -1,25 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
-import slides from "../slides/slides.jsx";
+// import slides from "../slides/slides.jsx";
 
 const SlideIndicators = (props) => {
-  const {caption, activeSlide, onIndicatorDotClick} = props;
+  const {caption, activeSlide, onIndicatorDotClick, slides} = props;
   return (
     <div className={`slider__indicators ${caption ? `slider__indicators--with-caption` : ``}`}>
       {slides.map((item, index) => {
         return (
           <div
-            key={index}
+            key={item + index}
             className={`slide__indicator ${index === activeSlide ? `slide__indicator--active` : ``}`}
-            id={index}
-            onClick={(evt) => onIndicatorDotClick(evt)}
           >
             <div
               className={`slide__indicator-inner ${index === activeSlide ? `slide__indicator-inner--active` : ``}`}
               id={index}
-              onClick={(evt) => onIndicatorDotClick(evt)}
+              onClick={onIndicatorDotClick}
             >
-              {index + 1}
             </div>
           </div>
         );
@@ -31,7 +28,8 @@ const SlideIndicators = (props) => {
 SlideIndicators.propTypes = {
   caption: PropTypes.bool.isRequired,
   activeSlide: PropTypes.number.isRequired,
-  onIndicatorDotClick: PropTypes.func.isRequired
+  onIndicatorDotClick: PropTypes.func.isRequired,
+  slides: PropTypes.arrayOf(PropTypes.shape({}))
 };
 
 export default SlideIndicators;
