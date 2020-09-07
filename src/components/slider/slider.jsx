@@ -6,7 +6,6 @@ class Slider extends React.Component {
   constructor(props) {
     super(props);
 
-    // this._getBackground = this._getBackground.bind(this);
     this._data = React.Children.toArray(this.props.children);
     this.ref = React.createRef();
   }
