@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Arrows from "../arrows/arrows.jsx";
 import SlideIndicators from "../slide-indicators/slide-indicators.jsx";
 
@@ -7,11 +8,21 @@ class Slider extends React.Component {
     super(props);
 
     this._data = React.Children.toArray(this.props.children);
-    this.ref = React.createRef();
   }
 
   componentDidMount() {
-    this.props.setSlidesCount(this._data);
+    const {setSlides} = this.props;
+    if (this.props.slidesToShow > 1) {
+      const firstCloneArray = this._data.slice(0, this.props.slidesToShow);
+      const lastCloneArray = this._data.slice(this._data.length - this.props.slidesToShow);
+      setSlides([...lastCloneArray, ...this._data, ...firstCloneArray]);
+    } else {
+      const firstElement = this._data[0];
+      const lastElement = this._data[this._data.length - 1];
+      setSlides([lastElement, ...this._data, firstElement]);
+    }
+
+
   }
 
   _getSlideData(arr) {
@@ -21,11 +32,12 @@ class Slider extends React.Component {
   }
 
   _getBackground(arr) {
-    console.log(arr);
-    let background;
-    arr.forEach((it) => {
-      if (it.props.src) {
-        console.log(it.type);
+    let background = `https://c4.wallpaperflare.com/wallpaper/585/526/393/gray-simple-background-empty-minimalism-wallpaper-preview.jpg`;
+    arr.some((it) => {
+      if (!it.props.src) {
+        background = background;
+      }
+      if (it.type === `img`) {
         background = it.props.src;
       }
     });
@@ -33,35 +45,87 @@ class Slider extends React.Component {
     return background;
   }
 
+  _handleSlideAnim() {
+    const {setSlideAnim} = this.props;
+    setSlideAnim(``);
+  }
+
   render() {
-    const slideData = this._getSlideData(this._data);
+    const {
+      activeSlide,
+      isCaption,
+      slides,
+      slidesToShow,
+      slidePosition,
+      slideAnim,
+      onLeftArrowClick,
+      onRightArrowClick,
+      onIndicatorDotClick,
+    } = this.props;
+
+    const slideData = this._getSlideData(slides);
+
     return (
       <React.Fragment>
-        {slideData.map((it, index) => {
-          const slideAnim = this.props.slideDirection ? `slideLeft` : `slideRight`;
-          const active = this.props.activeSlide === index ? `slide__item--active` : ``;
-          return (
-            <div key={it + index} className="slide">
-              <div className={`slide__item ${active} ${slideAnim}`} id={index} style={{backgroundImage: `url(${this._getBackground(it)})`, backgroundColor: `rgba(0, 0, 0, 0.5)`, backgroundBlendMode: `multiply`, backgroundSize: `cover`}}>
+        <div
+          className={`slide slide-${activeSlide}`}
+        >
+          {slideData.map((it, index) => {
+            return (
+              <div
+                key={it + index}
+                className={`slide__item ${slideAnim}`}
+                onAnimationEnd={() => this._handleSlideAnim()}
+                id={index + activeSlide}
+                style={{
+                  minWidth: `${100 / slidesToShow}%`,
+                  position: `relative`,
+                  left: `-${slidePosition}%`,
+                  backgroundImage: `url(${this._getBackground(it)})`,
+                  backgroundColor: `rgba(0, 0, 0, 0.5)`,
+                  backgroundBlendMode: `multiply`,
+                  backgroundSize: `cover`,
+                  backgroundPosition: `center`,
+                  backgroundPositionY: 0
+                }}
+              >
                 {it}
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
+
         <Arrows
-          activeSlide={this.props.activeSlide}
-          onLeftArrowClick={this.props.onLeftArrowClick}
-          onRightArrowClick={this.props.onRightArrowClick}
+          activeSlide={activeSlide}
+          onLeftArrowClick={onLeftArrowClick}
+          onRightArrowClick={onRightArrowClick}
         />
         <SlideIndicators
-          caption={this.props.caption}
-          activeSlide={this.props.activeSlide}
-          onIndicatorDotClick={this.props.onIndicatorDotClick}
+          isCaption={isCaption}
+          activeSlide={activeSlide}
+          onIndicatorDotClick={onIndicatorDotClick}
           slides={this._data}
+          slidesToShow={slidesToShow}
         />
       </React.Fragment>
     );
   }
 }
+
+Slider.propTypes = {
+  children: PropTypes.node.isRequired,
+  setSlides: PropTypes.func.isRequired,
+  activeSlide: PropTypes.number.isRequired,
+  isCaption: PropTypes.bool.isRequired,
+  slides: PropTypes.arrayOf(PropTypes.node).isRequired,
+  slidesToShow: PropTypes.number.isRequired,
+  // slideDirection: PropTypes.bool.isRequired,
+  slidePosition: PropTypes.number.isRequired,
+  slideAnim: PropTypes.string.isRequired,
+  setSlideAnim: PropTypes.func.isRequired,
+  onLeftArrowClick: PropTypes.func.isRequired,
+  onRightArrowClick: PropTypes.func.isRequired,
+  onIndicatorDotClick: PropTypes.func.isRequired,
+};
 
 export default Slider;
