@@ -7,7 +7,7 @@ import "./scss/main.scss";
 const init = () => {
   ReactDom.render(
       <App
-        slidesToShow={1}
+        slidesToShow={2}
         isInfinite={true}
         isCaption={false}
       />,
