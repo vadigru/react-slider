@@ -1,35 +1,37 @@
 import React from "react";
 import PropTypes from "prop-types";
-// import slides from "../slides/slides.jsx";
 
 const SlideIndicators = (props) => {
-  const {caption, activeSlide, onIndicatorDotClick, slides} = props;
-  return (
-    <div className={`slider__indicators ${caption ? `slider__indicators--with-caption` : ``}`}>
-      {slides.map((item, index) => {
-        return (
+  const {isCaption, activeSlide, onIndicatorDotClick, slides, slidesToShow} = props;
+
+  let indicatorsItem = [];
+  for (let i = slidesToShow; i <= (slides.length - 1) + slidesToShow; i++) {
+    indicatorsItem.push(
+        <div
+          key={i}
+          className={`slide__indicator ${i === activeSlide ? `slide__indicator--active` : ``}`}
+        >
           <div
-            key={item + index}
-            className={`slide__indicator ${index === activeSlide ? `slide__indicator--active` : ``}`}
+            className={`slide__indicator-inner ${i === activeSlide ? `slide__indicator-inner--active` : ``}`}
+            id={i}
+            onClick={onIndicatorDotClick}
           >
-            <div
-              className={`slide__indicator-inner ${index === activeSlide ? `slide__indicator-inner--active` : ``}`}
-              id={index}
-              onClick={onIndicatorDotClick}
-            >
-            </div>
           </div>
-        );
-      })}
+        </div>);
+  }
+  return (
+    <div className={`slider__indicators ${isCaption ? `slider__indicators--with-caption` : ``}`}>
+      {indicatorsItem}
     </div>
   );
 };
 
 SlideIndicators.propTypes = {
-  caption: PropTypes.bool.isRequired,
+  isCaption: PropTypes.bool.isRequired,
   activeSlide: PropTypes.number.isRequired,
   onIndicatorDotClick: PropTypes.func.isRequired,
-  slides: PropTypes.arrayOf(PropTypes.shape({}))
+  slides: PropTypes.arrayOf(PropTypes.node).isRequired,
+  slidesToShow: PropTypes.number.isRequired
 };
 
 export default SlideIndicators;

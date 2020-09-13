@@ -1,59 +1,74 @@
 import React from "react";
-// import PropTypes from "prop-types";
-// import Arrows from "../arrows/arrows.jsx";
-// // import slides from "../slides/slides.jsx";
-// import SlideIndicators from "../slide-indicators/slide-indicators.jsx";
+import PropTypes from "prop-types";
 import Slider from "../slider/slider.jsx";
 import Caption from "../caption/caption.jsx";
-// import VideoPlayer from "../video-player/video-player.jsx";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      activeSlide: 0,
-      isInfinte: true,
-      caption: true,
+      activeSlide: this.props.slidesToShow,
+      isInfinite: this.props.isInfinite,
+      isCaption: this.props.isCaption,
       slides: [],
-      slideToRight: true
+      // moveToRight: true,
+      slidePosition: 100,
+      slidesToShow: this.props.slidesToShow,
+      slideAnim: ``
     };
 
     this._handlPrevSlideClick = this._handlPrevSlideClick.bind(this);
     this._handlNextSlideClick = this._handlNextSlideClick.bind(this);
     this._handleSlideIndicatorClick = this._handleSlideIndicatorClick.bind(this);
-    this._setSlidesCount = this._setSlidesCount.bind(this);
+    this._setSlides = this._setSlides.bind(this);
+    this._setSlideAnim = this._setSlideAnim.bind(this);
   }
 
-  _handlPrevSlideClick(currentSlide) {
-    let prevSlide = currentSlide;
-    if (prevSlide !== 0 && prevSlide <= this.state.slides.length - 1) {
-      prevSlide = currentSlide - 1;
-    } else if (prevSlide === 0 && this.state.isInfinte) {
-      prevSlide = this.state.slides.length - 1;
+  _handlPrevSlideClick(slide) {
+    let currentSlide = slide;
+    let position = this.state.slidePosition;
+
+    if (currentSlide === this.state.slidesToShow && this.state.isInfinite) {
+      currentSlide = (this.state.slides.length - 1 - this.state.slidesToShow);
+      position = ((this.state.slides.length - 1) - this.state.slidesToShow) * 100 / this.state.slidesToShow;
+    } else if (currentSlide > this.state.slidesToShow) {
+      currentSlide = slide - 1;
+      position -= 100 / this.state.slidesToShow;
     } else {
-      prevSlide = this.state.activeSlide;
+      currentSlide = this.state.activeSlide;
+      position = this.state.slidePosition;
     }
 
     this.setState({
-      activeSlide: prevSlide,
-      slideToRight: true
+      activeSlide: currentSlide,
+      // moveToRight: false,
+      slidePosition: position,
+      slideAnim: `slideRight`
     });
   }
 
-  _handlNextSlideClick(currentSlide) {
-    let nextSlide = currentSlide;
-    if (nextSlide < this.state.slides.length - 1) {
-      nextSlide = currentSlide + 1;
-    } else if (nextSlide === this.state.slides.length - 1 && this.state.isInfinte) {
-      nextSlide = 0;
+  _handlNextSlideClick(slide) {
+    let currentSlide = slide;
+    let position = this.state.slidePosition;
+
+    if (currentSlide === (this.state.slides.length - 1) - this.state.slidesToShow) {
+      currentSlide = this.state.slidesToShow;
+      position = 100;
+    } else if (currentSlide < this.state.slides.length - 1) {
+      currentSlide = slide + 1;
+      position += 100 / this.state.slidesToShow;
     } else {
-      nextSlide = this.state.activeSlide;
+      currentSlide = this.state.activeSlide;
+      position = this.state.slidePosition;
     }
 
+
     this.setState({
-      activeSlide: nextSlide,
-      slideToRight: false
+      activeSlide: currentSlide,
+      // moveToRight: true,
+      slidePosition: position,
+      slideAnim: `slideLeft`
     });
   }
 
@@ -66,76 +81,104 @@ class App extends React.Component {
     if (id > this.state.activeSlide) {
       this.setState({
         activeSlide: id,
-        slideToRight: false
+        // moveToRight: true,
+        slidePosition: id * 100 / this.state.slidesToShow,
+        slideAnim: `slideLeft`
       });
     } else {
       this.setState({
         activeSlide: id,
-        slideToRight: true
+        // moveToRight: false,
+        slidePosition: id * 100 / this.state.slidesToShow,
+        slideAnim: `slideRight`
       });
     }
   }
 
-  _setSlidesCount(data) {
+  _setSlides(data) {
     this.setState({
       slides: data
     });
   }
 
+  _setSlideAnim(className) {
+    setTimeout(() => {
+      this.setState({
+        slideAnim: className
+      });
+    }, 1);
+  }
+
   render() {
     return (
       <main className="container">
-        <section className="slider">
+        <section
+          className={`slider`}
+        >
           <Slider
-            caption={this.state.caption}
+            isCaption={this.state.isCaption}
             activeSlide={ this.state.activeSlide}
-            setSlidesCount={(data) => this._setSlidesCount(data)}
-            onIndicatorDotClick={(evt) => this._handleSlideIndicatorClick(evt)}
+            setSlides={(data) => this._setSlides(data)}
+            setSlideAnim={(className) => this._setSlideAnim(className)}
+            onIndicatorDotClick={this._handleSlideIndicatorClick}
             onLeftArrowClick={this._handlPrevSlideClick}
             onRightArrowClick={this._handlNextSlideClick}
-            slideDirection={this.state.slideToRight}
+            // slideDirection={this.state.moveToRight}
+            slidePosition={this.state.slidePosition}
+            slides={this.state.slides}
+            slidesToShow={this.state.slidesToShow}
+            slideAnim={this.state.slideAnim}
           >
-            <React.Fragment>
-              <p className="slide__quote">
-                &ldquo;My armor, it was never a distraction or a hobby, it was a cocoon. And now, I&apos;m a changed man. You can take away my house, all my tricks and toys. But one thing you can&apos;t take away... I am Iron Man.&rdquo; ―Tony Stark
-              </p>
+            <div>
+              <div className="slide__quote">
+                <p>IRON MAN (Tony Stark)</p>
+                &ldquo;My armor, it was never a distraction or a hobby, it was a cocoon. And now, I&apos;m a changed man. You can take away my house, all my tricks and toys. But one thing you can&apos;t take away... I am Iron Man.&rdquo;
+              </div>
               <img src="https://media.comicbook.com/2020/02/iron-man-marvel-comics-1209184-1280x0.jpeg" alt="Iron Man"/>
-              <Caption caption={this.state.caption}>
+              <Caption isCaption={this.state.isCaption}>
                   I am the Iron Man
               </Caption>
-            </React.Fragment>
-            <React.Fragment>
-              <img src="https://townsquare.media/site/622/files/2017/03/captain-america-madbomb.jpg" alt="Iron Man"/>
-              <div>
-                CAPTAIN AMERICA
+            </div>
+            <div>
+              <div className="slide__quote">
+                <p>CAPTAIN AMERICA (Steve Rogers)</p>
+              &ldquo;For as long as I can remember, I just wanted to do what was right. I guess I&apos;m not quite sure what that is anymore. And I thought I could throw myself back in and follow orders, serve. It&apos;s just not the same.&rdquo;
               </div>
-              <Caption caption={this.state.caption}>
+              <img src="https://townsquare.media/site/622/files/2017/03/captain-america-madbomb.jpg" alt="Iron Man"/>
+              <Caption isCaption={this.state.isCaption}>
                 Before we get started, does anyone want to get out?
               </Caption>
-            </React.Fragment>
-            <React.Fragment>
+            </div>
+            <div>
+              <div className="slide__text">
+                <p>THOR (Thor Odinson)</p>
+                The son of Odin uses his mighty abilities as the God of Thunder to protect his home Asgard and planet Earth alike.
+              </div>
               <img src="https://pm1.narvii.com/6652/9b6208181e3272ba71d25a726bd669a20508dfaa_hq.jpg" alt="Iron Man"/>
-              <Caption caption={this.state.caption}>
+              <Caption isCaption={this.state.isCaption}>
                 Fortunately, I am mighty!
               </Caption>
-            </React.Fragment>
-            <React.Fragment>
+            </div>
+            <div>
+              <div className="slide__text">
+                <h5>HULK (BRUCE BANNER)</h5>
+                Exposed to heavy doses of gamma radiation, scientist Bruce Banner transforms into the mean, green rage machine called the Hulk.
+              </div>
+              <img src="https://www.wallpapertip.com/wmimgs/5-59448_marvel-tales-hulk.jpg" alt="Iron Man"/>
+              <Caption isCaption={this.state.isCaption}>
+              No team, only Hulk.
+              </Caption>
+            </div>
+            <div>
               <div className="slide__text">
                 <p>The Infinity Gauntlet is an American comic book storyline published by Marvel Comics.</p>
                 <a href="https://www.marvel.com/comics/events/29/infinity_war">GO TO COMICS</a>
               </div>
               <img src="https://i.annihil.us/u/prod/marvel/i/mg/3/20/5261633bcd293.jpg" alt="Iron Man"/>
-
-              <Caption caption={this.state.caption}>
+              <Caption isCaption={this.state.isCaption}>
                 The Infinity Gauntlet
               </Caption>
-            </React.Fragment>
-            {/* <React.Fragment>
-
-              <Caption caption={this.state.caption}>
-                Avenger: Infinity War
-              </Caption>
-            </React.Fragment> */}
+            </div>
           </Slider>
         </section>
       </main>
@@ -144,6 +187,9 @@ class App extends React.Component {
 }
 
 App.propTypes = {
+  isInfinite: PropTypes.bool.isRequired,
+  isCaption: PropTypes.bool.isRequired,
+  slidesToShow: PropTypes.number.isRequired
 };
 
 export default App;

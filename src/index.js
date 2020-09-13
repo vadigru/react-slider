@@ -6,7 +6,11 @@ import "./scss/main.scss";
 
 const init = () => {
   ReactDom.render(
-      <App />,
+      <App
+        slidesToShow={1}
+        isInfinite={true}
+        isCaption={false}
+      />,
       document.querySelector(`#root`)
   );
 };
