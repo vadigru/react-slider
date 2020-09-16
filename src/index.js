@@ -1,16 +1,11 @@
 import React from "react";
 import ReactDom from "react-dom";
 import App from "./components/app/app.jsx";
-import "./css/main.css";
-import "./scss/main.scss";
+import "./sass/style.scss";
 
 const init = () => {
   ReactDom.render(
-      <App
-        slidesToShow={2}
-        isInfinite={true}
-        isCaption={false}
-      />,
+      <App />,
       document.querySelector(`#root`)
   );
 };

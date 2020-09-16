@@ -2,27 +2,123 @@ import React from "react";
 import PropTypes from "prop-types";
 import Arrows from "../arrows/arrows.jsx";
 import SlideIndicators from "../slide-indicators/slide-indicators.jsx";
-
+import {touchStart, touchMove, touchEnd} from "../../utils/swipe.js";
 class Slider extends React.Component {
   constructor(props) {
     super(props);
 
-    this._data = React.Children.toArray(this.props.children);
+    this.state = {
+      activeSlide: this.props.slidesToShow,
+      isInfinite: this.props.isInfinite,
+      isCaption: this.props.isCaption,
+      isDisabled: false,
+      isAutoplay: this.props.isAutoplay,
+      slides: [],
+      slidePosition: 100,
+      slidesToShow: this.props.slidesToShow,
+      slideAnim: ``
+    };
+
+    this._slides = React.Children.toArray(this.props.children);
+
+    this._handlPrevSlideClick = this._handlPrevSlideClick.bind(this);
+    this._handlNextSlideClick = this._handlNextSlideClick.bind(this);
+    this._handleSlideIndicatorClick = this._handleSlideIndicatorClick.bind(this);
   }
 
   componentDidMount() {
-    const {setSlides} = this.props;
+    if (this.state.isAutoplay) {
+      setInterval(() => {
+        this._handlNextSlideClick(this.state.activeSlide);
+      }, 5000);
+    }
     if (this.props.slidesToShow > 1) {
-      const firstCloneArray = this._data.slice(0, this.props.slidesToShow);
-      const lastCloneArray = this._data.slice(this._data.length - this.props.slidesToShow);
-      setSlides([...lastCloneArray, ...this._data, ...firstCloneArray]);
+      const firstCloneArray = this._slides.slice(0, this.state.slidesToShow);
+      const lastCloneArray = this._slides.slice(this._slides.length - this.state.slidesToShow);
+      this.setState({
+        slides: [...lastCloneArray, ...this._slides, ...firstCloneArray]
+      });
     } else {
-      const firstElement = this._data[0];
-      const lastElement = this._data[this._data.length - 1];
-      setSlides([lastElement, ...this._data, firstElement]);
+      const firstElement = this._slides[0];
+      const lastElement = this._slides[this._slides.length - 1];
+      this.setState({
+        slides: [lastElement, ...this._slides, firstElement]
+      });
+    }
+  }
+
+  _handlPrevSlideClick(slide) {
+    let currentSlide = slide;
+    let position = this.state.slidePosition;
+    if (currentSlide === this.state.slidesToShow) {
+      currentSlide = (this.state.slides.length - 1 - this.state.slidesToShow);
+      position = ((this.state.slides.length - 1) - this.state.slidesToShow) * 100 / this.state.slidesToShow;
+    } else if (currentSlide > this.state.slidesToShow) {
+      currentSlide = slide - 1;
+      position -= 100 / this.state.slidesToShow;
+    } else {
+      currentSlide = this.state.activeSlide;
+      position = this.state.slidePosition;
     }
 
+    this.setState({
+      activeSlide: currentSlide,
+      isDisabled: true,
+      slidePosition: position,
+      slideAnim: `slideRight`
+    });
+  }
 
+  _handlNextSlideClick(slide) {
+    let currentSlide = slide;
+    let position = this.state.slidePosition;
+    if (currentSlide === (this.state.slides.length - 1) - this.state.slidesToShow) {
+      currentSlide = this.state.slidesToShow;
+      position = 100;
+    } else if (currentSlide < this.state.slides.length - 1) {
+      currentSlide = slide + 1;
+      position += 100 / this.state.slidesToShow;
+    } else {
+      currentSlide = this.state.activeSlide;
+      position = this.state.slidePosition;
+    }
+
+    this.setState({
+      activeSlide: currentSlide,
+      isDisabled: true,
+      slidePosition: position,
+      slideAnim: `slideLeft`
+    });
+  }
+
+  _handleSlideIndicatorClick(evt) {
+    const target = evt.target;
+    const id = parseInt(target.id, 10);
+    if (id === this.state.activeSlide) {
+      return;
+    }
+    if (id > this.state.activeSlide) {
+      this.setState({
+        activeSlide: id,
+        slidePosition: id * 100 / this.state.slidesToShow,
+        slideAnim: `slideLeft`
+      });
+    } else {
+      this.setState({
+        activeSlide: id,
+        slidePosition: id * 100 / this.state.slidesToShow,
+        slideAnim: `slideRight`
+      });
+    }
+  }
+
+  _handleSlideAnim() {
+    setTimeout(() => {
+      this.setState({
+        isDisabled: false,
+        slideAnim: ``
+      });
+    }, 1);
   }
 
   _getSlideData(arr) {
@@ -45,9 +141,8 @@ class Slider extends React.Component {
     return background;
   }
 
-  _handleSlideAnim() {
-    const {setSlideAnim} = this.props;
-    setSlideAnim(``);
+  _autoplay() {
+
   }
 
   render() {
@@ -55,27 +150,32 @@ class Slider extends React.Component {
       activeSlide,
       isCaption,
       slides,
-      slidesToShow,
       slidePosition,
+      slidesToShow,
       slideAnim,
-      onLeftArrowClick,
-      onRightArrowClick,
-      onIndicatorDotClick,
-    } = this.props;
+    } = this.state;
 
     const slideData = this._getSlideData(slides);
 
     return (
       <React.Fragment>
         <div
-          className={`slide slide-${activeSlide}`}
+          className={`slide`}
+
         >
           {slideData.map((it, index) => {
             return (
               <div
                 key={it + index}
-                className={`slide__item ${slideAnim}`}
+                className={`slide__item ${slideAnim} ${isCaption ? `` : `slide__item--without-caption`}`}
                 onAnimationEnd={() => this._handleSlideAnim()}
+                onTouchStart={(evt) => touchStart(evt)}
+                onTouchMove={(evt) => touchMove(evt)}
+                onTouchEnd={() => touchEnd(
+                    activeSlide,
+                    this._handlNextSlideClick,
+                    this._handlPrevSlideClick
+                )}
                 id={index + activeSlide}
                 style={{
                   minWidth: `${100 / slidesToShow}%`,
@@ -97,15 +197,21 @@ class Slider extends React.Component {
 
         <Arrows
           activeSlide={activeSlide}
-          onLeftArrowClick={onLeftArrowClick}
-          onRightArrowClick={onRightArrowClick}
+          isInfinite={this.state.isInfinite}
+          isDisabled={this.state.isDisabled}
+          slides={this._slides}
+          slidesToShow={this.state.slidesToShow}
+          onLeftArrowClick={this._handlPrevSlideClick}
+          onRightArrowClick={this._handlNextSlideClick}
         />
+
         <SlideIndicators
-          isCaption={isCaption}
           activeSlide={activeSlide}
-          onIndicatorDotClick={onIndicatorDotClick}
-          slides={this._data}
+          isInfinite={this.state.isInfinite}
+          isCaption={isCaption}
+          slides={this._slides}
           slidesToShow={slidesToShow}
+          onIndicatorDotClick={this._handleSlideIndicatorClick}
         />
       </React.Fragment>
     );
@@ -114,18 +220,10 @@ class Slider extends React.Component {
 
 Slider.propTypes = {
   children: PropTypes.node.isRequired,
-  setSlides: PropTypes.func.isRequired,
-  activeSlide: PropTypes.number.isRequired,
+  isInfinite: PropTypes.bool.isRequired,
   isCaption: PropTypes.bool.isRequired,
-  slides: PropTypes.arrayOf(PropTypes.node).isRequired,
+  isAutoplay: PropTypes.bool.isRequired,
   slidesToShow: PropTypes.number.isRequired,
-  // slideDirection: PropTypes.bool.isRequired,
-  slidePosition: PropTypes.number.isRequired,
-  slideAnim: PropTypes.string.isRequired,
-  setSlideAnim: PropTypes.func.isRequired,
-  onLeftArrowClick: PropTypes.func.isRequired,
-  onRightArrowClick: PropTypes.func.isRequired,
-  onIndicatorDotClick: PropTypes.func.isRequired,
 };
 
 export default Slider;

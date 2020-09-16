@@ -1,0 +1,19 @@
+.slideRight {
+  animation-name: slideRight;
+  animation-duration: 0.3s;
+}
+
+@keyframes slideRight {
+  from {transform: translateX(-100%);}
+  to {transform: translateX(0%);}
+ }
+
+ .slideLeft {
+  animation-name: slideLeft;
+  animation-duration: 0.3s;
+}
+
+@keyframes slideLeft {
+  from {transform: translateX(100%);}
+  to {transform: translateX(0%);}
+ }

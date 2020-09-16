@@ -1,0 +1,121 @@
+.slide {
+  position: relative;
+  display: flex;
+}
+
+.slide__content {
+  font-size: 16px;
+  width: 65%;
+  min-height: 50vh;
+  color: white;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  @media (orientation: portrait) {
+    min-height: 35vh;
+  }
+}
+
+.slide__image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  @media (orientation: landscape) {
+    margin-bottom: 0;
+  }
+}
+
+.slide__background {
+  display: none;
+}
+
+.slide__caption {
+  color: white;
+  width: 100%;
+  min-height: 50px;
+  display: none;
+  position: absolute;
+  top: 0;
+  background-color: rgba(0,0,0,0.5);
+  &--off {
+    display: none;
+  }
+}
+
+.slide__item {
+  min-width: 360px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.slide__item a {
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  color: #212121;
+  margin: 0 auto;
+  margin-top: 45px;
+  padding: 3px 11px;
+  max-width: 150px;
+  display: block;
+  background-color: $color-white;
+  border-radius: 3px;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+@media (min-width: $tablet-width) {
+  .slide__content {
+    margin-top: 50px;
+    font-size: 25px;
+    min-height: 40vh;
+  }
+
+  .slide__image {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (min-width: $desktop-width) {
+  .slide__content {
+    margin-top: 50px;
+    font-size: 30px;
+    min-height: 55vh;
+  }
+
+  .slide__image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .slide__caption {
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .slide__item {
+    height: 100vh;
+    &--without-caption > .slide__caption {
+      display: none;
+    }
+  }
+
+  .slide__item a {
+    font-size: 20px;
+    padding: 8px 30px;
+    @media (orientation: landscape) {
+      margin-top: 55px;
+    }
+  }
+}
