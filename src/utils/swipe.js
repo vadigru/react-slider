@@ -2,6 +2,8 @@ const sensitivity = 20;
 
 let touchPositionStart = null;
 let touchPositionCurrent = null;
+let touchTimeStart = null;
+let touchTimeEnd = null;
 
 const checkAction = (slide, next, prev) => {
   let positionDiff = {
@@ -10,7 +12,7 @@ const checkAction = (slide, next, prev) => {
   };
 
   if (Math.abs(positionDiff.x) > Math.abs(positionDiff.y)) {
-    if (Math.abs(positionDiff.x) > sensitivity) {
+    if (Math.abs(positionDiff.x) > sensitivity && touchTimeEnd - touchTimeStart > 250) {
       if (positionDiff.x > 0) {
         next(slide);
       } else {
@@ -21,6 +23,7 @@ const checkAction = (slide, next, prev) => {
 };
 
 export const touchStart = (evt) => {
+  touchTimeStart = evt.timeStamp;
   touchPositionStart = {
     x: evt.changedTouches[0].clientX,
     y: evt.changedTouches[0].clientY
@@ -38,7 +41,8 @@ export const touchMove = (evt) => {
   };
 };
 
-export const touchEnd = (slide, next, prev) => {
+export const touchEnd = (evt, slide, next, prev) => {
+  touchTimeEnd = evt.timeStamp;
   checkAction(slide, next, prev);
   touchPositionStart = null;
   touchPositionCurrent = null;

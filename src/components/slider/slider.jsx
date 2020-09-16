@@ -171,7 +171,8 @@ class Slider extends React.Component {
                 onAnimationEnd={() => this._handleSlideAnim()}
                 onTouchStart={(evt) => touchStart(evt)}
                 onTouchMove={(evt) => touchMove(evt)}
-                onTouchEnd={() => touchEnd(
+                onTouchEnd={(evt) => touchEnd(
+                    evt,
                     activeSlide,
                     this._handlNextSlideClick,
                     this._handlPrevSlideClick
