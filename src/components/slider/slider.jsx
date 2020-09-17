@@ -215,6 +215,7 @@ class Slider extends React.Component {
                 id={index + activeSlide}
                 style={{
                   minWidth: `${100 / slidesToShow}%`,
+                  height: window.innerHeight,
                   position: `relative`,
                   left: `-${slidePosition}%`,
                   backgroundImage: `url(${this._getBackground(it)})`,
