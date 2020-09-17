@@ -4,12 +4,9 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  bottom: 40px;
-
-  @media (min-width: 1000px) {
-    &--without-caption {
-      bottom: 50px;
-    }
+  bottom: 60px;
+  @media (orientation: landscape) {
+    bottom: 30px;
   }
 }
 
@@ -23,15 +20,11 @@
   align-items: center;
   cursor: pointer;
   transition: all 0.15s ease-in-out;
-  &--active {
-    background-color: white;
-    border: 2.5px solid red;
-  }
 }
 
 .dots__item-inner {
-  width: 20px;
-  height: 20px;
+  width: 5px;
+  height: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,13 +33,24 @@
   transition: all 0.15s ease-in-out;
 
   &--active {
-    background-color: #0072BF;
-    border: 2.5px solid red;
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 1);
   }
-  &--active:after {
-    content: '★';
-    position: absolute;
-    color: white;
-    font-size: 17px;
+}
+
+@media (min-width: $tablet-width) {
+  @media (orientation: landscape) {
+    .dots {
+      bottom: 60px;
+    }
+  }
+}
+
+@media (min-width: $desktop-width) {
+  @media (orientation: landscape) {
+    .dots {
+      bottom: 60px;
+    }
   }
 }

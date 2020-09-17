@@ -2,8 +2,9 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  position: absolute;
-  top: calc(50% - 25px);
+  // position: absolute;
+  // top: calc(50% - 25px);
+  z-index: 0;
 }
 
 .arrows__btn {
@@ -11,6 +12,7 @@
   height: 50px;
   border: 0;
   background-color: transparent;
+  position: absolute;
   cursor: pointer;
   &:focus {
     outline: none;
@@ -20,8 +22,11 @@
 .arrows__next {
   margin-right: -10px;
   margin-left: auto;
+  top: calc(50% - 25px);
+  right: 0;
 }
 
 .arrows__prev {
   margin-left: -10px;
+  top: calc(50% - 25px);
 }

@@ -20,10 +20,11 @@ class Slider extends React.Component {
     };
 
     this._slides = React.Children.toArray(this.props.children);
-
+    this._timer = null;
     this._handlPrevSlideClick = this._handlPrevSlideClick.bind(this);
     this._handlNextSlideClick = this._handlNextSlideClick.bind(this);
     this._handleSlideIndicatorClick = this._handleSlideIndicatorClick.bind(this);
+    this._handleMouseOver = this._handleMouseOver.bind(this);
   }
 
   componentDidMount() {
@@ -45,13 +46,40 @@ class Slider extends React.Component {
     }
   }
 
-  _handleMouseOver() {
+  componentDidUpdate() {
+    if (this.state.isAutoplay && !this.state.isInfinite) {
+      if (this.state.activeSlide === (this.state.slides.length - this.state.slidesToShow) - this.state.slidesToShow) {
+        clearInterval(this._timer);
+        this._timer = null;
+        this._timer = setInterval(this._handlPrevSlideClick, 3000);
+      } else if (this.state.activeSlide === this.state.slidesToShow) {
+        clearInterval(this._timer);
+        this._timer = null;
+        this._timer = setInterval(this._handlNextSlideClick, 3000);
+      }
+    }
+  }
+
+  _handleMouseOver(evt) {
+    console.log(evt.target);
     clearInterval(this._timer);
     this._timer = null;
   }
 
   _handleMouseOut() {
-    if (this.state.isAutoplay) {
+    if (this.state.isAutoplay && !this.state.isInfinite) {
+      if (this.state.activeSlide === (this.state.slides.length - this.state.slidesToShow) - this.state.slidesToShow) {
+        clearInterval(this._timer);
+        this._timer = null;
+        this._timer = setInterval(this._handlPrevSlideClick, 3000);
+      } else {
+        clearInterval(this._timer);
+        this._timer = null;
+        this._timer = setInterval(this._handlNextSlideClick, 3000);
+      }
+    } else {
+      clearInterval(this._timer);
+      this._timer = null;
       this._timer = setInterval(this._handlNextSlideClick, 3000);
     }
   }
@@ -59,10 +87,10 @@ class Slider extends React.Component {
   _handlPrevSlideClick() {
     let currentSlide = this.state.activeSlide;
     let position = this.state.slidePosition;
+    if (!this.state.isInfinite && currentSlide === this.state.slidesToShow) {
+      return;
+    }
     if (currentSlide === this.state.slidesToShow) {
-      if (!this.state.isInfinite) {
-        return;
-      }
       currentSlide = (this.state.slides.length - 1 - this.state.slidesToShow);
       position = ((this.state.slides.length - 1) - this.state.slidesToShow) * 100 / this.state.slidesToShow;
     } else if (currentSlide > this.state.slidesToShow) {
@@ -81,10 +109,10 @@ class Slider extends React.Component {
   _handlNextSlideClick() {
     let currentSlide = this.state.activeSlide;
     let position = this.state.slidePosition;
+    if (!this.state.isInfinite && currentSlide === (this.state.slides.length - this.state.slidesToShow) - this.state.slidesToShow) {
+      return;
+    }
     if (currentSlide === (this.state.slides.length - 1) - this.state.slidesToShow) {
-      if (!this.state.isInfinite) {
-        return;
-      }
       currentSlide = this.state.slidesToShow;
       position = 100;
     } else if (currentSlide < this.state.slides.length - 1) {
@@ -162,11 +190,13 @@ class Slider extends React.Component {
     const slideData = this._getSlideData(slides);
 
     return (
-      <React.Fragment>
+      <section
+        className="slider"
+        onMouseOver={this._handleMouseOver}
+        onMouseOut={() => this._handleMouseOut()}
+      >
         <div
           className={`slide`}
-          onMouseOver={() => this._handleMouseOver()}
-          onMouseOut={() => this._handleMouseOut()}
         >
           {slideData.map((it, index) => {
             return (
@@ -209,6 +239,7 @@ class Slider extends React.Component {
           slidesToShow={this.state.slidesToShow}
           onLeftArrowClick={this._handlPrevSlideClick}
           onRightArrowClick={this._handlNextSlideClick}
+          onMouseOverHandler={this._handleMouseOver}
         />
 
         <SlideIndicators
@@ -219,7 +250,7 @@ class Slider extends React.Component {
           slidesToShow={slidesToShow}
           onIndicatorDotClick={this._handleSlideIndicatorClick}
         />
-      </React.Fragment>
+      </section>
     );
   }
 }
