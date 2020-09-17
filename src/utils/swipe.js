@@ -1,4 +1,4 @@
-const sensitivity = 20;
+const sensitivity = 100;
 
 let touchPositionStart = null;
 let touchPositionCurrent = null;
@@ -12,7 +12,7 @@ const checkAction = (slide, next, prev) => {
   };
 
   if (Math.abs(positionDiff.x) > Math.abs(positionDiff.y)) {
-    if (Math.abs(positionDiff.x) > sensitivity && touchTimeEnd - touchTimeStart > 250) {
+    if (Math.abs(positionDiff.x) > sensitivity && touchTimeEnd - touchTimeStart > 300) {
       if (positionDiff.x > 0) {
         next(slide);
       } else {

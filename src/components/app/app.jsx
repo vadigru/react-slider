@@ -11,7 +11,7 @@ const App = () => {
         <Slider
           isInfinite={true}
           isCaption={true}
-          isAutoplay={false}
+          isAutoplay={true}
           slidesToShow={1}
         >
           <div>

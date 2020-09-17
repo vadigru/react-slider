@@ -28,9 +28,7 @@ class Slider extends React.Component {
 
   componentDidMount() {
     if (this.state.isAutoplay) {
-      setInterval(() => {
-        this._handlNextSlideClick(this.state.activeSlide);
-      }, 5000);
+      this._timer = setInterval(this._handlNextSlideClick, 3000);
     }
     if (this.props.slidesToShow > 1) {
       const firstCloneArray = this._slides.slice(0, this.state.slidesToShow);
@@ -47,18 +45,29 @@ class Slider extends React.Component {
     }
   }
 
-  _handlPrevSlideClick(slide) {
-    let currentSlide = slide;
+  _handleMouseOver() {
+    clearInterval(this._timer);
+    this._timer = null;
+  }
+
+  _handleMouseOut() {
+    if (this.state.isAutoplay) {
+      this._timer = setInterval(this._handlNextSlideClick, 3000);
+    }
+  }
+
+  _handlPrevSlideClick() {
+    let currentSlide = this.state.activeSlide;
     let position = this.state.slidePosition;
     if (currentSlide === this.state.slidesToShow) {
+      if (!this.state.isInfinite) {
+        return;
+      }
       currentSlide = (this.state.slides.length - 1 - this.state.slidesToShow);
       position = ((this.state.slides.length - 1) - this.state.slidesToShow) * 100 / this.state.slidesToShow;
     } else if (currentSlide > this.state.slidesToShow) {
-      currentSlide = slide - 1;
+      currentSlide = currentSlide - 1;
       position -= 100 / this.state.slidesToShow;
-    } else {
-      currentSlide = this.state.activeSlide;
-      position = this.state.slidePosition;
     }
 
     this.setState({
@@ -69,18 +78,18 @@ class Slider extends React.Component {
     });
   }
 
-  _handlNextSlideClick(slide) {
-    let currentSlide = slide;
+  _handlNextSlideClick() {
+    let currentSlide = this.state.activeSlide;
     let position = this.state.slidePosition;
     if (currentSlide === (this.state.slides.length - 1) - this.state.slidesToShow) {
+      if (!this.state.isInfinite) {
+        return;
+      }
       currentSlide = this.state.slidesToShow;
       position = 100;
     } else if (currentSlide < this.state.slides.length - 1) {
-      currentSlide = slide + 1;
+      currentSlide = currentSlide + 1;
       position += 100 / this.state.slidesToShow;
-    } else {
-      currentSlide = this.state.activeSlide;
-      position = this.state.slidePosition;
     }
 
     this.setState({
@@ -118,7 +127,7 @@ class Slider extends React.Component {
         isDisabled: false,
         slideAnim: ``
       });
-    }, 1);
+    }, 300);
   }
 
   _getSlideData(arr) {
@@ -137,12 +146,7 @@ class Slider extends React.Component {
         background = it.props.src;
       }
     });
-
     return background;
-  }
-
-  _autoplay() {
-
   }
 
   render() {
@@ -161,7 +165,8 @@ class Slider extends React.Component {
       <React.Fragment>
         <div
           className={`slide`}
-
+          onMouseOver={() => this._handleMouseOver()}
+          onMouseOut={() => this._handleMouseOut()}
         >
           {slideData.map((it, index) => {
             return (
