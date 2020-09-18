@@ -16,7 +16,9 @@ class Slider extends React.Component {
       slides: [],
       slidePosition: 100,
       slidesToShow: this.props.slidesToShow,
-      slideAnim: ``
+      slideAnim: ``,
+      width: window.innerWidth,
+      height: window.innerHeight
     };
 
     this._slides = React.Children.toArray(this.props.children);
@@ -25,9 +27,13 @@ class Slider extends React.Component {
     this._handlNextSlideClick = this._handlNextSlideClick.bind(this);
     this._handleSlideIndicatorClick = this._handleSlideIndicatorClick.bind(this);
     this._handleMouseOver = this._handleMouseOver.bind(this);
+    this._updateWindowDimensions = this._updateWindowDimensions.bind(this);
   }
 
   componentDidMount() {
+    this._updateWindowDimensions();
+    window.addEventListener(`resize`, this._updateWindowDimensions());
+
     if (this.state.isAutoplay) {
       this._timer = setInterval(this._handlNextSlideClick, 3000);
     }
@@ -60,8 +66,18 @@ class Slider extends React.Component {
     }
   }
 
-  _handleMouseOver(evt) {
-    console.log(evt.target);
+  componentWillUnmount() {
+    window.removeEventListener(`resize`, this._updateWindowDimensions);
+  }
+
+  _updateWindowDimensions() {
+    this.setState({
+      width: window.innerWidth,
+      height: window.innerHeight
+    });
+  }
+
+  _handleMouseOver() {
     clearInterval(this._timer);
     this._timer = null;
   }
@@ -215,7 +231,7 @@ class Slider extends React.Component {
                 id={index + activeSlide}
                 style={{
                   minWidth: `${100 / slidesToShow}%`,
-                  height: window.innerHeight,
+                  height: `${this.state.height}px`,
                   position: `relative`,
                   left: `-${slidePosition}%`,
                   backgroundImage: `url(${this._getBackground(it)})`,
