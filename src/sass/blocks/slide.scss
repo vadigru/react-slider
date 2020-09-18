@@ -4,10 +4,10 @@
 }
 
 .slide__content {
-  font-size: 16px;
+  font-size: calc(0.95em + 1vmin);
   width: 65%;
   min-height: 30vh;
-  color: white;
+  color: $color-white;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -29,8 +29,9 @@
 }
 
 .slide__caption {
+  font-size: calc(0.65em + 1vmin);
   text-align: center;
-  color: white;
+  color: $color-white;
   width: 100%;
   min-height: 50px;
   display: flex;
@@ -38,15 +39,11 @@
   align-items: center;
   position: absolute;
   top: 0;
-  background-color: rgba(0,0,0,0.5);
-  &--off {
-    display: none;
-  }
+  background-color:$color-black-50;
 }
 
 .slide__item {
   min-width: 360px;
-  // height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -57,10 +54,10 @@
 }
 
 .slide__item a {
-  font-size: 16px;
+  font-size: calc(0.75em + 1vmin);
   text-align: center;
   text-decoration: none;
-  color: #212121;
+  color: $color-mine-shaft;
   margin: 0 auto;
   margin-top: 45px;
   padding: 3px 11px;
@@ -70,14 +67,13 @@
   border-radius: 3px;
   transition: all 0.3s ease-in-out;
   &:hover {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: $color-white-80;
   }
 }
 
 @media (min-width: $tablet-width) {
   .slide__content {
     margin-top: 50px;
-    font-size: 25px;
     min-height: 50vh;
   }
 
@@ -90,7 +86,6 @@
 @media (min-width: $desktop-width) {
   .slide__content {
     margin-top: 50px;
-    font-size: 30px;
     min-height: 60vh;
   }
 
@@ -99,21 +94,7 @@
     height: 150px;
   }
 
-  .slide__caption {
-    font-size: 14px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  }
-
-  .slide__item {
-    // height: 100vh;
-  }
-
   .slide__item a {
-    font-size: 20px;
-    padding: 8px 30px;
     @media (orientation: landscape) {
       margin-top: 55px;
     }
