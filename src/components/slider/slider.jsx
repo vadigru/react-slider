@@ -17,8 +17,8 @@ class Slider extends React.Component {
       slidePosition: 100,
       slidesToShow: this.props.slidesToShow,
       slideAnim: ``,
-      width: window.innerWidth,
-      height: window.innerHeight
+      width: 0,
+      height: 0
     };
 
     this._slides = React.Children.toArray(this.props.children);
@@ -32,7 +32,7 @@ class Slider extends React.Component {
 
   componentDidMount() {
     this._updateWindowDimensions();
-    window.addEventListener(`resize`, this._updateWindowDimensions());
+    window.addEventListener(`resize`, this._updateWindowDimensions);
 
     if (this.state.isAutoplay) {
       this._timer = setInterval(this._handlNextSlideClick, 3000);
