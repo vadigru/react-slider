@@ -13,8 +13,4 @@ node_modules/
 
 public/app.js
 public/app.js.map
-public/css/*.*
-public/fonts/*.*
-public/img/*.*
-public/video/*.*
 coverage/
