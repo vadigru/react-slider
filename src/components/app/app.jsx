@@ -48,7 +48,7 @@ const App = () => {
         </div>
         <div>
           <VideoPlayer
-            src={`/video/coverr-sample072-9809.mp4`}
+            src={`./video/coverr-sample072-9809.mp4`}
             autoPlay={true}
           />
           <div className="slide__content--wo-bg">
