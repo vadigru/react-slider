@@ -48,14 +48,11 @@ const App = () => {
         </div>
         <div>
           <VideoPlayer
-            src={`./video/coverr-sample072-9809.mp4`}
+            src={`https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4`}
             autoPlay={true}
           />
-          <div className="slide__content--wo-bg">
-            Bacteria are microscopic, single-celled organisms that exist in their millions, in every environment, both inside and outside other organisms. Some bacteria are harmful, but most serve a useful purpose. They support many forms of life, both plant and animal, and they are used in industrial and medicinal processes.
-          </div>
           <div className="slide__caption">
-            BACTERIA
+            Big Buck Bunny
           </div>
         </div>
         <div>
