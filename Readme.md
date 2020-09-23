@@ -64,11 +64,13 @@ import "react-common-slider/public/css/main.css";
 
 ### Components
 
+| component | description |
+|-|-|
 | **VideoPlayer** | add video to the size of the entire slide using HTML5 video player |
 
 ### VideoPlayer props
 
-| property | type | description |
+| property | type | default | description |
 |-|-|-|-|
 | **src** | `string` | - | source of video file |
 | **autoPlay** | `boolean` | true | enable/disable autoplay video |
