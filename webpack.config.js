@@ -1,5 +1,9 @@
 const path = require(`path`);
 const MiniCssExtractPlugin = require(`mini-css-extract-plugin`);
+const CopyWebpackPlugin = require(`copy-webpack-plugin`);
+const ImageminPlugin = require(`imagemin-webpack-plugin`).default;
+const ImageminWebpWebpackPlugin = require(`imagemin-webp-webpack-plugin`);
+
 module.exports = {
   entry: {
     app: `./src/index.js`
@@ -56,7 +60,42 @@ module.exports = {
   devtool: `source-map`,
   plugins: [
     new MiniCssExtractPlugin({
-      filename: `css/[name].css`
-    })
+      filename: `./css/[name].css`
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: `./src/fonts`,
+          to: `./fonts`,
+        },
+        {
+          from: `./src/img`,
+          to: `./img`,
+        },
+        {
+          from: `./src/video`,
+          to: `./video`,
+        },
+      ],
+    }),
+    new ImageminPlugin({
+      test: `./src/img/**`,
+      optimizationLevel: 3,
+      progressive: true,
+    }),
+    new ImageminWebpWebpackPlugin({
+      config: [
+        {
+          test: /\.(jpe?g|png)/,
+          options: {
+            quality: 85,
+          },
+        },
+      ],
+      overrideExtension: true,
+      detailedLogs: false,
+      silent: false,
+      strict: true,
+    }),
   ]
 };

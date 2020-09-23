@@ -1,0 +1,41 @@
+.indicators {
+  width: auto;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 15px;
+  left: calc(50% - 100px);
+  right: calc(50% - 100px);
+  z-index: 999;
+}
+
+.indicators__item {
+  width: 30px;
+  height: 30px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.indicators__item-inner {
+  width: 5px;
+  height: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $color-white-50;
+  border-radius: 25px;
+  border: 1px solid $color-black-30;
+  transition: all 0.15s ease-in-out;
+
+  &--active {
+    width: 10px;
+    height: 10px;
+    background-color: $color-white;
+  }
+}

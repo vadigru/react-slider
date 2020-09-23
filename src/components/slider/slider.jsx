@@ -3,19 +3,20 @@ import PropTypes from "prop-types";
 import Arrows from "../arrows/arrows.jsx";
 import SlideIndicators from "../slide-indicators/slide-indicators.jsx";
 import {touchStart, touchMove, touchEnd} from "../../utils/swipe.js";
+import {checkMobile} from "../../utils/check-mobile.js";
 class Slider extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      activeSlide: this.props.slidesCount,
-      isInfinite: this.props.isInfinite,
-      isCaption: this.props.isCaption,
+      activeSlide: this.props.slidesCount || 1,
+      isInfinite: this.props.isInfinite || false,
+      isCaption: this.props.isCaption || false,
       isDisabled: false,
-      isAutoplay: this.props.isAutoplay,
+      isAutoplay: this.props.isAutoplay || false,
       slides: [],
       slidePosition: 100,
-      slidesToShow: this.props.slidesCount,
+      slidesToShow: this.props.slidesCount || 1,
       slideAnim: ``,
       sliderWidth: this.props.width || 0,
       sliderHeight: this.props.height || 0
@@ -36,18 +37,29 @@ class Slider extends React.Component {
     if (isAutoplay) {
       this._timer = setInterval(this._handlNextSlideClick, 3000);
     }
-    if (slidesCount > 1) {
+
+    if (slidesCount > 1 && slidesCount <= this._slides.length) {
       const firstCloneArray = this._slides.slice(0, slidesToShow);
       const lastCloneArray = this._slides.slice(this._slides.length - slidesToShow);
       this.setState({
         slides: [...lastCloneArray, ...this._slides, ...firstCloneArray]
       });
+    } else if (slidesCount > this._slides.length) {
+      throw new Error(`I cannot show more slides than you have in a list.`);
     } else {
-      const firstElement = this._slides[0];
-      const lastElement = this._slides[this._slides.length - 1];
-      this.setState({
-        slides: [lastElement, ...this._slides, firstElement]
-      });
+      if (this._slides.length === 1) {
+        this.setState({
+          activeSlide: slidesCount - 1,
+          slidePosition: 0,
+          slides: [...this._slides]
+        });
+      } else {
+        const firstElement = this._slides[0];
+        const lastElement = this._slides[this._slides.length - 1];
+        this.setState({
+          slides: [lastElement, ...this._slides, firstElement]
+        });
+      }
     }
     this._updateWindowDimensions();
     window.addEventListener(`resize`, this._updateWindowDimensions);
@@ -64,9 +76,9 @@ class Slider extends React.Component {
 
     if (isAutoplay && !isInfinite) {
       if (activeSlide === (slides.length - slidesToShow) - slidesToShow) {
-        this._prevInterval();
+        this._resetPrevInterval();
       } else if (activeSlide === slidesToShow) {
-        this._nextInterval();
+        this._resetNextInterval();
       }
     }
   }
@@ -75,32 +87,26 @@ class Slider extends React.Component {
     window.removeEventListener(`resize`, this._updateWindowDimensions);
   }
 
-  _prevInterval() {
+  _resetPrevInterval() {
     clearInterval(this._timer);
     this._timer = null;
     this._timer = setInterval(this._handlPrevSlideClick, 3000);
   }
 
-  _nextInterval() {
+  _resetNextInterval() {
     clearInterval(this._timer);
     this._timer = null;
     this._timer = setInterval(this._handlNextSlideClick, 3000);
   }
 
+
   _updateWindowDimensions() {
     const {width, height} = this.props;
-    let isMobile = false;
-    let computedWidth = window.innerWidth;
-    let computedHeight = window.innerHeight;
-    if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|honex|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent)
-        || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0, 4))) {
-      isMobile = true;
-    }
-    computedWidth = width ? width : computedWidth;
-    computedHeight = height ? height : computedHeight;
+    const updatedWidth = width ? width : `${window.innerWidth}px`;
+    const updatedHeight = height ? height : `${window.innerHeight}px`;
     this.setState({
-      sliderWidth: isMobile ? 100 : computedWidth,
-      sliderHeight: computedHeight
+      sliderWidth: checkMobile() ? `100%` : updatedWidth,
+      sliderHeight: checkMobile() ? `100vw` : updatedHeight
     });
   }
 
@@ -120,13 +126,13 @@ class Slider extends React.Component {
 
     if (isAutoplay && !isInfinite) {
       if (activeSlide === (slides.length - slidesToShow) - slidesToShow) {
-        this._prevInterval();
+        this._resetPrevInterval();
       } else {
-        this._nextInterval();
+        this._resetNextInterval();
       }
     }
     if (isAutoplay && isInfinite) {
-      this._nextInterval();
+      this._resetNextInterval();
     }
   }
 
@@ -141,7 +147,7 @@ class Slider extends React.Component {
 
     let currentSlide = activeSlide;
     let position = slidePosition;
-    if (!isInfinite && currentSlide === slidesToShow) {
+    if (!isInfinite && currentSlide === slidesToShow || slides.length === 1) {
       return;
     }
     if (currentSlide === slidesToShow) {
@@ -171,7 +177,7 @@ class Slider extends React.Component {
 
     let currentSlide = activeSlide;
     let position = slidePosition;
-    if (!isInfinite && currentSlide === (slides.length - slidesToShow) - slidesToShow) {
+    if (!isInfinite && currentSlide === (slides.length - slidesToShow) - slidesToShow || slides.length === 1) {
       return;
     }
     if (currentSlide === (slides.length - 1) - slidesToShow) {
@@ -218,7 +224,7 @@ class Slider extends React.Component {
         isDisabled: false,
         slideAnim: ``
       });
-    }, 300);
+    }, 1);
   }
 
   _getSlideData(arr) {
@@ -228,15 +234,23 @@ class Slider extends React.Component {
   }
 
   _getBackground(arr) {
-    let background = `https://c4.wallpaperflare.com/wallpaper/585/526/393/gray-simple-background-empty-minimalism-wallpaper-preview.jpg`;
-    arr.some((it) => {
-      if (!it.props.src) {
-        background = background;
+    let background = ``;
+    if (Array.isArray(arr)) {
+      arr.some((it) => {
+        if (it.props.src) {
+          background = it.props.src;
+        }
+      });
+    } else {
+      for (let property in arr) {
+        if (arr.hasOwnProperty(property)) {
+          if (arr[`props`].src) {
+            background = arr[`props`].src;
+          }
+        }
       }
-      if (it.type === `img`) {
-        background = it.props.src;
-      }
-    });
+    }
+
     return background;
   }
 
@@ -252,11 +266,6 @@ class Slider extends React.Component {
       sliderHeight
     } = this.state;
 
-    const {
-      width,
-      height
-    } = this.props;
-
     const slideData = this._getSlideData(slides);
 
     return (
@@ -265,11 +274,19 @@ class Slider extends React.Component {
         onMouseOver={this._handleMouseOver}
         onMouseOut={() => this._handleMouseOut()}
         style={{
-          width: `${sliderWidth}${width ? `%` : `px`}`,
+          maxWidth: sliderWidth,
         }}
       >
         <div
           className={`slide`}
+          onTouchStart={(evt) => touchStart(evt)}
+          onTouchMove={(evt) => touchMove(evt)}
+          onTouchEnd={(evt) => touchEnd(
+              evt,
+              activeSlide,
+              this._handlNextSlideClick,
+              this._handlPrevSlideClick
+          )}
         >
           {slideData.map((it, index) => {
             return (
@@ -277,53 +294,41 @@ class Slider extends React.Component {
                 key={it + index}
                 className={`slide__item ${slideAnim} ${isCaption ? `` : `slide__item--without-caption`}`}
                 onAnimationEnd={() => this._handleSlideAnim()}
-                onTouchStart={(evt) => touchStart(evt)}
-                onTouchMove={(evt) => touchMove(evt)}
-                onTouchEnd={(evt) => touchEnd(
-                    evt,
-                    activeSlide,
-                    this._handlNextSlideClick,
-                    this._handlPrevSlideClick
-                )}
                 id={index + activeSlide}
                 style={{
+                  color: `${!this._getBackground(it) ? `black` : `white`}`,
                   minWidth: `${100 / slidesToShow}%`,
-                  height: `${sliderHeight}${height ? `vh` : `px`}`,
-                  position: `relative`,
+                  height: sliderHeight,
                   left: `-${slidePosition}%`,
                   backgroundImage: `url(${this._getBackground(it)})`,
-                  backgroundColor: `rgba(0, 0, 0, 0.5)`,
-                  backgroundBlendMode: `multiply`,
-                  backgroundSize: `cover`,
-                  backgroundPosition: `center`,
-                  backgroundPositionY: 0
                 }}
               >
                 {it}
               </div>
             );
           })}
+          {slides.length === 1 ? `` :
+            <SlideIndicators
+              activeSlide={activeSlide}
+              isInfinite={this.state.isInfinite}
+              isCaption={isCaption}
+              slides={this._slides}
+              slidesToShow={slidesToShow}
+              onIndicatorDotClick={this._handleSlideIndicatorClick}
+            />}
         </div>
 
-        <Arrows
-          activeSlide={activeSlide}
-          isInfinite={this.state.isInfinite}
-          isDisabled={this.state.isDisabled}
-          slides={this._slides}
-          slidesToShow={this.state.slidesToShow}
-          onLeftArrowClick={this._handlPrevSlideClick}
-          onRightArrowClick={this._handlNextSlideClick}
-          onMouseOverHandler={this._handleMouseOver}
-        />
-
-        <SlideIndicators
-          activeSlide={activeSlide}
-          isInfinite={this.state.isInfinite}
-          isCaption={isCaption}
-          slides={this._slides}
-          slidesToShow={slidesToShow}
-          onIndicatorDotClick={this._handleSlideIndicatorClick}
-        />
+        {slides.length === 1 ? `` :
+          <Arrows
+            activeSlide={activeSlide}
+            isInfinite={this.state.isInfinite}
+            isDisabled={this.state.isDisabled}
+            slides={this._slides}
+            slidesToShow={this.state.slidesToShow}
+            onLeftArrowClick={this._handlPrevSlideClick}
+            onRightArrowClick={this._handlNextSlideClick}
+            onMouseOverHandler={this._handleMouseOver}
+          />}
       </section>
     );
   }
@@ -331,12 +336,12 @@ class Slider extends React.Component {
 
 Slider.propTypes = {
   children: PropTypes.node.isRequired,
-  isInfinite: PropTypes.bool.isRequired,
-  isCaption: PropTypes.bool.isRequired,
-  isAutoplay: PropTypes.bool.isRequired,
-  slidesCount: PropTypes.number.isRequired,
-  width: PropTypes.number,
-  height: PropTypes.number
+  isInfinite: PropTypes.bool,
+  isCaption: PropTypes.bool,
+  isAutoplay: PropTypes.bool,
+  slidesCount: PropTypes.number,
+  width: PropTypes.string,
+  height: PropTypes.string
 };
 
 export default Slider;

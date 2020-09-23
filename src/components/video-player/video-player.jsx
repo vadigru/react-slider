@@ -11,11 +11,12 @@ class VideoPlayer extends React.PureComponent {
   componentDidMount() {
     const {src, autoPlay} = this.props;
     const video = this.videoRef.current;
-    console.log(src);
+
     if (video) {
       video.src = src;
       video.autoPlay = autoPlay;
       video.muted = true;
+      video.loop = true;
     }
   }
 
@@ -26,20 +27,18 @@ class VideoPlayer extends React.PureComponent {
       video.src = ``;
       video.autoPlay = null;
       video.muted = null;
+      video.loop = null;
+
     }
   }
 
   render() {
-    const {src, autoPlay} = this.props;
-    console.log(src);
+    const {src, autoPlay = true} = this.props;
     return (
       <video
         ref={this.videoRef}
         src={src}
         autoPlay={autoPlay}
-        onClick={this.handleVideoPlay}
-        width="100%"
-        height="175"
       >
       </video>
     );
@@ -47,7 +46,6 @@ class VideoPlayer extends React.PureComponent {
 }
 
 VideoPlayer.propTypes = {
-  isPlaying: PropTypes.bool.isRequired,
   src: PropTypes.string.isRequired,
   autoPlay: PropTypes.bool.isRequired
 };

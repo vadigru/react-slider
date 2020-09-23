@@ -1,74 +1,74 @@
 import React from "react";
 import Slider from "../slider/slider.jsx";
-
+import VideoPlayer from "../video-player/video-player.jsx";
 
 const App = () => {
   return (
-    <Slider
-      isInfinite={false}
-      isCaption={true}
-      isAutoplay={false}
-      width={100} // in percent
-      height={100} // in vh
-      slidesCount={1}
-    >
-      <div>
-        <div className="slide__content">
-          <img className="slide__image" src="https://cdn.gameomg.me/c/gom/cover/4f/iron-man-star-war/iron-man-star-war.jpg?v=1426213902" alt="Iron Man" width="100" heigth="100"/>
-          <h4>IRON MAN</h4>
-          &ldquo;You can take away my house, all my tricks and toys. But one thing you can&apos;t take away... I am Iron Man.&rdquo;
+    <>
+      <Slider
+        width={`1000px`}
+        height={`500px`}
+        isInfinite={false}
+        isCaption={true}
+        isAutoplay={false}
+        slidesCount={1}
+      >
+        <div>
+          <img className="slide__background" src="/img/asgard.webp" alt="Thor background image"/>
+          <div className="slide__content">
+            <img className="slide__avatar" src="/img/thor_avatar.webp" alt="Thor" width="100" heigth="100"/>
+            <h4>THOR</h4>
+            <span>
+              <a href="https://www.marvel.com/characters/thor-thor-odinson">The son of Odin</a> uses his mighty abilities as the God of Thunder to protect his home Asgard and planet Earth alike.
+            </span>
+          </div>
+          <div className="slide__caption">
+            Fortunately, I am mighty!
+          </div>
         </div>
-        <img className="slide__background" src="https://i.pinimg.com/originals/69/a9/0b/69a90b480d82ed3d88978a6260c6bcaa.png" alt="Iron Man background image"/>
-        <div className="slide__caption">
-          I am the Iron Man
+
+        <div>
+          <img className="slide__background" src="/img/hawaii.webp" alt="Hawaii"/>
+          <div className="slide__content">
+            <h2>Hawaii</h2>
+            is the world&apos;s largest island chain, and it&apos;s the only U.S. state completely made up of islands. But only 7 of its 132 islands are inhabited: Hawaii (also known as the Big Island), Maui, Molokai, Lanai, Oahu, Kauai, and Niihau. The Hawaiian Islands are volcanic islands.
+          </div>
+          <div className="slide__caption">
+            Hawaii
+          </div>
         </div>
-      </div>
-      <div>
-        <div className="slide__content">
-          <img className="slide__image" src="https://economicsandethics.typepad.com/.a/6a0120a58aead7970c01a73deecf79970d-200wi" alt="Captain America" width="100" heigth="100"/>
-          <h4>CAPTAIN AMERICA</h4>
-          &ldquo;I don&apos;t want to kill anyone. I don&apos;t like bullies. I don&apos;t care where they&apos;re from.&rdquo;
+        <div>
+          <img className="slide__background" src="/img/black_hole.webp" alt="Black Hole"/>
+          <a href="https://www.universetoday.com/135158/team-creates-negative-effective-mass-lab/">
+            <span className="visually-hidden">Link to Black Hole</span>
+          </a>
+          <div className="slide__caption">
+            Black Hole
+          </div>
         </div>
-        <img className="slide__background" src="https://vignette.wikia.nocookie.net/marvelcinematicuniverse/images/c/ce/Camp_Lehigh_%281970%29.png/revision/latest?cb=20190728103840" alt="Captain America background image"/>
-        <div className="slide__caption">
-          Before we get started, does anyone want to get out?
+        <div>
+          <VideoPlayer
+            src={`/video/coverr-sample072-9809.mp4`}
+            autoPlay={true}
+          />
+          <div className="slide__content--wo-bg">
+            Bacteria are microscopic, single-celled organisms that exist in their millions, in every environment, both inside and outside other organisms. Some bacteria are harmful, but most serve a useful purpose. They support many forms of life, both plant and animal, and they are used in industrial and medicinal processes.
+          </div>
+          <div className="slide__caption">
+            BACTERIA
+          </div>
         </div>
-      </div>
-      <div>
-        <div className="slide__content">
-          <img className="slide__image" src="https://avatarfiles.alphacoders.com/185/thumb-185526.jpg" alt="Thor" width="100" heigth="100"/>
-          <h4>THOR</h4>
-          The son of Odin uses his mighty abilities as the God of Thunder to protect his home Asgard and planet Earth alike.
+        <div>
+          <div className="slide__content--wo-bg">
+          Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus.
+          Most people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment.
+            <button>
+              <a href="https://covid19.who.int/">Coronavirus Dashboard</a>
+            </button>
+          </div>
         </div>
-        <img className="slide__background" src="https://i.pinimg.com/originals/cd/21/f3/cd21f3c362faa00a9f948fa804043e29.png" alt="Thor background image"/>
-        <div className="slide__caption">
-          Fortunately, I am mighty!
-        </div>
-      </div>
-      <div>
-        <div className="slide__content">
-          <img className="slide__image" src="https://avatarfiles.alphacoders.com/121/thumb-121988.png" alt="Hulk" width="100" heigth="100"/>
-          <h4>HULK</h4>
-          Exposed to heavy doses of gamma radiation, scientist Bruce Banner transforms into the mean, green rage machine called the Hulk.
-        </div>
-        <img className="slide__background" src="http://danieltdorrance.com/wp-content/uploads/2013/04/4BannersLabAfter.jpg" alt="Hulk background image"/>
-        <div className="slide__caption">
-        No team, only Hulk.
-        </div>
-      </div>
-      <div>
-        <div className="slide__content">
-          <img className="slide__image" src="https://avatarfiles.alphacoders.com/177/thumb-177423.png" alt="" width="100" heigth="100"/>
-          <h4>The Infinity Gauntlet</h4>
-          The Infinity Gauntlet is an American comic book storyline published by Marvel Comics.
-          <a href="https://www.marvel.com/comics/events/29/infinity_war">OPEN</a>
-        </div>
-        <img className="slide__background" src="https://cdnb.artstation.com/p/assets/images/images/014/245/147/large/chris-kesler-6.jpg?1543169029" alt="The Infinity Gautlet background image"/>
-        <div className="slide__caption">
-          The Infinity Gauntlet
-        </div>
-      </div>
-    </Slider>
+      </Slider>
+    </>
   );
 };
 
