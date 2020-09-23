@@ -37,12 +37,12 @@ import "react-common-slider/public/css/main.css";
 
 | property | type | default | description |
 |-|-|-|-|
-| **width** | `string` | if no props passed width will be 100%
-| **height** | `string` | if no props passed height will be 100%
+| **width** | `string` | if no props passed width will be 100% |
+| **height** | `string` | if no props passed height will be 100% |
 | **isInfinite** | `boolean` | false |
 | **isCaption** | `boolean` | false |
 | **isAutoplay** | `boolean` | false |
-| **slidesCount** | `number` | 1
+| **slidesCount** | `number` | 1 |
 
 ### Classnames
 
@@ -64,9 +64,9 @@ import "react-common-slider/public/css/main.css";
 
 ### Components
 
-| **<VideoPlayer/>** | add video to the size of the entire slide using HTML5 video player |
+| **VideoPlayer** | add video to the size of the entire slide using HTML5 video player |
 
-### <VideoPlayer/> props
+### VideoPlayer props
 
 | property | type | description |
 |-|-|-|-|
