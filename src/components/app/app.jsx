@@ -6,12 +6,13 @@ const App = () => {
   return (
     <>
       <Slider
-        width={`1000px`}
-        height={`500px`}
-        isInfinite={false}
+        // width={`1000px`}
+        // height={`350px`}
+        isInfinite={true}
         isCaption={true}
-        isAutoplay={false}
-        slidesCount={1}
+        // isAutoplay={true}
+        isIndicators={true}
+        // slidesCount={2}
       >
         <div>
           <img className="slide__background" src="/img/asgard.webp" alt="Thor background image"/>
@@ -37,28 +38,31 @@ const App = () => {
             Hawaii
           </div>
         </div>
+
         <div>
           <img className="slide__background" src="/img/black_hole.webp" alt="Black Hole"/>
           <a href="https://www.universetoday.com/135158/team-creates-negative-effective-mass-lab/">
-            <span className="visually-hidden">Link to Black Hole</span>
-          </a>
+            <span className="visually-hidden">Black Hole</span></a>
           <div className="slide__caption">
-            Black Hole
+            What is a Black Hole?
           </div>
         </div>
+
         <div>
           <VideoPlayer
             src={`https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4`}
             autoPlay={true}
           />
-          <div className="slide__caption">
+          <div className="slide__caption slide__caption--forced">
             Big Buck Bunny
           </div>
         </div>
+
         <div>
-          <div className="slide__content--wo-bg">
-          Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus.
-          Most people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment.
+          <div className="slide__content--no-bg">
+            <p>Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus.
+              Most people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment.
+            </p>
             <button>
               <a href="https://covid19.who.int/">Coronavirus Dashboard</a>
             </button>

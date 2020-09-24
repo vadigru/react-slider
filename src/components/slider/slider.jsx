@@ -3,27 +3,29 @@ import PropTypes from "prop-types";
 import Arrows from "../arrows/arrows.jsx";
 import SlideIndicators from "../slide-indicators/slide-indicators.jsx";
 import {touchStart, touchMove, touchEnd} from "../../utils/swipe.js";
-import {checkMobile} from "../../utils/check-mobile.js";
+
 class Slider extends React.Component {
   constructor(props) {
     super(props);
 
+    this._slides = React.Children.toArray(this.props.children);
+    this._timer = null;
+
     this.state = {
-      activeSlide: this.props.slidesCount || 1,
+      sliderWidth: this.props.width || ``,
+      sliderHeight: this.props.height || ``,
+      activeSlide: this.props.slidesCount > this._slides.length ? this._slides.length : this.props.slidesCount || 1,
       isInfinite: this.props.isInfinite || false,
       isCaption: this.props.isCaption || false,
       isDisabled: false,
       isAutoplay: this.props.isAutoplay || false,
+      isIndicators: this.props.isIndicators || false,
       slides: [],
       slidePosition: 100,
-      slidesToShow: this.props.slidesCount || 1,
+      slidesToShow: this.props.slidesCount > this._slides.length ? this._slides.length : this.props.slidesCount || 1,
       slideAnim: ``,
-      sliderWidth: this.props.width || 0,
-      sliderHeight: this.props.height || 0
     };
 
-    this._slides = React.Children.toArray(this.props.children);
-    this._timer = null;
     this._handlPrevSlideClick = this._handlPrevSlideClick.bind(this);
     this._handlNextSlideClick = this._handlNextSlideClick.bind(this);
     this._handleSlideIndicatorClick = this._handleSlideIndicatorClick.bind(this);
@@ -32,37 +34,37 @@ class Slider extends React.Component {
   }
 
   componentDidMount() {
-    const {slidesCount} = this.props;
     const {isAutoplay, slidesToShow} = this.state;
-    if (isAutoplay) {
-      this._timer = setInterval(this._handlNextSlideClick, 3000);
-    }
+    this._updateWindowDimensions();
+    window.addEventListener(`resize`, this._updateWindowDimensions);
 
-    if (slidesCount > 1 && slidesCount <= this._slides.length) {
-      const firstCloneArray = this._slides.slice(0, slidesToShow);
-      const lastCloneArray = this._slides.slice(this._slides.length - slidesToShow);
-      this.setState({
-        slides: [...lastCloneArray, ...this._slides, ...firstCloneArray]
-      });
-    } else if (slidesCount > this._slides.length) {
-      throw new Error(`I cannot show more slides than you have in a list.`);
-    } else {
-      if (this._slides.length === 1) {
+    switch (true) {
+      case this._slides.length !== 1 && isAutoplay:
+        this._timer = setInterval(this._handlNextSlideClick, 3000);
+        break;
+      case slidesToShow > 1:
+        const firstCloneArray = this._slides.slice(0, slidesToShow);
+        const lastCloneArray = this._slides.slice(this._slides.length - slidesToShow);
         this.setState({
-          activeSlide: slidesCount - 1,
-          slidePosition: 0,
-          slides: [...this._slides]
+          slides: [...lastCloneArray, ...this._slides, ...firstCloneArray]
         });
-      } else {
+        break;
+      default:
+        if (this._slides.length === 1) {
+          this.setState({
+            activeSlide: slidesToShow - 1,
+            slidePosition: 0,
+            slides: [...this._slides]
+          });
+          return;
+        }
         const firstElement = this._slides[0];
         const lastElement = this._slides[this._slides.length - 1];
         this.setState({
           slides: [lastElement, ...this._slides, firstElement]
         });
-      }
+        break;
     }
-    this._updateWindowDimensions();
-    window.addEventListener(`resize`, this._updateWindowDimensions);
   }
 
   componentDidUpdate() {
@@ -85,6 +87,8 @@ class Slider extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener(`resize`, this._updateWindowDimensions);
+    clearInterval(this._timer);
+    this._timer = null;
   }
 
   _resetPrevInterval() {
@@ -102,11 +106,12 @@ class Slider extends React.Component {
 
   _updateWindowDimensions() {
     const {width, height} = this.props;
-    const updatedWidth = width ? width : `${window.innerWidth}px`;
-    const updatedHeight = height ? height : `${window.innerHeight}px`;
+    const updatedWidth = parseInt(width, 10) < window.innerWidth ? width : `${window.innerWidth}px`;
+    const updatedHeight = parseInt(height, 10) < window.innerHeight ? height : `${window.innerHeight}px`;
+
     this.setState({
-      sliderWidth: checkMobile() ? `100%` : updatedWidth,
-      sliderHeight: checkMobile() ? `100vw` : updatedHeight
+      sliderWidth: updatedWidth,
+      sliderHeight: updatedHeight
     });
   }
 
@@ -142,7 +147,7 @@ class Slider extends React.Component {
       isInfinite,
       slidesToShow,
       slidePosition,
-      slides
+      slides,
     } = this.state;
 
     let currentSlide = activeSlide;
@@ -172,7 +177,7 @@ class Slider extends React.Component {
       isInfinite,
       slidePosition,
       slides,
-      slidesToShow
+      slidesToShow,
     } = this.state;
 
     let currentSlide = activeSlide;
@@ -258,6 +263,7 @@ class Slider extends React.Component {
     const {
       activeSlide,
       isCaption,
+      isIndicators,
       slides,
       slidePosition,
       slidesToShow,
@@ -292,7 +298,7 @@ class Slider extends React.Component {
             return (
               <div
                 key={it + index}
-                className={`slide__item ${slideAnim} ${isCaption ? `` : `slide__item--without-caption`}`}
+                className={`slide__item ${slideAnim} ${isCaption ? `` : `slide__item--no-caption`}`}
                 onAnimationEnd={() => this._handleSlideAnim()}
                 id={index + activeSlide}
                 style={{
@@ -307,7 +313,7 @@ class Slider extends React.Component {
               </div>
             );
           })}
-          {slides.length === 1 ? `` :
+          {slides.length === 1 || !isIndicators ? `` :
             <SlideIndicators
               activeSlide={activeSlide}
               isInfinite={this.state.isInfinite}
@@ -336,12 +342,13 @@ class Slider extends React.Component {
 
 Slider.propTypes = {
   children: PropTypes.node.isRequired,
+  width: PropTypes.string,
+  height: PropTypes.string,
   isInfinite: PropTypes.bool,
   isCaption: PropTypes.bool,
   isAutoplay: PropTypes.bool,
-  slidesCount: PropTypes.number,
-  width: PropTypes.string,
-  height: PropTypes.string
+  isIndicators: PropTypes.bool,
+  slidesCount: PropTypes.number
 };
 
 export default Slider;

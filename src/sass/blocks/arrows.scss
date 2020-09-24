@@ -1,6 +1,6 @@
 .arrows__btn {
   width: 50px;
-  height: 50px;
+  height: 100%;
   border: 0;
   padding: 0;
   background-color: transparent;
@@ -12,14 +12,36 @@
   }
 }
 
+.arrows__prev-icon,
+.arrows__next-icon {
+  transition: all 0.3s ease-in-out;
+}
+
 .arrows__next {
   margin-left: auto;
-  top: calc(50% - 40px);
   right: 0;
+  &:hover > .arrows__next-icon {
+    box-shadow: none;
+    transform: translateX(-10px) scale(1.2);
+  }
 }
 
 .arrows__prev {
   margin-left: 0;
-  top: calc(50% - 40px);
   left: 0;
+  &:hover > .arrows__prev-icon {
+    box-shadow: none;
+    transform: translateX(10px) scale(1.2);
+  }
 }
+
+
+.arrows__next,
+.arrows__prev {
+  top: 0;
+  border-radius: 0;
+  &:hover {
+    box-shadow: none;
+  }
+}
+
