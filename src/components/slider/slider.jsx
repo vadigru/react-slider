@@ -277,22 +277,22 @@ class Slider extends React.Component {
     return (
       <section
         className="slider"
-        onMouseOver={this._handleMouseOver}
-        onMouseOut={() => this._handleMouseOut()}
         style={{
           maxWidth: sliderWidth,
         }}
+        onMouseOver={this._handleMouseOver}
+        onMouseOut={() => this._handleMouseOut()}
+        onTouchStart={(evt) => touchStart(evt)}
+        onTouchMove={(evt) => touchMove(evt)}
+        onTouchEnd={(evt) => touchEnd(
+            evt,
+            activeSlide,
+            this._handlNextSlideClick,
+            this._handlPrevSlideClick
+        )}
       >
         <div
           className={`slide`}
-          onTouchStart={(evt) => touchStart(evt)}
-          onTouchMove={(evt) => touchMove(evt)}
-          onTouchEnd={(evt) => touchEnd(
-              evt,
-              activeSlide,
-              this._handlNextSlideClick,
-              this._handlPrevSlideClick
-          )}
         >
           {slideData.map((it, index) => {
             return (
