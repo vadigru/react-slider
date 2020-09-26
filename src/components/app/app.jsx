@@ -12,7 +12,7 @@ const App = () => {
         isCaption={true}
         // isAutoplay={true}
         isIndicators={true}
-        // slidesCount={2}
+        slidesCount={2}
       >
         <div>
           <img className="slide__background" src="/img/asgard.webp" alt="Thor background image"/>
@@ -41,10 +41,8 @@ const App = () => {
 
         <div>
           <img className="slide__background" src="/img/black_hole.webp" alt="Black Hole"/>
-          <a href="https://www.universetoday.com/135158/team-creates-negative-effective-mass-lab/">
-            <span className="visually-hidden">Black Hole</span></a>
           <div className="slide__caption">
-            What is a Black Hole?
+          <a href="https://www.universetoday.com/135158/team-creates-negative-effective-mass-lab/">What is a Black Hole?</a>
           </div>
         </div>
 

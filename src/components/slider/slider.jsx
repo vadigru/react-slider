@@ -152,15 +152,18 @@ class Slider extends React.Component {
 
     let currentSlide = activeSlide;
     let position = slidePosition;
-    if (!isInfinite && currentSlide === slidesToShow || slides.length === 1) {
-      return;
-    }
-    if (currentSlide === slidesToShow) {
-      currentSlide = (slides.length - 1 - slidesToShow);
-      position = ((slides.length - 1) - slidesToShow) * 100 / slidesToShow;
-    } else if (currentSlide > slidesToShow) {
-      currentSlide = currentSlide - 1;
-      position -= 100 / slidesToShow;
+
+    switch (true) {
+      case !isInfinite && currentSlide === slidesToShow || slides.length === 1:
+        return;
+      case currentSlide === slidesToShow:
+        currentSlide = (slides.length - 1 - slidesToShow);
+        position = ((slides.length - 1) - slidesToShow) * 100 / slidesToShow;
+        break;
+      default:
+        currentSlide = currentSlide - 1;
+        position -= 100 / slidesToShow;
+        break;
     }
 
     this.setState({
@@ -170,6 +173,7 @@ class Slider extends React.Component {
       slideAnim: `slideRight`
     });
   }
+
 
   _handlNextSlideClick() {
     const {
@@ -182,15 +186,18 @@ class Slider extends React.Component {
 
     let currentSlide = activeSlide;
     let position = slidePosition;
-    if (!isInfinite && currentSlide === (slides.length - slidesToShow) - slidesToShow || slides.length === 1) {
-      return;
-    }
-    if (currentSlide === (slides.length - 1) - slidesToShow) {
-      currentSlide = slidesToShow;
-      position = 100;
-    } else if (currentSlide < slides.length - 1) {
-      currentSlide = currentSlide + 1;
-      position += 100 / slidesToShow;
+
+    switch (true) {
+      case !isInfinite && currentSlide === (slides.length - slidesToShow) - slidesToShow || slides.length === 1:
+        return;
+      case currentSlide === (slides.length - 1) - slidesToShow:
+        currentSlide = slidesToShow;
+        position = 100;
+        break;
+      default:
+        currentSlide = currentSlide + 1;
+        position += 100 / slidesToShow;
+        break;
     }
 
     this.setState({
@@ -205,21 +212,24 @@ class Slider extends React.Component {
     const {activeSlide, slidesToShow} = this.state;
     const target = evt.target;
     const id = parseInt(target.id, 10);
-    if (id === activeSlide) {
-      return;
-    }
-    if (id > activeSlide) {
-      this.setState({
-        activeSlide: id,
-        slidePosition: id * 100 / slidesToShow,
-        slideAnim: `slideLeft`
-      });
-    } else {
-      this.setState({
-        activeSlide: id,
-        slidePosition: id * 100 / slidesToShow,
-        slideAnim: `slideRight`
-      });
+
+    switch (true) {
+      case id === activeSlide:
+        return;
+      case id > activeSlide:
+        this.setState({
+          activeSlide: id,
+          slidePosition: id * 100 / slidesToShow,
+          slideAnim: `slideLeft`
+        });
+        break;
+      default:
+        this.setState({
+          activeSlide: id,
+          slidePosition: id * 100 / slidesToShow,
+          slideAnim: `slideRight`
+        });
+        break;
     }
   }
 
@@ -229,7 +239,7 @@ class Slider extends React.Component {
         isDisabled: false,
         slideAnim: ``
       });
-    }, 1);
+    }, 150);
   }
 
   _getSlideData(arr) {
@@ -240,21 +250,40 @@ class Slider extends React.Component {
 
   _getBackground(arr) {
     let background = ``;
-    if (Array.isArray(arr)) {
-      arr.some((it) => {
-        if (it.props.src) {
-          background = it.props.src;
-        }
-      });
-    } else {
-      for (let property in arr) {
-        if (arr.hasOwnProperty(property)) {
-          if (arr[`props`].src) {
-            background = arr[`props`].src;
+
+    switch (true) {
+      case Array.isArray(arr):
+        arr.some((it) => {
+          if (it.props.src) {
+            background = it.props.src;
+          }
+        });
+        break;
+      default:
+        for (let property in arr) {
+          if (arr.hasOwnProperty(property)) {
+            if (arr[`props`].src) {
+              background = arr[`props`].src;
+            }
           }
         }
-      }
     }
+
+    // if (Array.isArray(arr)) {
+    //   arr.some((it) => {
+    //     if (it.props.src) {
+    //       background = it.props.src;
+    //     }
+    //   });
+    // } else {
+    //   for (let property in arr) {
+    //     if (arr.hasOwnProperty(property)) {
+    //       if (arr[`props`].src) {
+    //         background = arr[`props`].src;
+    //       }
+    //     }
+    //   }
+    // }
 
     return background;
   }
@@ -282,14 +311,7 @@ class Slider extends React.Component {
         }}
         onMouseOver={this._handleMouseOver}
         onMouseOut={() => this._handleMouseOut()}
-        onTouchStart={(evt) => touchStart(evt)}
-        onTouchMove={(evt) => touchMove(evt)}
-        onTouchEnd={(evt) => touchEnd(
-            evt,
-            activeSlide,
-            this._handlNextSlideClick,
-            this._handlPrevSlideClick
-        )}
+
       >
         <div
           className={`slide`}
@@ -300,6 +322,22 @@ class Slider extends React.Component {
                 key={it + index}
                 className={`slide__item ${slideAnim} ${isCaption ? `` : `slide__item--no-caption`}`}
                 onAnimationEnd={() => this._handleSlideAnim()}
+                onMouseDown={(evt) => touchStart(evt)}
+                onMouseMove={(evt) => touchMove(evt)}
+                onMouseUp={(evt) => touchEnd(
+                    evt,
+                    activeSlide,
+                    this._handlNextSlideClick,
+                    this._handlPrevSlideClick
+                )}
+                onTouchStart={(evt) => touchStart(evt)}
+                onTouchMove={(evt) => touchMove(evt)}
+                onTouchEnd={(evt) => touchEnd(
+                    evt,
+                    activeSlide,
+                    this._handlNextSlideClick,
+                    this._handlPrevSlideClick
+                )}
                 id={index + activeSlide}
                 style={{
                   color: `${!this._getBackground(it) ? `black` : `white`}`,
@@ -308,12 +346,13 @@ class Slider extends React.Component {
                   left: `-${slidePosition}%`,
                   backgroundImage: `url(${this._getBackground(it)})`,
                 }}
+                draggable={true}
               >
                 {it}
               </div>
             );
           })}
-          {slides.length === 1 || !isIndicators ? `` :
+          {!isIndicators || this._slides.length === slidesToShow ? `` :
             <SlideIndicators
               activeSlide={activeSlide}
               isInfinite={this.state.isInfinite}
