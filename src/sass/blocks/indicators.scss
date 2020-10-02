@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  bottom: 15px;
+  bottom: -40px;
   left: calc(50% - 100px);
   right: calc(50% - 100px);
   z-index: 999;
@@ -36,6 +36,6 @@
   &--active {
     width: 10px;
     height: 10px;
-    background-color: $color-white;
+    background-color: $color-black;
   }
 }

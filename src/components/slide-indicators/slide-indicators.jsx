@@ -4,32 +4,28 @@ import PropTypes from "prop-types";
 const SlideIndicators = (props) => {
   const {
     activeSlide,
-    isInfinite,
+    // isInfinite,
     isCaption,
-    slides,
+    // slides,
     slidesToShow,
+    indicators,
     onIndicatorDotClick,
   } = props;
 
-  let slidesLengthCorrection = 0;
-
-  if (!isInfinite && slidesToShow > 1) {
-    slidesLengthCorrection = slidesToShow - 1;
-  }
-
   let indicatorsItem = [];
-  for (let i = slidesToShow; i <= (slides.length - 1 - slidesLengthCorrection) + slidesToShow; i++) {
+  // for (let i = slidesToShow; i <= ((slides.length - 1 - slidesLengthCorrection) + slidesToShow); i++) {
+  for (let i = 0; i < indicators.length; i++) {
     indicatorsItem.push(
         <div
           key={i}
-          className={`indicators__item ${i === activeSlide ? `indicators__item--active` : ``}`}
+          className={`indicators__item ${i + slidesToShow === activeSlide ? `indicators__item--active` : ``}`}
           id={i}
-          onClick={onIndicatorDotClick}
+          onClick={(evt) => onIndicatorDotClick(evt)}
         >
           <div
-            className={`indicators__item-inner ${i === activeSlide ? `indicators__item-inner--active` : ``}`}
+            className={`indicators__item-inner ${i + slidesToShow === activeSlide ? `indicators__item-inner--active` : ``}`}
             id={i}
-            onClick={onIndicatorDotClick}
+            onClick={(evt) => onIndicatorDotClick(evt)}
           >
           </div>
         </div>);
@@ -43,10 +39,11 @@ const SlideIndicators = (props) => {
 
 SlideIndicators.propTypes = {
   activeSlide: PropTypes.number.isRequired,
-  isInfinite: PropTypes.bool.isRequired,
+  // isInfinite: PropTypes.bool.isRequired,
   isCaption: PropTypes.bool.isRequired,
-  slides: PropTypes.arrayOf(PropTypes.node).isRequired,
+  // slides: PropTypes.arrayOf(PropTypes.node).isRequired,
   slidesToShow: PropTypes.number.isRequired,
+  indicators: PropTypes.arrayOf(PropTypes.number).isRequired,
   onIndicatorDotClick: PropTypes.func.isRequired,
 };
 

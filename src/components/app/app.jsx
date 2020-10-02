@@ -6,12 +6,13 @@ const App = () => {
   return (
     <>
       <Slider
-        // width={`1000px`}
-        // height={`350px`}
+        width={`1000px`}
+        height={`500px`}
         isInfinite={true}
         isCaption={true}
         // isAutoplay={true}
         isIndicators={true}
+        isArrows={true}
         slidesCount={2}
       >
         <div>
@@ -29,6 +30,15 @@ const App = () => {
         </div>
 
         <div>
+          <div className="slide__content">
+            <img className="slide__image" src="/img/black_hole.webp" alt="Black Hole"/>
+          </div>
+          <div className="slide__caption">
+            <a href="https://www.universetoday.com/135158/team-creates-negative-effective-mass-lab/">What is a Black Hole?</a>
+          </div>
+        </div>
+
+        <div>
           <img className="slide__background" src="/img/hawaii.webp" alt="Hawaii"/>
           <div className="slide__content">
             <h2>Hawaii</h2>
@@ -36,13 +46,6 @@ const App = () => {
           </div>
           <div className="slide__caption">
             Hawaii
-          </div>
-        </div>
-
-        <div>
-          <img className="slide__background" src="/img/black_hole.webp" alt="Black Hole"/>
-          <div className="slide__caption">
-          <a href="https://www.universetoday.com/135158/team-creates-negative-effective-mass-lab/">What is a Black Hole?</a>
           </div>
         </div>
 
@@ -66,6 +69,48 @@ const App = () => {
             </button>
           </div>
         </div>
+
+        <div>
+          <div className="slide__content">
+            <h2>LAST SLIDE</h2>
+          </div>
+        </div>
+
+        {/* <div>
+          <div className="slide__content--no-bg">
+            <h2> 1</h2>
+          </div>
+        </div>
+
+        <div>
+          <div className="slide__content--no-bg">
+            <h2> 2 </h2>
+          </div>
+        </div>
+
+        <div>
+          <div className="slide__content--no-bg">
+            <h2> 3 </h2>
+          </div>
+        </div>
+
+        <div>
+          <div className="slide__content--no-bg">
+            <h2> 4 </h2>
+          </div>
+        </div>
+
+        <div>
+          <div className="slide__content--no-bg">
+            <h2> 5 </h2>
+          </div>
+        </div>
+
+        <div>
+          <div className="slide__content--no-bg">
+            <h2> 6 </h2>
+          </div>
+        </div> */}
       </Slider>
     </>
   );
