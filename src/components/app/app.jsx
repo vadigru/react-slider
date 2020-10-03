@@ -8,12 +8,12 @@ const App = () => {
       <Slider
         width={`1000px`}
         height={`500px`}
-        isInfinite={true}
+        // isInfinite={true}
         isCaption={true}
         // isAutoplay={true}
         isIndicators={true}
         isArrows={true}
-        slidesCount={2}
+        slidesCount={1}
       >
         <div>
           <img className="slide__background" src="/img/asgard.webp" alt="Thor background image"/>

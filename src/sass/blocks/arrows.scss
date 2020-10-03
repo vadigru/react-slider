@@ -38,7 +38,7 @@
 
 .arrows__next,
 .arrows__prev {
-  bottom: -50px;
+  bottom: calc(50% - 25px);
   border-radius: 0;
   &:hover {
     box-shadow: none;
