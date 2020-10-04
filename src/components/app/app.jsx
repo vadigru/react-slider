@@ -6,14 +6,15 @@ const App = () => {
   return (
     <>
       <Slider
-        width={`1000px`}
-        height={`500px`}
+        // width={`1000px`}
+        // height={`500px`}
         // isInfinite={true}
         isCaption={true}
         // isAutoplay={true}
         isIndicators={true}
         isArrows={true}
-        slidesCount={1}
+        isMultiple={true}
+        slidesCount={3}
       >
         <div>
           <img className="slide__background" src="/img/asgard.webp" alt="Thor background image"/>
@@ -33,8 +34,8 @@ const App = () => {
           <div className="slide__content">
             <img className="slide__image" src="/img/black_hole.webp" alt="Black Hole"/>
           </div>
-          <div className="slide__caption">
-            <a href="https://www.universetoday.com/135158/team-creates-negative-effective-mass-lab/">What is a Black Hole?</a>
+          <div className="slide__caption caption">
+            <a className="caption__btn" href="https://www.universetoday.com/135158/team-creates-negative-effective-mass-lab/">What is a Black Hole?</a>
           </div>
         </div>
 
@@ -42,7 +43,7 @@ const App = () => {
           <img className="slide__background" src="/img/hawaii.webp" alt="Hawaii"/>
           <div className="slide__content">
             <h2>Hawaii</h2>
-            is the world&apos;s largest island chain, and it&apos;s the only U.S. state completely made up of islands. But only 7 of its 132 islands are inhabited: Hawaii (also known as the Big Island), Maui, Molokai, Lanai, Oahu, Kauai, and Niihau. The Hawaiian Islands are volcanic islands.
+            is the world&apos;s largest island chain, and it&apos;s the only U.S. state completely made up of islands.
           </div>
           <div className="slide__caption">
             Hawaii
@@ -60,13 +61,10 @@ const App = () => {
         </div>
 
         <div>
-          <div className="slide__content--no-bg">
-            <p>Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus.
-              Most people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment.
+          <div className="slide__content--no-bg content">
+            <p>COVID-19 is an infectious disease. Most people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment.
             </p>
-            <button>
-              <a href="https://covid19.who.int/">Coronavirus Dashboard</a>
-            </button>
+            <a className="content__btn content__btn--alert" href="https://covid19.who.int/">COVID-19 Dashboard</a>
           </div>
         </div>
 

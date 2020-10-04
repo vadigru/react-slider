@@ -3,15 +3,31 @@ import PropTypes from "prop-types";
 import Arrows from "../arrows/arrows.jsx";
 import SlideIndicators from "../slide-indicators/slide-indicators.jsx";
 // import {touchStart, touchMove, touchEnd} from "../../utils/swipe.js";
+const getSlidesCount = (count = 1) => {
+  if (count > 1) {
+    if (window.innerWidth > 1150) {
+      count = count;
+    } else if (window.innerWidth > 768 && window.innerWidth < 1150) {
+      count = 2;
+    } else if (window.innerWidth < 768) {
+      count = 1;
+    }
+  }
 
+  return count;
+};
 class Slider extends React.Component {
   constructor(props) {
     super(props);
 
     this._initSlides = React.Children.toArray(this.props.children);
+    this._modifiedSlides = [];
     this._indicators = [];
     this._timer = null;
-    this.sensitivity = 20;
+    this._slidesMaxCount = 3;
+    this._sensitivity = 20;
+    this._slidesToShow = this.props.isMultiple ? getSlidesCount(this.props.slidesCount) : this.props.slidesCount;
+
     this.propstouchPositionCurrent = null;
     this.propstouchTimeStart = null;
     this.propstouchTimeEnd = null;
@@ -21,18 +37,21 @@ class Slider extends React.Component {
     this.state = {
       sliderWidth: this.props.width || ``,
       sliderHeight: this.props.height || ``,
-      activeSlide: this.props.slidesCount > this._initSlides.length ? this._initSlides.length : this.props.slidesCount || 1,
+      activeSlide: this._slidesToShow,
       isInfinite: this.props.isInfinite || false,
       isCaption: this.props.isCaption || false,
       isDisabled: false,
       isAutoplay: this.props.isAutoplay || false,
       isIndicators: this.props.isIndicators || false,
       isArrows: this.props.isArrows || false,
-      slides: [],
+      isMultiple: this.props.isMultiple || false,
+      // slides: [],
       slidePosition: 100,
-      slidesToShow: this.props.slidesCount > this._initSlides.length ? this._initSlides.length : this.props.slidesCount || 1,
+      // slidesToShow: this.props.slidesCount > this._initSlides.length ? this._initSlides.length : this.props.slidesCount || 1,
+      slidesToShow: this._slidesToShow,
+      // slidesToShow: ,
       // slideAnim: ``,
-      animationName: ``
+      slideAnimation: ``
     };
 
     this._handlPrevSlideClick = this._handlPrevSlideClick.bind(this);
@@ -40,6 +59,74 @@ class Slider extends React.Component {
     this._handleSlideIndicatorClick = this._handleSlideIndicatorClick.bind(this);
     this._handleMouseOver = this._handleMouseOver.bind(this);
     this._updateWindowDimensions = this._updateWindowDimensions.bind(this);
+  }
+
+  componentDidMount() {
+    this._setupSlider();
+  }
+
+  componentDidUpdate() {
+    const {
+      activeSlide,
+      isAutoplay,
+      isInfinite,
+      // slides,
+      slidesToShow
+    } = this.state;
+    if (isAutoplay && !isInfinite) {
+      if (activeSlide === (this._modifiedSlides.length - 1) + slidesToShow) {
+        this._resetPrevInterval();
+      } else if (activeSlide === slidesToShow) {
+        this._resetNextInterval();
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener(`resize`, this._updateWindowDimensions);
+    clearInterval(this._timer);
+    this._timer = null;
+  }
+
+  _buildSlides() {
+    const {slidesToShow} = this.state;
+    if (this._modifiedSlides.length) {
+      this._modifiedSlides = [];
+      // this.setState({
+      //   slides: []
+      // });
+    }
+    switch (true) {
+      case slidesToShow > 1:
+        const firstCloneArray = this._initSlides.slice(0, slidesToShow);
+        const lastCloneArray = this._initSlides.slice(this._initSlides.length - slidesToShow);
+        this._modifiedSlides = [...lastCloneArray, ...this._initSlides, ...firstCloneArray];
+        // this.setState({
+        //   slides: [...lastCloneArray, ...this._initSlides, ...firstCloneArray]
+        // });
+        break;
+      default:
+        if (this._initSlides.length === 1) {
+          this.setState({
+            activeSlide: slidesToShow - 1,
+            slidePosition: 100,
+            // slides: [...this._initSlides]
+          });
+          this._modifiedSlides = [...this._initSlides];
+          return;
+        }
+        const firstElement = this._initSlides[0];
+        const lastElement = this._initSlides[this._initSlides.length - 1];
+        this._modifiedSlides = [lastElement, ...this._initSlides, firstElement];
+        // this.setState({
+        //   slides: [lastElement, ...this._initSlides, firstElement]
+        // });
+        break;
+    }
+    this.setState({
+      activeSlide: this.state.slidesToShow
+    });
+    // console.log(this._modifiedSlides);
   }
 
   _buildIndicators() {
@@ -79,49 +166,7 @@ class Slider extends React.Component {
     return background;
   }
 
-
-  _buildSlides() {
-    const {slidesToShow} = this.state;
-    switch (true) {
-      case slidesToShow > 1:
-        const firstCloneArray = this._initSlides.slice(0, slidesToShow);
-        const lastCloneArray = this._initSlides.slice(this._initSlides.length - slidesToShow);
-        this.setState({
-          slides: [...lastCloneArray, ...this._initSlides, ...firstCloneArray]
-        });
-        break;
-      default:
-        if (this._initSlides.length === 1) {
-          this.setState({
-            activeSlide: slidesToShow - 1,
-            slidePosition: 0,
-            slides: [...this._initSlides]
-          });
-          return;
-        }
-        const firstElement = this._initSlides[0];
-        const lastElement = this._initSlides[this._initSlides.length - 1];
-        this.setState({
-          slides: [lastElement, ...this._initSlides, firstElement]
-        });
-        break;
-    }
-  }
-
-  _startAutoplay() {
-    const {isAutoplay} = this.state;
-    if (isAutoplay && this._initSlides.length !== 1) {
-      this._timer = setInterval(this._handlNextSlideClick, 3000);
-    }
-  }
-
   _setupSlider() {
-    if (this.state.slides) {
-      this.setState({
-        slides: []
-      });
-    }
-
     this._buildSlides();
     this._buildIndicators();
     this._startAutoplay();
@@ -129,56 +174,31 @@ class Slider extends React.Component {
     window.addEventListener(`resize`, this._updateWindowDimensions);
   }
 
-  componentDidMount() {
-    this._setupSlider();
-  }
-
-  componentDidUpdate() {
-    const {
-      activeSlide,
-      isAutoplay,
-      isInfinite,
-      slides,
-      slidesToShow
-    } = this.state;
-    if (isAutoplay && !isInfinite) {
-      if (activeSlide === (slides.length - slidesToShow) - slidesToShow) {
-        this._resetPrevInterval();
-      } else if (activeSlide === slidesToShow) {
-        this._resetNextInterval();
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener(`resize`, this._updateWindowDimensions);
-    clearInterval(this._timer);
-    this._timer = null;
-  }
-
   _updateWindowDimensions() {
     const {width, height} = this.props;
     const updatedWidth = parseInt(width, 10) < window.innerWidth ? width : `${window.innerWidth}px`;
     const updatedHeight = parseInt(height, 10) < window.innerHeight ? height : `${window.innerHeight}px`;
-    let updatedSlidesToShow = this.state.slidesToShow;
-    if (window.innerWidth > 1150) {
-      updatedSlidesToShow = this.props.slidesCount;
-    }
-    if (window.innerWidth < 1150) {
-      updatedSlidesToShow = this.props.slidesCount - 1;
-    }
-    if (window.innerWidth < 768) {
-      updatedSlidesToShow = 1;
-    }
+
+    const updatedSlidesToShow = getSlidesCount(this.props.slidesCount);
 
     this.setState({
-      slidesToShow: updatedSlidesToShow,
+      slidesToShow: this.state.isMultiple ? updatedSlidesToShow : this.state.slidesToShow,
       sliderWidth: updatedWidth,
-      sliderHeight: updatedHeight
+      sliderHeight: updatedHeight,
+      // activeSlide: updatedSlidesToShow,
+      slidePosition: 100
     });
 
+    this._buildSlides();
     this._buildIndicators();
+  }
 
+  // atoplay handlers ---------------------------------------------------------
+  _startAutoplay() {
+    const {isAutoplay} = this.state;
+    if (isAutoplay && this._initSlides.length !== 1) {
+      this._timer = setInterval(this._handlNextSlideClick, 3000);
+    }
   }
 
   _handleMouseOver() {
@@ -186,16 +206,28 @@ class Slider extends React.Component {
     this._timer = null;
   }
 
+  _resetPrevInterval() {
+    clearInterval(this._timer);
+    this._timer = null;
+    this._timer = setInterval(this._handlPrevSlideClick, 3000);
+  }
+
+  _resetNextInterval() {
+    clearInterval(this._timer);
+    this._timer = null;
+    this._timer = setInterval(this._handlNextSlideClick, 3000);
+  }
+
   _handleMouseOut() {
     const {
       activeSlide,
       isAutoplay,
       isInfinite,
-      slides,
+      // slides,
       slidesToShow
     } = this.state;
     if (isAutoplay && !isInfinite) {
-      if (activeSlide === (slides.length - slidesToShow) - slidesToShow) {
+      if (activeSlide === (this._modifiedSlides.length - slidesToShow) - slidesToShow) {
         this._resetPrevInterval();
       } else {
         this._resetNextInterval();
@@ -206,6 +238,7 @@ class Slider extends React.Component {
     }
   }
 
+  // slider navigation handlers -----------------------------------------------
   _handlPrevSlideClick(evt) {
     this.setAnimation(evt);
     const {
@@ -213,13 +246,13 @@ class Slider extends React.Component {
       isInfinite,
       slidesToShow,
       slidePosition,
-      slides,
+      // slides,
     } = this.state;
     let currentSlide = activeSlide;
     let position = this.positionDiff ? Math.round(slidePosition - ((this.positionDiff.x * 100 / parseInt(this.state.sliderWidth, 10)))) : slidePosition;
 
     switch (true) {
-      case !isInfinite && currentSlide === slidesToShow || slides.length === 1 || slidesToShow === this._initSlides.length:
+      case !isInfinite && currentSlide === slidesToShow || this._modifiedSlides.length === 1 || slidesToShow === this._initSlides.length:
         currentSlide = currentSlide;
         position = position;
         break;
@@ -246,13 +279,13 @@ class Slider extends React.Component {
       activeSlide,
       isInfinite,
       slidePosition,
-      slides,
+      // slides,
       slidesToShow,
     } = this.state;
     let currentSlide = activeSlide;
     let position = this.positionDiff ? Math.round(slidePosition - ((this.positionDiff.x * 100 / parseInt(this.state.sliderWidth, 10)))) : slidePosition;
     switch (true) {
-      case !isInfinite && currentSlide === this._indicators.length + slidesToShow - 1 || slides.length === 1 || slidesToShow === this._initSlides.length:
+      case !isInfinite && currentSlide === this._indicators.length + slidesToShow - 1 || this._modifiedSlides.length === 1 || slidesToShow === this._initSlides.length:
         currentSlide = currentSlide;
         position = position;
         break;
@@ -296,6 +329,7 @@ class Slider extends React.Component {
     this.setAnimation(evt);
   }
 
+  // animation ---------------------------------------------------------------
   _handleSlideAnim() {
     setTimeout(() => {
       this.setState({
@@ -305,24 +339,9 @@ class Slider extends React.Component {
     }, 150);
   }
 
-  _resetPrevInterval() {
-    clearInterval(this._timer);
-    this._timer = null;
-    this._timer = setInterval(this._handlPrevSlideClick, 3000);
-  }
-
-  _resetNextInterval() {
-    clearInterval(this._timer);
-    this._timer = null;
-    this._timer = setInterval(this._handlNextSlideClick, 3000);
-  }
-
-
-
-  // handle touchevents and mouseevents --------------------------------------
   setAnimation(evt) {
     // let styleSheet = document.styleSheets[0];
-    let animationName = `animation${Math.round(Math.random() * 100)}`;
+    let slideAnimation = `animation${Math.round(Math.random() * 100)}`;
     const anima = () => {
       let a = ``;
       if (this.positionDiff) {
@@ -342,17 +361,17 @@ class Slider extends React.Component {
       return a;
     };
     let keyframes =
-    `@-webkit-keyframes ${animationName} {
+    `@-webkit-keyframes ${slideAnimation} {
       0% {-webkit-transform:translate(${anima()}%)}
       100% {-webkit-transform:translate(${0}%)}
     }`;
     this.styleSheet.insertRule(keyframes, this.styleSheet.cssRules.length);
     this.setState({
-      animationName
+      slideAnimation
     });
-    console.log(this.styleSheet);
   }
 
+  // handle touchevents and mouseevents --------------------------------------
   checkAction(slide, next, prev) {
     this.positionDiff = {
       x: this.touchPositionStart.x - this.touchPositionCurrent.x,
@@ -428,7 +447,7 @@ class Slider extends React.Component {
       activeSlide,
       isCaption,
       isIndicators,
-      slides,
+      // slides,
       slidePosition,
       slidesToShow,
       // slideAnim,
@@ -436,7 +455,7 @@ class Slider extends React.Component {
       sliderHeight
     } = this.state;
 
-    const slideData = this._getSlideData(slides);
+    const slideData = this._getSlideData(this._modifiedSlides);
     return (
       <section
         className="slider"
@@ -473,7 +492,7 @@ class Slider extends React.Component {
         >
           {slideData.map((it, index) => {
             let style = {
-              animationName: this.state.animationName,
+              animationName: this.state.slideAnimation,
               animationTimingFunction: `ease-in-out`,
               animationDuration: `0.3s`,
               animationDelay: `0.0s`,
@@ -492,7 +511,6 @@ class Slider extends React.Component {
               left: `-${slidePosition}%`,
               visibility: `hidden`
             };
-            console.log(index, this._initSlides.length);
             return (
               <div
                 key={it + index}
@@ -500,7 +518,7 @@ class Slider extends React.Component {
                 // className={`slide__item ${slideAnim} ${isCaption ? `` : `slide__item--no-caption`}`}
                 onAnimationEnd={() => this._handleSlideAnim()}
                 id={index + activeSlide}
-                style={!this.state.isInfinite && index < this.state.slidesToShow || !this.state.isInfinite && index > (this._initSlides.length - 1) + this.state.slidesToShow ? styleHidden : style}
+                style={!this.state.isInfinite && index < slidesToShow || !this.state.isInfinite && index > (this._initSlides.length - 1) + slidesToShow ? styleHidden : style}
               >
                 {it}
               </div>
@@ -509,7 +527,7 @@ class Slider extends React.Component {
 
         </div>
 
-        {!this.state.isArrows || slides.length === 1 || slidesToShow === this._initSlides.length ? `` :
+        {!this.state.isArrows || this._modifiedSlides.length === 1 || slidesToShow === this._initSlides.length ? `` :
           <Arrows
             activeSlide={activeSlide}
             isInfinite={this.state.isInfinite}
@@ -544,6 +562,8 @@ Slider.propTypes = {
   isCaption: PropTypes.bool,
   isAutoplay: PropTypes.bool,
   isIndicators: PropTypes.bool,
+  isArrows: PropTypes.bool,
+  isMultiple: PropTypes.bool,
   slidesCount: PropTypes.number
 };
 

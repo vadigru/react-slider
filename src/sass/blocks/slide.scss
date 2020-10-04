@@ -1,14 +1,17 @@
 
-button {
-  font-size: calc(0.55em + 1vmin);
+.content__btn {
+  font-size: calc(0.45em + 1vmin);
   padding: 15px 20px;
   border-radius: 50px;
   border: none;
-  background-color: $color-black;
   transition: all 0.2s ease-in-out;
-  & > a {
-    color: $color-white;
-    text-decoration: none;
+  color: $color-white;
+  text-decoration: none;
+  &--night {
+    background-color: $color-black;
+  }
+  &--alert {
+    background-color: $color-red;
   }
   &:hover {
     transform: translateY(-1px);
@@ -42,7 +45,7 @@ button {
   z-index: 999;
 }
 
-.slide__caption a {
+.caption__btn {
   color: $color-white;
   display: inline;
   text-decoration: none;
