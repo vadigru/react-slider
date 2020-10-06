@@ -27,7 +27,6 @@
   position: relative;
   display: flex;
   overflow: hidden;
-  outline: 5px solid blue;
 }
 
 .slide__caption {
@@ -71,7 +70,6 @@
   background-size: cover;
   background-position-x: center;
   background-position-y: center;
-  outline: 2px solid red;
   &--no-caption > .slide__caption {
     display: none;
   }

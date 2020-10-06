@@ -6,20 +6,21 @@ const App = () => {
   return (
     <>
       <Slider
-        // width={`1000px`}
-        // height={`500px`}
+        width={`1000px`}
+        height={`500px`}
         // isInfinite={true}
         isCaption={true}
         // isAutoplay={true}
         isIndicators={true}
         isArrows={true}
         isMultiple={true}
-        slidesCount={3}
+        animatedSwipe={true}
+        slidesCount={4}
       >
         <div>
-          <img className="slide__background" src="/img/asgard.webp" alt="Thor background image"/>
-          <div className="slide__content">
-            <img className="slide__avatar" src="/img/thor_avatar.webp" alt="Thor" width="100" heigth="100"/>
+          <img className="slide__background" src="img/asgard.webp" alt="Thor background image"/>
+          <div className="slide__content content">
+            <img className="slide__avatar" src="img/thor_avatar.webp  " alt="Thor" width="100" heigth="100"/>
             <h4>THOR</h4>
             <span>
               <a href="https://www.marvel.com/characters/thor-thor-odinson">The son of Odin</a> uses his mighty abilities as the God of Thunder to protect his home Asgard and planet Earth alike.
@@ -31,8 +32,8 @@ const App = () => {
         </div>
 
         <div>
-          <div className="slide__content">
-            <img className="slide__image" src="/img/black_hole.webp" alt="Black Hole"/>
+          <div className="slide__content content">
+            <img className="slide__image" src="img/black_hole.webp" alt="Black Hole"/>
           </div>
           <div className="slide__caption caption">
             <a className="caption__btn" href="https://www.universetoday.com/135158/team-creates-negative-effective-mass-lab/">What is a Black Hole?</a>
@@ -40,8 +41,8 @@ const App = () => {
         </div>
 
         <div>
-          <img className="slide__background" src="/img/hawaii.webp" alt="Hawaii"/>
-          <div className="slide__content">
+          <img className="slide__background" src="img/hawaii.webp" alt="Hawaii"/>
+          <div className="slide__content content">
             <h2>Hawaii</h2>
             is the world&apos;s largest island chain, and it&apos;s the only U.S. state completely made up of islands.
           </div>
