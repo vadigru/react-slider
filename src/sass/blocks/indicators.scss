@@ -28,14 +28,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $color-white-50;
+  background-color: $color-grey;
   border-radius: 25px;
-  border: 1px solid $color-black-30;
   transition: all 0.15s ease-in-out;
 
   &--active {
     width: 10px;
     height: 10px;
     background-color: $color-white;
+    border: 1px solid $color-grey;
   }
 }

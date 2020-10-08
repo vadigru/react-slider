@@ -4,16 +4,13 @@ import PropTypes from "prop-types";
 const SlideIndicators = (props) => {
   const {
     activeSlide,
-    // isInfinite,
     isCaption,
-    // slides,
     slidesToShow,
     indicators,
     onIndicatorDotClick,
   } = props;
 
   let indicatorsItem = [];
-  // for (let i = slidesToShow; i <= ((slides.length - 1 - slidesLengthCorrection) + slidesToShow); i++) {
   for (let i = 0; i < indicators.length; i++) {
     indicatorsItem.push(
         <div
@@ -39,9 +36,7 @@ const SlideIndicators = (props) => {
 
 SlideIndicators.propTypes = {
   activeSlide: PropTypes.number.isRequired,
-  // isInfinite: PropTypes.bool.isRequired,
   isCaption: PropTypes.bool.isRequired,
-  // slides: PropTypes.arrayOf(PropTypes.node).isRequired,
   slidesToShow: PropTypes.number.isRequired,
   indicators: PropTypes.arrayOf(PropTypes.number).isRequired,
   onIndicatorDotClick: PropTypes.func.isRequired,

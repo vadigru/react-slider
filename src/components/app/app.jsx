@@ -8,16 +8,16 @@ const App = () => {
       <Slider
         width={`1000px`}
         height={`500px`}
-        // isInfinite={true}
-        isCaption={true}
-        // isAutoplay={true}
-        isIndicators={true}
-        isArrows={true}
-        isMultiple={true}
-        animatedSwipe={true}
-        slidesCount={4}
+        // infinite={true}
+        caption={true}
+        autoplay={true}
+        indicators={true}
+        arrows={true}
+        adaptiveSlides={true}
+        // animatedSwipe={true}
+        slidesCount={2}
       >
-        <div>
+        {/* <div>
           <img className="slide__background" src="img/asgard.webp" alt="Thor background image"/>
           <div className="slide__content content">
             <img className="slide__avatar" src="img/thor_avatar.webp  " alt="Thor" width="100" heigth="100"/>
@@ -73,9 +73,9 @@ const App = () => {
           <div className="slide__content">
             <h2>LAST SLIDE</h2>
           </div>
-        </div>
+        </div> */}
 
-        {/* <div>
+        <div>
           <div className="slide__content--no-bg">
             <h2> 1</h2>
           </div>
@@ -109,7 +109,7 @@ const App = () => {
           <div className="slide__content--no-bg">
             <h2> 6 </h2>
           </div>
-        </div> */}
+        </div>
       </Slider>
     </>
   );
