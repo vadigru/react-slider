@@ -6,16 +6,16 @@ const App = () => {
   return (
     <>
       <Slider
-        width={`1000px`}
-        height={`500px`}
+        width={`500px`}
+        height={`200px`}
         // infinite={true}
         caption={true}
-        autoplay={true}
+        // autoplay={true}
         indicators={true}
         arrows={true}
         adaptiveSlides={true}
-        // animatedSwipe={true}
-        slidesCount={2}
+        animatedSwipe={true}
+        slidesCount={3}
       >
         {/* <div>
           <img className="slide__background" src="img/asgard.webp" alt="Thor background image"/>
@@ -44,9 +44,9 @@ const App = () => {
           <img className="slide__background" src="img/hawaii.webp" alt="Hawaii"/>
           <div className="slide__content content">
             <h2>Hawaii</h2>
-            is the world&apos;s largest island chain, and it&apos;s the only U.S. state completely made up of islands.
+            <p>is the world&apos;s largest island chain, and it&apos;s the only U.S. state completely made up of islands.</p>
           </div>
-          <div className="slide__caption">
+          <div className="slide__caption caption">
             Hawaii
           </div>
         </div>
@@ -56,8 +56,20 @@ const App = () => {
             src={`https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4`}
             autoPlay={true}
           />
-          <div className="slide__caption slide__caption--forced">
+          <div className="slide__caption slide__caption--forced caption">
             Big Buck Bunny
+          </div>
+        </div>
+
+        <div>
+          <img className="slide__background" src="https://cdnb.artstation.com/p/assets/images/images/014/245/147/large/chris-kesler-6.jpg?1543169029" alt="The Infinity Gautlet background image"/>
+          <div className="slide__content content">
+            <img className="slide__avatar" src="https://avatarfiles.alphacoders.com/177/thumb-177423.png" alt="Thanos with the Infinity Gauntlet" width="100" heigth="100"/>
+            <h4>The Infinity Gauntlet</h4>
+            <span><a href="https://www.marvel.com/comics/events/29/infinity_war">The Infinity Gauntlet</a> is an American comic book storyline published by Marvel Comics.</span>
+          </div>
+          <div className="slide__caption caption">
+            The Infinity Gauntlet
           </div>
         </div>
 
@@ -67,48 +79,54 @@ const App = () => {
             </p>
             <a className="content__btn content__btn--alert" href="https://covid19.who.int/">COVID-19 Dashboard</a>
           </div>
-        </div>
-
-        <div>
-          <div className="slide__content">
-            <h2>LAST SLIDE</h2>
-          </div>
         </div> */}
 
         <div>
-          <div className="slide__content--no-bg">
-            <h2> 1</h2>
-          </div>
+          <h2>Slide 1</h2>
         </div>
 
         <div>
-          <div className="slide__content--no-bg">
-            <h2> 2 </h2>
-          </div>
+          <h2>Slide 2</h2>
         </div>
 
         <div>
-          <div className="slide__content--no-bg">
-            <h2> 3 </h2>
-          </div>
+          <h2>Slide 3</h2>
         </div>
 
         <div>
-          <div className="slide__content--no-bg">
-            <h2> 4 </h2>
-          </div>
+          <h2>Slide 4</h2>
         </div>
 
         <div>
-          <div className="slide__content--no-bg">
-            <h2> 5 </h2>
-          </div>
+          <h2>Slide 5</h2>
         </div>
 
         <div>
-          <div className="slide__content--no-bg">
-            <h2> 6 </h2>
-          </div>
+          <h2>Slide 6</h2>
+        </div>
+
+        <div>
+          <h2>Slide 7</h2>
+        </div>
+
+        <div>
+          <h2>Slide 8</h2>
+        </div>
+
+        <div>
+          <h2>Slide 9</h2>
+        </div>
+
+        <div>
+          <h2>Slide 10</h2>
+        </div>
+
+        <div>
+          <h2>Slide 11</h2>
+        </div>
+
+        <div>
+          <h2>Slide 12</h2>
         </div>
       </Slider>
     </>

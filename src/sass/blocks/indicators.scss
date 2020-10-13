@@ -31,6 +31,10 @@
   background-color: $color-grey;
   border-radius: 25px;
   transition: all 0.15s ease-in-out;
+  &:active,
+  &:focus {
+    background-color: red;
+  }
 
   &--active {
     width: 10px;
@@ -38,4 +42,5 @@
     background-color: $color-white;
     border: 1px solid $color-grey;
   }
+
 }

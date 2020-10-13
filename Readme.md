@@ -27,11 +27,14 @@ import "react-common-slider/public/css/main.css";
       <Slider
         width={`1000px`}
         height={`500px`}
-        isInfinite={true}
-        isCaption={true}
-        isAutoplay={true}
-        isIndicators={true}
-        slidesCount={0}
+        infinite={true}
+        caption={true}
+        autoplay={true}
+        indicators={true}
+        arrows={true}
+        adaptiveSlides={true}
+        animatedSwipe={true}
+        slidesCount={4}
       >
         <div>
           <img className="slide__background" src=""/>
@@ -53,11 +56,14 @@ import "react-common-slider/public/css/main.css";
 |-|-|-|-|
 | **width** | `string` | ``| if no props passed width will be 100% |
 | **height** | `string` | `` | if no props passed height will be 100% |
-| **isInfinite** | `boolean` | false | simple slider or infinite |
-| **isCaption** | `boolean` | false | show/hide caption in the top of the slide |
-| **isAutoplay** | `boolean` | false | slider autoplay |
+| **infinite** | `boolean` | false | simple slider or infinite |
+| **caption** | `boolean` | false | show/hide caption in the top of the slide |
+| **autoplay** | `boolean` | false | slider autoplay |
+| **indicators** | `boolean` | false | show/hide slides indicators in the bottom of the slider|
+| **arrows** | `boolean` | false | show/hide navigation arrows |
+| **adaptiveSlides** | `boolean` | false | if true slider will change number of showed slides accordingly to the screen width. 1 for mobile, 2 for tablet, 3 for desktop. if false slider will always show number of slides based on slidesCount |
+| **animatedSwipe** | `boolean` | false | animate when dragging to next/previous slide |
 | **slidesCount** | `number` | 1 | if passed value exceeds the number of slides, the slider will show the maximum possible number of slides |
-| **isIndicators** | `boolean` | false | show/hide slide indicators |
 
 ## Classnames
 
