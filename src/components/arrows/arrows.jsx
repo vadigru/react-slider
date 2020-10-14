@@ -5,18 +5,20 @@ const Arrows = (props) => {
   const {
     activeSlide,
     isInfinite,
+    isDragging,
     slidesToShow,
     onLeftArrowClick,
     onRightArrowClick,
-    indicators
+    indicators,
   } = props;
 
   return (
-    <div className="slider__buttons arrows">
+    <div className={`slider__buttons arrows`}>
       <button
-        className={`arrows__btn arrows__prev ${!isInfinite && activeSlide === slidesToShow ? `hidden` : ``}`}
+        className={`arrows__btn arrows__prev ${!isInfinite && activeSlide === slidesToShow ? `hidden` : ``} ${isDragging ? `arrows__prev--hide` : ``}`}
         onClick={(evt) => onLeftArrowClick(evt)}
-        disabled={props.isDisabled}>
+        disabled={props.isDisabled}
+      >
         <svg
           className="arrows__prev-icon"
           viewBox="0 0 20 20"
@@ -30,9 +32,10 @@ const Arrows = (props) => {
       </button>
 
       <button
-        className={`arrows__btn arrows__next ${!isInfinite && activeSlide === (indicators.length + slidesToShow - 1) ? `hidden` : ``}`}
+        className={`arrows__btn arrows__next ${!isInfinite && activeSlide === (indicators.length + slidesToShow - 1) ? `hidden` : ``} ${isDragging ? `arrows__next--hide` : ``}`}
         onClick={(evt) => onRightArrowClick(evt)}
-        disabled={props.isDisabled}>
+        disabled={props.isDisabled}
+      >
         <svg
           className="arrows__next-icon"
           viewBox="0 0 20 20"
@@ -52,6 +55,7 @@ Arrows.propTypes = {
   activeSlide: PropTypes.number.isRequired,
   isInfinite: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool.isRequired,
+  isDragging: PropTypes.bool.isRequired,
   slidesToShow: PropTypes.number.isRequired,
   indicators: PropTypes.arrayOf(PropTypes.number).isRequired,
   onLeftArrowClick: PropTypes.func.isRequired,

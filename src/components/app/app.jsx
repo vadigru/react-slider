@@ -6,11 +6,12 @@ const App = () => {
   return (
     <>
       <Slider
-        width={`500px`}
-        height={`200px`}
+        width={`1000px`}
+        height={`500px`}
         // infinite={true}
         caption={true}
-        // autoplay={true}
+        autoplay={true}
+        autoplayDelay={2000}
         indicators={true}
         arrows={true}
         adaptiveSlides={true}
@@ -109,7 +110,7 @@ const App = () => {
           <h2>Slide 7</h2>
         </div>
 
-        <div>
+        {/* <div>
           <h2>Slide 8</h2>
         </div>
 
@@ -127,7 +128,7 @@ const App = () => {
 
         <div>
           <h2>Slide 12</h2>
-        </div>
+        </div> */}
       </Slider>
     </>
   );

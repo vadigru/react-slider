@@ -1,4 +1,5 @@
-export const INTERVAL_TIME = 3000;
+export const AUTOPLAY_DELAY = 3000;
+export const TIMEOUT_DELAY = 150;
 export const SENSITIVITY = 100;
 
 export const WindowDimensions = {

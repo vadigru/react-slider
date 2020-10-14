@@ -30,11 +30,12 @@ import "react-common-slider/public/css/main.css";
         infinite={true}
         caption={true}
         autoplay={true}
+        autoplayDelay={2000}
         indicators={true}
         arrows={true}
         adaptiveSlides={true}
         animatedSwipe={true}
-        slidesCount={4}
+        slidesCount={1}
       >
         <div>
           <img className="slide__background" src=""/>
@@ -59,6 +60,7 @@ import "react-common-slider/public/css/main.css";
 | **infinite** | `boolean` | false | simple slider or infinite |
 | **caption** | `boolean` | false | show/hide caption in the top of the slide |
 | **autoplay** | `boolean` | false | slider autoplay |
+| **autoplayDelay** | `number` | false | slider autoplay interval time in ms|
 | **indicators** | `boolean` | false | show/hide slides indicators in the bottom of the slider|
 | **arrows** | `boolean` | false | show/hide navigation arrows |
 | **adaptiveSlides** | `boolean` | false | if true slider will change number of showed slides accordingly to the screen width. 1 for mobile, 2 for tablet, 3 for desktop. if false slider will always show number of slides based on slidesCount |
