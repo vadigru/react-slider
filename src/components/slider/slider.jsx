@@ -358,8 +358,9 @@ class Slider extends React.Component {
           a = startAnimationPosition;
         }
         if (isReverse) {
-          if (activeSlide - 1 === slidesToShow ||
-            evt && parseInt(evt.target.id, 10) + slidesToShow === slidesToShow) {
+          if (slidePosition === 100 ||
+              activeSlide - 1 === slidesToShow ||
+              evt && parseInt(evt.target.id, 10) + slidesToShow === slidesToShow) {
             this.setState({
               isReverse: false
             });
@@ -550,6 +551,7 @@ class Slider extends React.Component {
 
   touchEnd(evt) {
     const {isAnimatedSwipe} = this.state;
+    evt.preventDefault();
     if (this.touchTimeStart) {
       this.touchTimeEnd = evt.timeStamp;
       this.checkAction();
