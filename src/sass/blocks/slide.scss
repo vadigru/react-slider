@@ -77,11 +77,6 @@
   }
 }
 
-.slide__item p {
-  display: inline-block;
-  text-align: center;
-}
-
 .slide__content {
   font-size: calc(0.95em + 1vmin);
   width: 70%;
@@ -112,7 +107,6 @@
     min-height: 30vh;
     position: absolute;
     text-align: center;
-    background-color: lightslategrey;
   }
 }
 
@@ -142,14 +136,6 @@
 .slide__image {
   max-width: 100%;
   position: absolute;
-}
-
-
-
-video {
-  object-fit: cover;
-  width: 100%;
-  height: 100vh;
 }
 
 @media (min-width: $tablet-width) {

@@ -2,7 +2,6 @@ const path = require(`path`);
 const MiniCssExtractPlugin = require(`mini-css-extract-plugin`);
 const CopyWebpackPlugin = require(`copy-webpack-plugin`);
 const ImageminPlugin = require(`imagemin-webpack-plugin`).default;
-const ImageminWebpWebpackPlugin = require(`imagemin-webp-webpack-plugin`);
 
 module.exports = {
   entry: {
@@ -29,7 +28,6 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          // `style-loader`,
           {
             loader: MiniCssExtractPlugin.loader,
           },
@@ -75,23 +73,9 @@ module.exports = {
       ],
     }),
     new ImageminPlugin({
-      test: `./src/img/**`,
+      test: `./src/img`,
       optimizationLevel: 3,
       progressive: true,
-    }),
-    new ImageminWebpWebpackPlugin({
-      config: [
-        {
-          test: /\.(jpe?g|png)/,
-          options: {
-            quality: 85,
-          },
-        },
-      ],
-      overrideExtension: true,
-      detailedLogs: false,
-      silent: false,
-      strict: true,
     }),
   ]
 };

@@ -11,6 +11,10 @@
     "start": "webpack-dev-server"
   },
   "author": "Vadim Grunenko - https://github.com/vadigru",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vadigru/react-common-slider.git"
+  },
   "license": "MIT",
   "browserslist": [
     "> 1%",
@@ -50,10 +54,12 @@
   "engines": {
     "node": "12.x"
   },
+ "externals": {
+  "react": "react"
+	},
   "dependencies": {
     "babel-plugin-emotion": "^10.0.33",
     "copy-webpack-plugin": "^6.1.1",
-    "imagemin-webp-webpack-plugin": "^3.3.3",
     "imagemin-webpack-plugin": "^2.4.2",
     "prop-types": "15.7.2",
     "react": "16.13.1",
