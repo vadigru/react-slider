@@ -1,17 +1,16 @@
-import {WindowDimensions} from "../const.js";
-export const getSlidesCount = (count = 1) => {
-  let windowWidth = window.innerWidth;
-  if (count >= 1) {
-    if (windowWidth > WindowDimensions.DESKTOP) {
-      count = count > 3 ? 3 : count;
-    } else if (windowWidth > WindowDimensions.TABLET && windowWidth < WindowDimensions.DESKTOP) {
-      count = count < 2 ? count : 2;
-    } else if (windowWidth < WindowDimensions.TABLET) {
-      count = 1;
-    }
-  }
+import {WindowDimensions, SlidesCount} from "../const.js";
 
-  return count;
+export const getSlidesCount = (count = 1, width) => {
+  switch (true) {
+    case count === 0:
+      return SlidesCount.MOBILE;
+    case width > WindowDimensions.DESKTOP:
+      return count > SlidesCount.DESKTOP ? SlidesCount.DESKTOP : count;
+    case width > WindowDimensions.TABLET && width < WindowDimensions.DESKTOP:
+      return count < SlidesCount.TABLET ? count : SlidesCount.TABLET;
+    default:
+      return SlidesCount.MOBILE;
+  }
 };
 
 export const getSlideData = (arr) => {

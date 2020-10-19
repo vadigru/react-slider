@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render Slider component 1`] = `
+Array [
+  <section
+    className="slider"
+    onMouseOut={[Function]}
+    style={
+      Object {
+        "maxWidth": 1024,
+      }
+    }
+  >
+    <div
+      className="slide"
+      onAnimationEnd={[Function]}
+      onMouseDown={[Function]}
+      onMouseMove={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+    >
+      <div
+        className="slide__item slide__item--no-caption"
+        id={0}
+        style={
+          Object {
+            "animationDuration": "0.75s",
+            "animationName": "",
+            "animationTimingFunction": "ease",
+            "backgroundImage": "url(img/image.jpg)",
+            "height": 738,
+            "left": "-0%",
+            "minWidth": "NaN%",
+          }
+        }
+      >
+        <img
+          className="slide__background"
+          src="img/image.jpg"
+        />
+        <h2>
+          slide 1
+        </h2>
+      </div>
+    </div>
+    
+  </section>,
+  "",
+]
+`;

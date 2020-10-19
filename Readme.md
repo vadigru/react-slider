@@ -20,33 +20,11 @@ npm run build
 
 ## Most Simple Use
 
-```jsx
-import Slider from "react-common-slider";
-import "react-common-slider/public/css/main.css";
-
-      <Slider
-        width={`1000px`}
-        height={`500px`}
-        infinite={true}
-        caption={true}
-        autoplay={true}
-        autoplayDelay={2000}
-        indicators={true}
-        arrows={true}
-        adaptiveSlides={true}
-        animatedSwipe={true}
-        slidesCount={1}
-      >
+```
+      <Slider props={props}>
         <div>
-          <img className="slide__background" src=""/>
-          <div className="slide__content">
-            <img className="slide__avatar" src=""/>
-            <h4>Some title</h4>
-              Some text
-          </div>
-          <div className="slide__caption">
-            Caption text
-          </div>
+          <h2>FIRST SLIDE</h2>
+          <p>This is the most simple use.</p>
         </div>
       </Slider>
 ```
@@ -85,17 +63,3 @@ import "react-common-slider/public/css/main.css";
 | **arrows_next** | next button |
 | **indicators** | element wrapping all slide indicators |
 | **indicators__item** | outer indicator element |
-| **indicators__item-inner** | inner indicator element |
-
-## Components
-
-| component | description |
-|-|-|
-| **VideoPlayer** | add video to the size of the entire slide using HTML5 video player |
-
-### VideoPlayer properties
-
-| property | type | default | description |
-|-|-|-|-|
-| **src** | `string` | - | source of video file |
-| **autoPlay** | `boolean` | true | video autoplay |

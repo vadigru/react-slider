@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render Arrows component 1`] = `
+<div
+  className="slider__indicators  indicators
+      "
+>
+  <div
+    className="indicators__item
+            indicators__item--active"
+    id={0}
+    onClick={[Function]}
+  >
+    <div
+      className="indicators__item-inner
+              indicators__item-inner--active"
+      onClick={[Function]}
+    />
+  </div>
+  <div
+    className="indicators__item
+            "
+    id={1}
+    onClick={[Function]}
+  >
+    <div
+      className="indicators__item-inner
+              "
+      onClick={[Function]}
+    />
+  </div>
+  <div
+    className="indicators__item
+            "
+    id={2}
+    onClick={[Function]}
+  >
+    <div
+      className="indicators__item-inner
+              "
+      onClick={[Function]}
+    />
+  </div>
+</div>
+`;

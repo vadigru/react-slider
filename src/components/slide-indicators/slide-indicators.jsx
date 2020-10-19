@@ -15,20 +15,29 @@ const SlideIndicators = (props) => {
     indicatorsItem.push(
         <div
           key={i}
-          className={`indicators__item ${i + slidesToShow === activeSlide ? `indicators__item--active` : ``}`}
+          className={
+            `indicators__item
+            ${i + slidesToShow === activeSlide ? `indicators__item--active` : ``}`
+          }
           id={i}
           onClick={(evt) => onIndicatorDotClick(evt)}
         >
           <div
-            className={`indicators__item-inner ${i + slidesToShow === activeSlide ? `indicators__item-inner--active` : ``}`}
-            id={i}
+            className={
+              `indicators__item-inner
+              ${i + slidesToShow === activeSlide ? `indicators__item-inner--active` : ``}`
+            }
             onClick={(evt) => onIndicatorDotClick(evt)}
           >
           </div>
         </div>);
   }
   return (
-    <div className={`slider__indicators  indicators ${isCaption ? `` : `indicators--without-caption`}`}>
+    <div className={
+      `slider__indicators  indicators
+      ${isCaption ? `` : `indicators--without-caption`}`
+    }
+    >
       {indicatorsItem}
     </div>
   );
