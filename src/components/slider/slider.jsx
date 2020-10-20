@@ -42,8 +42,8 @@ class Slider extends React.Component {
       isReverse: false,
       isAnimatedSwipe: this.props.animatedSwipe || false,
       isDragging: false,
-      sliderWidth: parseInt(this.props.width, 10) || ``,
-      sliderHeight: parseInt(this.props.height, 10) || ``,
+      sliderWidth: this.props.width || 0,
+      sliderHeight: this.props.height || 0,
       slidePosition: SlidePosition.INITIAL,
       slidesToShow: this.slidesCount,
       slideAnimation: ``
@@ -53,7 +53,13 @@ class Slider extends React.Component {
     this.handlNextSlideClick = this.handlNextSlideClick.bind(this);
     this.handleSlideIndicatorClick = this.handleSlideIndicatorClick.bind(this);
     this.pauseAutoplay = this.pauseAutoplay.bind(this);
+    this.resumeAutoplay = this.resumeAutoplay.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    this.touchStart = this.touchStart.bind(this);
+    this.touchMove = this.touchMove.bind(this);
+    this.touchEnd = this.touchEnd.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    this.onAnimationEnd = this.onAnimationEnd.bind(this);
   }
 
   componentDidMount() {
@@ -146,8 +152,8 @@ class Slider extends React.Component {
   updateWindowDimensions() {
     const {width, height} = this.props;
     const {isAdaptive, slidesToShow} = this.state;
-    const updatedWidth = parseInt(width, 10) < window.innerWidth ? parseInt(width, 10) : window.innerWidth;
-    const updatedHeight = parseInt(height, 10) < window.innerHeight ? parseInt(height, 10) : window.innerHeight;
+    const updatedWidth = width < window.innerWidth ? width : window.innerWidth;
+    const updatedHeight = height < window.innerHeight ? height : window.innerHeight;
     const updatedSlidesToShow = getSlidesCount(this.props.slidesCount, window.innerWidth);
 
     this.setState({
@@ -325,6 +331,7 @@ class Slider extends React.Component {
     }
     this.setState({
       isDisabled: false,
+      isDragging: false
     });
   }
 
@@ -343,14 +350,14 @@ class Slider extends React.Component {
 
     const animateSlide = () => {
       const lastSlide = (this.indicators.length - 1) + slidesToShow;
-      const startAnimationPosition = slidesToShow * 100;
+      const startAnimationPosition = 100;
       const alternativeAnimationPosition = (this.initSlides.length - (Math.floor(this.initSlides.length / slidesToShow) * slidesToShow)) * 100;
       let a = ``;
 
       // autoplay handle ------------------------------------------------------
       if (isAutoplay && !isInfinite) {
         if (!isReverse) {
-          if (!evt && activeSlide + 1 === lastSlide) {
+          if (!evt && activeSlide === lastSlide) {
             this.setState({
               isReverse: true
             });
@@ -358,7 +365,7 @@ class Slider extends React.Component {
           a = startAnimationPosition;
         }
         if (isReverse) {
-          if (!evt && activeSlide - 1 === slidesToShow) {
+          if (!evt && activeSlide === slidesToShow) {
             this.setState({
               isReverse: false
             });
@@ -369,7 +376,7 @@ class Slider extends React.Component {
       }
 
       // navigation arrows click handle -----------------------------------
-      if ((evt && evt.currentTarget.classList[1] === `arrows__next`) ||
+      if ((evt && evt.currentTarget.id === `arrow-next`) ||
           (this.positionDiff && this.positionDiff.x > SwipeSensitivity.MIN) ||
           (isAutoplay && !isReverse && isInfinite)) {
         a = startAnimationPosition;
@@ -379,7 +386,7 @@ class Slider extends React.Component {
             startAnimationPosition;
         }
       }
-      if ((evt && evt.currentTarget.classList[1] === `arrows__prev`) ||
+      if ((evt && evt.currentTarget.id === `arrow-prev`) ||
           (this.positionDiff && this.positionDiff.x < SwipeSensitivity.MIN)) {
         a = -startAnimationPosition;
         if (activeSlide === slidesToShow) {
@@ -401,8 +408,8 @@ class Slider extends React.Component {
         if (id + slidesToShow - activeSlide > 1 ||
                    id + slidesToShow - activeSlide < -1) {
           a = slidesToShow === 1 ?
-            (((id + 1) - activeSlide) * slidesToShow) * 100 :
-            ((id - (activeSlide - slidesToShow)) * slidesToShow) * 100;
+            (((id + 1) - activeSlide)) * 100 :
+            ((id - (activeSlide - slidesToShow))) * 100;
         }
         if (id + slidesToShow - activeSlide >= 1 && id === this.indicators.length - 1) {
           this.setState({
@@ -424,16 +431,17 @@ class Slider extends React.Component {
           !isInfinite && slidePosition < SlidePosition.INITIAL ||
           !isInfinite && slidePosition > (this.indicators.length * 100)) {
           a = -slidesToShow * positionCorrection;
+          a = -positionCorrection;
         } else {
           // next/prev slide switching --------------------------------------
           if (this.positionDiff.x > SwipeSensitivity.MIN) {
-            a = startAnimationPosition - positionCorrection * slidesToShow;
+            a = startAnimationPosition - positionCorrection;
             if (this.initSlides.length % slidesToShow !== 0 && activeSlide === lastSlide) {
               a = alternativeAnimationPosition - (positionCorrection * slidesToShow);
             }
           }
           if (this.positionDiff.x < SwipeSensitivity.MIN) {
-            a = -startAnimationPosition - positionCorrection * slidesToShow;
+            a = -startAnimationPosition - positionCorrection;
             if (this.initSlides.length % slidesToShow !== 0 && activeSlide === slidesToShow) {
               a = -alternativeAnimationPosition - positionCorrection * slidesToShow;
             }
@@ -509,7 +517,7 @@ class Slider extends React.Component {
   touchStart(evt) {
     this.touchTimeStart = evt.timeStamp;
     if (evt.type === `mousedown`) {
-      evt.preventDefault();
+      // evt.preventDefault();
       this.touchPositionStart = {
         x: evt.clientX,
       };
@@ -528,11 +536,11 @@ class Slider extends React.Component {
   }
 
   touchMove(evt) {
-
     const {
       sliderWidth,
       slidesToShow,
       slidePosition,
+      isAnimatedSwipe
     } = this.state;
     let shift;
 
@@ -552,11 +560,13 @@ class Slider extends React.Component {
           x: evt.changedTouches[0].clientX,
         };
       }
-      const position = slidePosition + (shift.x * 100 / sliderWidth);
-      this.setState({
-        slidePosition: position,
-        isDragging: true
-      });
+      if (isAnimatedSwipe) {
+        const position = slidePosition + (shift.x * 100 / sliderWidth);
+        this.setState({
+          slidePosition: position,
+          isDragging: true
+        });
+      }
     }
   }
 
@@ -568,11 +578,17 @@ class Slider extends React.Component {
       this.touchPositionCurrent = null;
     }
 
-    this.setState({
-      isDragging: false
-    });
-
     this.resumeAutoplay();
+  }
+
+  handleClick(evt) {
+    if (this.state.isDragging) {
+      if (evt.metaKey || evt.shiftKey || evt.altKey || evt.ctrlKey) {
+        return;
+      }
+      evt.preventDefault();
+      evt.stopPropagation();
+    }
   }
 
   render() {
@@ -590,6 +606,7 @@ class Slider extends React.Component {
       sliderHeight,
       slideAnimation,
     } = this.state;
+
     const slideData = getSlideData(this.modifiedSlides);
 
     return (
@@ -600,41 +617,48 @@ class Slider extends React.Component {
             maxWidth: sliderWidth,
           }}
           onMouseOver={this.pauseAutoplay}
-          onMouseOut={() => this.resumeAutoplay()}
+          onMouseOut={this.resumeAutoplay}
+          onClickCapture={this.handleClick}
         >
           <div
-            className={`slide`}
-            onMouseDown={(evt) => this.touchStart(evt)}
+            className={`slides`}
+            onMouseDown={(evt) => {
+              evt.preventDefault();
+              evt.stopPropagation();
+              this.touchStart(evt);
+            }}
             onMouseMove={(evt) => this.touchMove(evt)}
             onMouseUp={(evt) => this.touchEnd(evt)}
             onTouchStart={(evt) => this.touchStart(evt)}
             onTouchMove={(evt) => this.touchMove(evt)}
             onTouchEnd={(evt) => this.touchEnd(evt)}
-            onAnimationEnd={() => this.onAnimationEnd()}
+            onAnimationEnd={this.onAnimationEnd}
             ref={(ref) => {
               this.slideRef = ref;
+            }}
+            style={{
+              animationName: slideAnimation,
+              animationTimingFunction: `ease`,
+              animationDuration: `0.75s`,
+              left: `-${slidePosition}%`,
+
             }}
           >
             {slideData.map((it, index) => {
               let style = {
-                animationName: slideAnimation,
-                animationTimingFunction: `ease`,
-                animationDuration: `0.75s`,
                 minWidth: `${100 / slidesToShow}%`,
                 height: sliderHeight - INDICATORS_HEIGHT,
-                left: `-${slidePosition}%`,
                 backgroundImage: `url(${getBackground(it)})`,
               };
               let styleHidden = {
                 minWidth: `${100 / slidesToShow}%`,
                 height: sliderHeight - INDICATORS_HEIGHT,
-                left: `-${slidePosition}%`,
                 visibility: `hidden`
               };
               return (
                 <div
                   key={it + index}
-                  className={`slide__item ${isCaption ? `` : `slide__item--no-caption`}`}
+                  className={`slide ${isCaption ? `` : `slide--no-caption`}`}
                   id={index}
                   style={!isInfinite && index < slidesToShow ||
                     !isInfinite && index > (this.initSlides.length - 1) + slidesToShow ?
@@ -676,8 +700,8 @@ class Slider extends React.Component {
 
 Slider.propTypes = {
   children: PropTypes.node.isRequired,
-  width: PropTypes.string,
-  height: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number,
   infinite: PropTypes.bool,
   caption: PropTypes.bool,
   autoplay: PropTypes.bool,

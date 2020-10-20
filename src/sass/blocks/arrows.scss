@@ -1,8 +1,4 @@
-.arrows {
-  transition: all 1s ease-in-out;
-}
-
-.arrows__btn {
+.arrows-btn {
   width: 50px;
   height: 50px;
   border: 0;
@@ -17,41 +13,40 @@
   }
 }
 
-.arrows__prev-icon,
-.arrows__next-icon {
+.arrow-prev-icon,
+.arrow-next-icon {
   transition: all 0.3s ease-in-out;
 }
 
-.arrows__next {
+.arrow-next {
   margin-left: auto;
-  right: 0;
+  right: -5px;
   &--hide {
     transform: translateX(50px);
     opacity: 0;
   }
-  &:hover > .arrows__next-icon {
+  &:hover > .arrow-next-icon {
     box-shadow: none;
     transform: translateX(-10px) scale(1.2);
   }
 }
 
-.arrows__prev {
+.arrow-prev {
   margin-left: 0;
-  left: 0;
+  left: -5px;
   &--hide {
     transform: translateX(-50px);
     opacity: 0;
   }
-  &:hover > .arrows__prev-icon {
+  &:hover > .arrow-prev-icon {
     box-shadow: none;
     transform: translateX(10px) scale(1.2);
   }
 }
 
-
-.arrows__next,
-.arrows__prev {
-  bottom: calc(50% - 25px);
+.arrow-next,
+.arrow-prev {
+  bottom: calc(50% - 10px);
   border-radius: 0;
   &:hover {
     box-shadow: none;

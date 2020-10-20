@@ -22,9 +22,15 @@ export const getSlideData = (arr) => {
 export const getBackground = (arr) => {
   let background = ``;
   switch (true) {
+    case !Array.isArray(arr):
+      break;
     case Array.isArray(arr):
       arr.some((it) => {
-        if (it.props.src) {
+        // console.log(it);
+
+        if (typeof it !== `object`) {
+          return;
+        } else if (it.props.src) {
           background = it.props.src;
         }
       });

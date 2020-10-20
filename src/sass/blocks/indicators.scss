@@ -7,7 +7,7 @@
   z-index: 999;
 }
 
-.indicators__item {
+.indicator {
   width: 30px;
   height: 30px;
   border-radius: 25px;
@@ -15,6 +15,10 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  &:hover::after {
+    width: 10px;
+    height: 10px;
+  }
   &:after {
     content: "";
     display: block;
@@ -27,7 +31,6 @@
     z-index: -1;
     transition: all 0.15s ease-in-out;
   }
-
   &--active {
     &:after {
       content: "";
@@ -39,6 +42,7 @@
       border: 1px solid $color-grey;
       position: absolute;
       z-index: -1;
+      transition: all 0.15s ease-in-out;
     }
   }
 }

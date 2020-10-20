@@ -14,18 +14,19 @@ const Arrows = (props) => {
   } = props;
 
   return (
-    <div className={`slider__buttons arrows`}>
+    <div className={`arrows`}>
       <button
         className={
-          `arrows__btn arrows__prev
+          `arrows-btn arrow-prev
           ${!isInfinite && activeSlide === slidesToShow ? `hidden` : ``}
-          ${isDragging ? `arrows__prev--hide` : ``}`
+          ${isDragging ? `arrow-prev--hide` : ``}`
         }
+        id="arrow-prev"
         onClick={(evt) => onLeftArrowClick(evt)}
         disabled={isDisabled}
       >
         <svg
-          className="arrows__prev-icon"
+          className="arrow-prev-icon"
           viewBox="0 0 20 20"
         >
           <path
@@ -38,15 +39,16 @@ const Arrows = (props) => {
 
       <button
         className={
-          `arrows__btn arrows__next
+          `arrows-btn arrow-next
           ${!isInfinite && activeSlide === (indicators.length + slidesToShow - 1) ? `hidden` : ``}
-          ${isDragging ? `arrows__next--hide` : ``}`
+          ${isDragging ? `arrow-next--hide` : ``}`
         }
+        id="arrow-next"
         onClick={(evt) => onRightArrowClick(evt)}
         disabled={isDisabled}
       >
         <svg
-          className="arrows__next-icon"
+          className="arrow-next-icon"
           viewBox="0 0 20 20"
         >
           <path

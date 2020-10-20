@@ -4,36 +4,55 @@ A Slider/Carousel component for React. Designed and developed by [Vadim Grunenko
 
 [Demo](https://react-common-slider.vercel.app/)
 
-## How to start a project locally:
+# How to start a project locally:
 Install project on local computer (node.js required):
 ```sh
-npm i
+npm install
 ```
 Run project:
 ```sh
 npm run start
 ```
-Create production build for the project:
+Create production build:
 ```sh
 npm run build
 ```
 
-## Most Simple Use
+# Usage
+### Most simple use:
 
 ```
-      <Slider props={props}>
+      <Slider props={...}>
         <div>
-          <h2>FIRST SLIDE</h2>
-          <p>This is the most simple use.</p>
+          <h2>Some title</h2>
+          <p>Some text</p>
         </div>
       </Slider>
+```
+
+### With background image, avatar image, translucent dark background, and caption:
+
+```
+    <Slider props={props}>
+      <div>
+        <img className="background" src="" />
+        <div className="content content--bg">
+          <img className="avatar" src="" alt="" />
+          <h4>Some title</h4>
+          <p>Some text</p>
+        </div>
+        <div className="caption">
+          Some caption text
+        </div>
+      </div>
+    </Slider>
 ```
 
 ## Properties
 
 | property | type | default | description |
 |-|-|-|-|
-| **width** | `string` | ``| if no props passed width will be 100% |
+| **width** | `string` | `` | if no props passed width will be 100%. example width={`1000`} heigth={`600`} |
 | **height** | `string` | `` | if no props passed height will be 100% |
 | **infinite** | `boolean` | false | simple slider or infinite |
 | **caption** | `boolean` | false | show/hide caption in the top of the slide |
@@ -50,16 +69,21 @@ npm run build
 | class | description |
 |-|-|
 | **slider** | element wrapping the whole Slider |
-| **slide** | element wrapping all slides |
-| **slide__item** | apllied to every child item |
-| **slide__background** | add image as slide background |
-| **slide__content** | add main slide content with 50% translucent dark background |
-| **slide__content--no-bg** | add main slide content without background |
-| **slide__avatar** | add rounded image |
-| **slide__caption** | add caption for slide |
-| **slide__caption--forced** | will show slide caption even if all captions are turned off |
+| **slides** | element wrapping all slides |
+|-|-|
+| **slide** | apllied to every child item |
+| **slide--no-caption** | apllied to every child item if captions are turned off |
+| **avatar** | add small rounded image |
+| **image** | add image to slide |
+| **background** | add image as slide background |
+| **content--bg** | add main slide content with 50% translucent dark background |
+| **content--no-bg** | add main slide content without background |
+| **caption** | add caption for slide |
+| **caption--forced** | will show slide caption even if all captions are turned off |
+|-|-|
 | **arrows** | element wrapping navigation buttons |
-| **arrows__prev** | previous button |
-| **arrows_next** | next button |
+| **arrow-prev** | previous button |
+| **arrow-next** | next button |
+|-|-|
 | **indicators** | element wrapping all slide indicators |
-| **indicators__item** | outer indicator element |
+| **indicator** | indicator element |

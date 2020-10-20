@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 const SlideIndicators = (props) => {
   const {
     activeSlide,
-    isCaption,
     slidesToShow,
     indicators,
     onIndicatorDotClick,
@@ -16,26 +15,19 @@ const SlideIndicators = (props) => {
         <div
           key={i}
           className={
-            `indicators__item
-            ${i + slidesToShow === activeSlide ? `indicators__item--active` : ``}`
+            `indicator
+            ${i + slidesToShow === activeSlide ? `indicator--active` : ``}`
           }
           id={i}
           onClick={(evt) => onIndicatorDotClick(evt)}
         >
-          <div
-            className={
-              `indicators__item-inner
-              ${i + slidesToShow === activeSlide ? `indicators__item-inner--active` : ``}`
-            }
-            onClick={(evt) => onIndicatorDotClick(evt)}
-          >
-          </div>
-        </div>);
+          <span className="visually-hidden">{i + 1}</span>
+        </div>
+    );
   }
   return (
     <div className={
-      `slider__indicators  indicators
-      ${isCaption ? `` : `indicators--without-caption`}`
+      `indicators`
     }
     >
       {indicatorsItem}
@@ -45,7 +37,6 @@ const SlideIndicators = (props) => {
 
 SlideIndicators.propTypes = {
   activeSlide: PropTypes.number.isRequired,
-  isCaption: PropTypes.bool.isRequired,
   slidesToShow: PropTypes.number.isRequired,
   indicators: PropTypes.arrayOf(PropTypes.number).isRequired,
   onIndicatorDotClick: PropTypes.func.isRequired,
