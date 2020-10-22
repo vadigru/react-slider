@@ -4,6 +4,7 @@ import Slider from "../slider/slider.jsx";
 const App = () => {
   return (
     <Slider
+      demoMode={true}
       width={1200}
       height={600}
       // infinite={true}
@@ -17,7 +18,7 @@ const App = () => {
       // slidesCount={1}
     >
       <div>
-        <h2>FIRST SLIDE</h2>
+        <h2>FIRST SLIDE 1</h2>
         <p>This is the most simple use.</p>
       </div>
 

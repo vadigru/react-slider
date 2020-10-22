@@ -27,6 +27,7 @@ class Slider extends React.Component {
     this.timer = null;
     this.touchTimeEnd = null;
     this.touchTimeStart = null;
+    this.demoMode = this.props.demoMode || false;
 
     this.state = {
       activeSlide: this.slidesCount,
@@ -558,9 +559,16 @@ class Slider extends React.Component {
 
     this.positionDiff = {
       x: this.touchPositionStart.x - this.touchPositionCurrent.x,
+      y: this.touchPositionStart.y - this.touchPositionCurrent.y,
     };
 
-    if (Math.abs(this.positionDiff.x) >= SwipeSensitivity.MAX && this.touchTimeEnd - this.touchTimeStart !== 0) {
+    if (this.positionDiff.y) {
+      window.removeEventListener(`resize`, this.updateWindowDimensions);
+      setTimeout(() => {
+        window.addEventListener(`resize`, this.updateWindowDimensions);
+      }, 1);
+    }
+    if (Math.abs(this.positionDiff.x) >= SwipeSensitivity.MAX && this.touchTimeEnd - this.touchTimeStart > 150) {
       if (this.positionDiff.x > SwipeSensitivity.MAX) {
         this.handlNextSlideClick();
       } else {
@@ -596,16 +604,20 @@ class Slider extends React.Component {
     if (evt.type === `mousedown`) {
       this.touchPositionStart = {
         x: evt.clientX,
+        y: evt.clientY,
       };
       this.touchPositionCurrent = {
         x: this.touchPositionStart.x,
+        y: this.touchPositionStart.y,
       };
     } else if (evt.changedTouches && evt.changedTouches.length) {
       this.touchPositionStart = {
         x: evt.changedTouches[0].clientX,
+        y: evt.changedTouches[0].clientY,
       };
       this.touchPositionCurrent = {
         x: this.touchPositionStart.x,
+        y: this.touchPositionStart.y,
       };
     }
     this.onMouseOverPauseAutoplay();
@@ -624,18 +636,23 @@ class Slider extends React.Component {
       if (evt.type === `mousemove`) {
         shift = {
           x: this.touchPositionCurrent.x - evt.clientX,
+          y: this.touchPositionCurrent.y - evt.clientY,
         };
         this.touchPositionCurrent = {
           x: evt.clientX,
+          y: evt.clientY,
         };
       } else {
         shift = {
           x: this.touchPositionCurrent.x - evt.changedTouches[0].clientX,
+          y: this.touchPositionCurrent.y - evt.changedTouches[0].clientY,
         };
         this.touchPositionCurrent = {
           x: evt.changedTouches[0].clientX,
+          y: evt.changedTouches[0].clientY,
         };
       }
+
       if (isAnimatedSwipe) {
         const position = slidePosition + (shift.x * 100 / sliderWidth);
         this.setState({
@@ -687,7 +704,7 @@ class Slider extends React.Component {
 
     return (
       <main>
-        <section className="slider-settings">
+        {this.demoMode ? <section className="slider-settings">
           <label htmlFor="wrange">Width:
             <input
               id="wrange"
@@ -716,7 +733,7 @@ class Slider extends React.Component {
             />
             <span>{this.state.sliderHeight}</span>
           </label>
-          <label htmlFor="autoplay">Autoplay:
+          <label htmlFor="autoplay" className="label-autoplay">Autoplay:
             <input
               id="autoplay"
               type="checkbox"
@@ -726,7 +743,7 @@ class Slider extends React.Component {
               defaultChecked={this.state.isAutoplay ? `checked` : false}
             />
           </label>
-          <label htmlFor="autoplay-delay">Autoplay delay:
+          <label htmlFor="autoplay-delay" className="label-autoplay">Autoplay delay (ms):
             <input
               id="autoplay-delay"
               type="number"
@@ -791,7 +808,7 @@ class Slider extends React.Component {
               defaultChecked={this.state.isInfinite ? `checked` : false}
             />
           </label>
-          <label htmlFor="adaptive">Adaptive:
+          <label htmlFor="adaptive" className="label-adaptive">Adaptive:
             <input
               id="adaptive"
               type="checkbox"
@@ -801,7 +818,7 @@ class Slider extends React.Component {
               defaultChecked={this.state.isAdaptive ? `checked` : false}
             />
           </label>
-          <label htmlFor="slides-count">Max slides (3):
+          <label htmlFor="slides-count" className="label-adaptive">Max slides (3):
             <input
               id="slides-count"
               type="number"
@@ -817,11 +834,12 @@ class Slider extends React.Component {
               }}
             />
           </label>
-        </section>
+        </section> : ``}
         <section
           className="slider"
           style={{
             maxWidth: sliderWidth,
+            width: `100%`
           }}
           onMouseOver={this.onMouseOverPauseAutoplay}
           onMouseOut={this.onMouseOutResumeAutoplay}
@@ -906,6 +924,7 @@ class Slider extends React.Component {
 
 Slider.propTypes = {
   children: PropTypes.node.isRequired,
+  demoMode: PropTypes.bool,
   width: PropTypes.number,
   height: PropTypes.number,
   infinite: PropTypes.bool,

@@ -6,7 +6,11 @@ const mock = [{
   }
 }];
 
-// const mock2 = 0;
+const mock2 = {
+  props: {
+    src: `img/image.jpg`
+  }
+};
 
 it(`Should get count of slides according window size`, () => {
   expect(getSlidesCount(0, 1150)).toBe(1);
@@ -18,13 +22,12 @@ it(`Should get count of slides according window size`, () => {
   expect(getSlidesCount(3, 1000)).toBe(2);
   expect(getSlidesCount(3, 1920)).toBe(3);
   expect(getSlidesCount(4, 1920)).toBe(3);
-
 });
 
 it(`Should return a background`, () => {
   expect(getBackground(mock)).toEqual(`img/image.jpg`);
 });
 
-// it(`Should return an emty string`, () => {
-//   expect(getBackground(mock2)).toBe(``);
-// });
+it(`Should return an emty string`, () => {
+  expect(getBackground(mock2)).toBe(`img/image.jpg`);
+});

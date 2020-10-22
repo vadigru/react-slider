@@ -38,6 +38,7 @@ exports[`Should render App component 1`] = `
       </span>
     </label>
     <label
+      className="label-autoplay"
       htmlFor="autoplay"
     >
       Autoplay:
@@ -50,9 +51,10 @@ exports[`Should render App component 1`] = `
       />
     </label>
     <label
+      className="label-autoplay"
       htmlFor="autoplay-delay"
     >
-      Autoplay delay:
+      Autoplay delay (ms):
       <input
         id="autoplay-delay"
         name="autoplayDelay"
@@ -128,6 +130,7 @@ exports[`Should render App component 1`] = `
       />
     </label>
     <label
+      className="label-adaptive"
       htmlFor="adaptive"
     >
       Adaptive:
@@ -140,6 +143,7 @@ exports[`Should render App component 1`] = `
       />
     </label>
     <label
+      className="label-adaptive"
       htmlFor="slides-count"
     >
       Max slides (3):
@@ -168,6 +172,7 @@ exports[`Should render App component 1`] = `
     style={
       Object {
         "maxWidth": 1024,
+        "width": "100%",
       }
     }
   >
@@ -225,7 +230,7 @@ exports[`Should render App component 1`] = `
         }
       >
         <h2>
-          FIRST SLIDE
+          FIRST SLIDE 1
         </h2>
         <p>
           This is the most simple use.
@@ -385,7 +390,7 @@ exports[`Should render App component 1`] = `
         }
       >
         <h2>
-          FIRST SLIDE
+          FIRST SLIDE 1
         </h2>
         <p>
           This is the most simple use.

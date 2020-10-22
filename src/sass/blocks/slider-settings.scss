@@ -1,12 +1,9 @@
 main {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: relative;
-}
-
-.slider {
-  margin: 15px auto;
-  order: 0;
 }
 
 .slider-settings {
@@ -19,15 +16,9 @@ main {
   justify-content: center;
   align-items: center;
   order: 1;
-  & label {
-    padding: 5px 10px;
-    margin: 5px;
-    display: flex;
-    flex-direction: row;
-
-    justify-content: space-between;
-    border-radius: 5px;
-    background-color: $color-black-30;
+  & input[type=checkbox] {
+    transform: scale(1.2);
+    margin-left: 5px;
   }
   & input[type=number] {
     width: 50px;
@@ -41,13 +32,26 @@ main {
     margin-left: 15px;
     margin-right: 15px;
   }
+  & label {
+    padding: 5px 10px;
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+    border-radius: 5px;
+    background-color: $color-black-30;
+  }
   & span {
     display: block;
     width: 50px;
   }
-  & input[type=checkbox] {
-    transform: scale(1.2);
-    margin-left: 5px;
+  & .label-autoplay {
+    background-color: lightslategray;
+  }
+
+  & .label-adaptive {
+    background-color: lightsteelblue;
   }
 }
 
