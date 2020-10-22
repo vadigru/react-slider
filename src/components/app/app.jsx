@@ -4,17 +4,17 @@ import Slider from "../slider/slider.jsx";
 const App = () => {
   return (
     <Slider
-      width={1150}
+      width={1200}
       height={600}
-      infinite={true}
-      caption={true}
-      autoplay={true}
-      autoplayDelay={3000}
-      indicators={true}
-      arrows={true}
-      adaptiveSlides={true}
-      animatedSwipe={true}
-      slidesCount={3}
+      // infinite={true}
+      // caption={true}
+      // autoplay={true}
+      // autoplayDelay={5000}
+      // indicators={true}
+      // arrows={true}
+      // adaptiveSlides={true}
+      // animatedSwipe={true}
+      // slidesCount={1}
     >
       <div>
         <h2>FIRST SLIDE</h2>
@@ -23,7 +23,7 @@ const App = () => {
 
       <div>
         <img className="background" src="img/blackhole.jpg" alt="Black Hole"/>
-        <div className="caption--forced">
+        <div className="caption">
           <a className="caption-btn" href="https://www.livescience.com/whats-inside-black-hole.html">What&apos;s Inside a Black Hole?</a>
         </div>
       </div>
@@ -48,7 +48,7 @@ const App = () => {
       </div>
 
       <div>
-        <div className="caption--forced">
+        <div className="caption">
           COVID-19 is an infectious disease.
         </div>
         <div className="content--no-bg">

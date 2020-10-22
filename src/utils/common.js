@@ -4,9 +4,9 @@ export const getSlidesCount = (count = 1, width) => {
   switch (true) {
     case count === 0:
       return SlidesCount.MOBILE;
-    case width > WindowDimensions.DESKTOP:
+    case width >= WindowDimensions.DESKTOP:
       return count > SlidesCount.DESKTOP ? SlidesCount.DESKTOP : count;
-    case width > WindowDimensions.TABLET && width < WindowDimensions.DESKTOP:
+    case width >= WindowDimensions.TABLET && width <= WindowDimensions.DESKTOP:
       return count < SlidesCount.TABLET ? count : SlidesCount.TABLET;
     default:
       return SlidesCount.MOBILE;
@@ -26,8 +26,6 @@ export const getBackground = (arr) => {
       break;
     case Array.isArray(arr):
       arr.some((it) => {
-        // console.log(it);
-
         if (typeof it !== `object`) {
           return;
         } else if (it.props.src) {

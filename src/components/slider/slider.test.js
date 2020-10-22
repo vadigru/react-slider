@@ -7,7 +7,6 @@ it(`Should render Slider component`, () => {
   const tree = renderer.create(
       <Slider>
         <div>
-          <img className="slide__background" src="img/image.jpg"/>
           <h2>slide 1</h2>
         </div>
       </Slider>

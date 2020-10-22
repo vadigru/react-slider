@@ -1,10 +1,170 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Should render App component 1`] = `
-Array [
+<main>
+  <section
+    className="slider-settings"
+  >
+    <label
+      htmlFor="wrange"
+    >
+      Width:
+      <input
+        id="wrange"
+        max="1920"
+        min="320"
+        onChange={[Function]}
+        type="range"
+        value={1024}
+      />
+      <span>
+        1024
+      </span>
+    </label>
+    <label
+      htmlFor="hrange"
+    >
+      Height:
+      <input
+        id="hrange"
+        max="1080"
+        min="320"
+        onChange={[Function]}
+        type="range"
+        value={600}
+      />
+      <span>
+        600
+      </span>
+    </label>
+    <label
+      htmlFor="autoplay"
+    >
+      Autoplay:
+      <input
+        defaultChecked={false}
+        id="autoplay"
+        name="autoplay"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </label>
+    <label
+      htmlFor="autoplay-delay"
+    >
+      Autoplay delay:
+      <input
+        id="autoplay-delay"
+        name="autoplayDelay"
+        onChange={[Function]}
+        readOnly={true}
+        style={
+          Object {
+            "backgroundColor": "#ccc",
+          }
+        }
+        type="number"
+        value={3000}
+      />
+    </label>
+    <label
+      htmlFor="indicators"
+    >
+      Indicators:
+      <input
+        defaultChecked={false}
+        id="indicators"
+        name="indicators"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </label>
+    <label
+      htmlFor="arrows"
+    >
+      Arrows:
+      <input
+        defaultChecked={false}
+        id="arrows"
+        name="arrows"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </label>
+    <label
+      htmlFor="caption"
+    >
+      Caption:
+      <input
+        defaultChecked={false}
+        id="caption"
+        name="caption"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </label>
+    <label
+      htmlFor="animated"
+    >
+      Animated swipe:
+      <input
+        defaultChecked={false}
+        id="animated"
+        name="animated"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </label>
+    <label
+      htmlFor="infinite"
+    >
+      Infinte:
+      <input
+        defaultChecked={false}
+        id="infinite"
+        name="infinite"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </label>
+    <label
+      htmlFor="adaptive"
+    >
+      Adaptive:
+      <input
+        defaultChecked={false}
+        id="adaptive"
+        name="adaptive"
+        onChange={[Function]}
+        type="checkbox"
+      />
+    </label>
+    <label
+      htmlFor="slides-count"
+    >
+      Max slides (3):
+      <input
+        id="slides-count"
+        max="3"
+        min="1"
+        name="slides-count"
+        onChange={[Function]}
+        readOnly={true}
+        style={
+          Object {
+            "backgroundColor": "#ccc",
+          }
+        }
+        type="number"
+        value={1}
+      />
+    </label>
+  </section>
   <section
     className="slider"
+    onClickCapture={[Function]}
     onMouseOut={[Function]}
+    onMouseOver={[Function]}
     style={
       Object {
         "maxWidth": 1024,
@@ -12,7 +172,7 @@ Array [
     }
   >
     <div
-      className="slide"
+      className="slides"
       onAnimationEnd={[Function]}
       onMouseDown={[Function]}
       onMouseMove={[Function]}
@@ -20,79 +180,47 @@ Array [
       onTouchEnd={[Function]}
       onTouchMove={[Function]}
       onTouchStart={[Function]}
+      style={
+        Object {
+          "animationDuration": "0.75s",
+          "animationName": "",
+          "animationTimingFunction": "ease",
+          "left": "-100%",
+        }
+      }
     >
       <div
-        className="slide__item "
+        className="slide slide--no-caption"
         id={0}
         style={
           Object {
-            "animationDuration": "0.75s",
-            "animationName": "",
-            "animationTimingFunction": "ease",
-            "backgroundImage": "url()",
-            "height": 570,
-            "left": "-100%",
-            "minWidth": "50%",
-          }
-        }
-      >
-        <div
-          className="slide__content--no-bg content"
-        >
-          <p>
-            COVID-19 is an infectious disease. Most people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment.
-          </p>
-          <a
-            className="content__btn content__btn--alert"
-            href="https://covid19.who.int/"
-          >
-            COVID-19 Dashboard
-          </a>
-        </div>
-      </div>
-      <div
-        className="slide__item "
-        id={1}
-        style={
-          Object {
-            "animationDuration": "0.75s",
-            "animationName": "",
-            "animationTimingFunction": "ease",
-            "backgroundImage": "url(img/hawaii.jpg)",
-            "height": 570,
-            "left": "-100%",
-            "minWidth": "50%",
+            "height": 600,
+            "minWidth": "100%",
+            "visibility": "hidden",
           }
         }
       >
         <img
-          alt="Hawaii"
-          className="slide__background"
-          src="img/hawaii.jpg"
+          alt="Elbrus"
+          className="background"
+          src="img/elbrus.jpg"
         />
         <div
-          className="slide__content content"
+          className="content--bg"
         >
           <h2>
-            Hawaii
+            Beautiful Elbrus
           </h2>
-          <p>
-            is the world's largest island chain, and it's the only U.S. state completely made up of islands.
-          </p>
         </div>
       </div>
       <div
-        className="slide__item "
-        id={2}
+        className="slide slide--no-caption"
+        id={1}
         style={
           Object {
-            "animationDuration": "0.75s",
-            "animationName": "",
-            "animationTimingFunction": "ease",
             "backgroundImage": "url()",
-            "height": 570,
-            "left": "-100%",
-            "minWidth": "50%",
+            "height": 600,
+            "minWidth": "100%",
           }
         }
       >
@@ -104,85 +232,78 @@ Array [
         </p>
       </div>
       <div
-        className="slide__item "
-        id={3}
+        className="slide slide--no-caption"
+        id={2}
         style={
           Object {
-            "animationDuration": "0.75s",
-            "animationName": "",
-            "animationTimingFunction": "ease",
-            "backgroundImage": "url()",
-            "height": 570,
-            "left": "-100%",
-            "minWidth": "50%",
-          }
-        }
-      >
-        <div
-          className="slide__content content"
-        >
-          <h2>
-            Hello, World!
-          </h2>
-        </div>
-      </div>
-      <div
-        className="slide__item "
-        id={4}
-        style={
-          Object {
-            "animationDuration": "0.75s",
-            "animationName": "",
-            "animationTimingFunction": "ease",
-            "backgroundImage": "url(img/black_hole.jpg)",
-            "height": 570,
-            "left": "-100%",
-            "minWidth": "50%",
+            "backgroundImage": "url(img/blackhole.jpg)",
+            "height": 600,
+            "minWidth": "100%",
           }
         }
       >
         <img
           alt="Black Hole"
-          className="slide__background"
-          src="img/black_hole.jpg"
+          className="background"
+          src="img/blackhole.jpg"
         />
         <div
-          className="slide__caption caption"
+          className="caption"
         >
           <a
-            className="caption__btn"
-            href="https://www.universetoday.com/135158/team-creates-negative-effective-mass-lab/"
+            className="caption-btn"
+            href="https://www.livescience.com/whats-inside-black-hole.html"
           >
-            What is a Black Hole?
+            What's Inside a Black Hole?
           </a>
         </div>
       </div>
       <div
-        className="slide__item "
-        id={5}
+        className="slide slide--no-caption"
+        id={3}
         style={
           Object {
-            "animationDuration": "0.75s",
-            "animationName": "",
-            "animationTimingFunction": "ease",
+            "backgroundImage": "url()",
+            "height": 600,
+            "minWidth": "100%",
+          }
+        }
+      >
+        <div
+          className="content--no-bg"
+        >
+          <h3>
+            Hello, World!
+          </h3>
+          <img
+            alt="World map"
+            className="image"
+            src="img/world-map.jpg"
+          />
+        </div>
+      </div>
+      <div
+        className="slide slide--no-caption"
+        id={4}
+        style={
+          Object {
             "backgroundImage": "url(img/iron-man-home.jpg)",
-            "height": 570,
-            "left": "-100%",
-            "minWidth": "50%",
+            "height": 600,
+            "minWidth": "100%",
           }
         }
       >
         <img
           alt="Iron Man background image"
-          className="slide__background"
+          className="background"
           src="img/iron-man-home.jpg"
         />
         <div
-          className="slide__content content"
+          className="content--bg"
         >
           <img
             alt="Iron Man"
-            className="slide__avatar"
+            className="avatar"
             heigth="100"
             src="img/iron-man-ava.jpg"
             width="100"
@@ -193,34 +314,35 @@ Array [
           “You can take away my house, all my tricks and toys. But one thing you can't take away... I am Iron Man.”
         </div>
         <div
-          className="slide__caption caption"
+          className="caption"
         >
           I am the Iron Man
         </div>
       </div>
       <div
-        className="slide__item "
-        id={6}
+        className="slide slide--no-caption"
+        id={5}
         style={
           Object {
-            "animationDuration": "0.75s",
-            "animationName": "",
-            "animationTimingFunction": "ease",
             "backgroundImage": "url()",
-            "height": 570,
-            "left": "-100%",
-            "minWidth": "50%",
+            "height": 600,
+            "minWidth": "100%",
           }
         }
       >
         <div
-          className="slide__content--no-bg content"
+          className="caption"
+        >
+          COVID-19 is an infectious disease.
+        </div>
+        <div
+          className="content--no-bg"
         >
           <p>
-            COVID-19 is an infectious disease. Most people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment.
+            Most people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment.
           </p>
           <a
-            className="content__btn content__btn--alert"
+            className="content-btn content-btn--alert"
             href="https://covid19.who.int/"
           >
             COVID-19 Dashboard
@@ -228,48 +350,37 @@ Array [
         </div>
       </div>
       <div
-        className="slide__item "
-        id={7}
+        className="slide slide--no-caption"
+        id={6}
         style={
           Object {
-            "animationDuration": "0.75s",
-            "animationName": "",
-            "animationTimingFunction": "ease",
-            "backgroundImage": "url(img/hawaii.jpg)",
-            "height": 570,
-            "left": "-100%",
-            "minWidth": "50%",
+            "backgroundImage": "url(img/elbrus.jpg)",
+            "height": 600,
+            "minWidth": "100%",
           }
         }
       >
         <img
-          alt="Hawaii"
-          className="slide__background"
-          src="img/hawaii.jpg"
+          alt="Elbrus"
+          className="background"
+          src="img/elbrus.jpg"
         />
         <div
-          className="slide__content content"
+          className="content--bg"
         >
           <h2>
-            Hawaii
+            Beautiful Elbrus
           </h2>
-          <p>
-            is the world's largest island chain, and it's the only U.S. state completely made up of islands.
-          </p>
         </div>
       </div>
       <div
-        className="slide__item "
-        id={8}
+        className="slide slide--no-caption"
+        id={7}
         style={
           Object {
-            "animationDuration": "0.75s",
-            "animationName": "",
-            "animationTimingFunction": "ease",
-            "backgroundImage": "url()",
-            "height": 570,
-            "left": "-100%",
-            "minWidth": "50%",
+            "height": 600,
+            "minWidth": "100%",
+            "visibility": "hidden",
           }
         }
       >
@@ -280,140 +391,9 @@ Array [
           This is the most simple use.
         </p>
       </div>
-      <div
-        className="slide__item "
-        id={9}
-        style={
-          Object {
-            "animationDuration": "0.75s",
-            "animationName": "",
-            "animationTimingFunction": "ease",
-            "backgroundImage": "url()",
-            "height": 570,
-            "left": "-100%",
-            "minWidth": "50%",
-          }
-        }
-      >
-        <div
-          className="slide__content content"
-        >
-          <h2>
-            Hello, World!
-          </h2>
-        </div>
-      </div>
-      <div
-        className="slide__item "
-        id={10}
-        style={
-          Object {
-            "animationDuration": "0.75s",
-            "animationName": "",
-            "animationTimingFunction": "ease",
-            "backgroundImage": "url(img/black_hole.jpg)",
-            "height": 570,
-            "left": "-100%",
-            "minWidth": "50%",
-          }
-        }
-      >
-        <img
-          alt="Black Hole"
-          className="slide__background"
-          src="img/black_hole.jpg"
-        />
-        <div
-          className="slide__caption caption"
-        >
-          <a
-            className="caption__btn"
-            href="https://www.universetoday.com/135158/team-creates-negative-effective-mass-lab/"
-          >
-            What is a Black Hole?
-          </a>
-        </div>
-      </div>
     </div>
-    <div
-      className="slider__buttons arrows"
-    >
-      <button
-        className="arrows__btn arrows__prev
-          
-          "
-        disabled={false}
-        onClick={[Function]}
-      >
-        <svg
-          className="arrows__prev-icon"
-          viewBox="0 0 20 20"
-        >
-          <path
-            d="M8.388,10.049l4.76-4.873c0.303-0.31,0.297-0.804-0.012-1.105c-0.309-0.304-0.803-0.293-1.105,0.012L6.726,9.516c-0.303,0.31-0.296,0.805,0.012,1.105l5.433,5.307c0.152,0.148,0.35,0.223,0.547,0.223c0.203,0,0.406-0.08,0.559-0.236c0.303-0.309,0.295-0.803-0.012-1.104L8.388,10.049z"
-            fill="#cccccc"
-          />
-        </svg>
-      </button>
-      <button
-        className="arrows__btn arrows__next
-          
-          "
-        disabled={false}
-        onClick={[Function]}
-      >
-        <svg
-          className="arrows__next-icon"
-          viewBox="0 0 20 20"
-        >
-          <path
-            d="M11.611,10.049l-4.76-4.873c-0.303-0.31-0.297-0.804,0.012-1.105c0.309-0.304,0.803-0.293,1.105,0.012l5.306,5.433c0.304,0.31,0.296,0.805-0.012,1.105L7.83,15.928c-0.152,0.148-0.35,0.223-0.547,0.223c-0.203,0-0.406-0.08-0.559-0.236c-0.303-0.309-0.295-0.803,0.012-1.104L11.611,10.049z"
-            fill="#cccccc"
-          />
-        </svg>
-      </button>
-    </div>
-  </section>,
-  <div
-    className="slider__indicators  indicators
-      "
-  >
-    <div
-      className="indicators__item
-            indicators__item--active"
-      id={0}
-      onClick={[Function]}
-    >
-      <div
-        className="indicators__item-inner
-              indicators__item-inner--active"
-        onClick={[Function]}
-      />
-    </div>
-    <div
-      className="indicators__item
-            "
-      id={1}
-      onClick={[Function]}
-    >
-      <div
-        className="indicators__item-inner
-              "
-        onClick={[Function]}
-      />
-    </div>
-    <div
-      className="indicators__item
-            "
-      id={2}
-      onClick={[Function]}
-    >
-      <div
-        className="indicators__item-inner
-              "
-        onClick={[Function]}
-      />
-    </div>
-  </div>,
-]
+    
+    
+  </section>
+</main>
 `;

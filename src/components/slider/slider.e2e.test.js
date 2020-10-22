@@ -11,9 +11,9 @@ configure({
 const componentDidMountSpy = jest.spyOn(Slider.prototype, `componentDidMount`);
 const componentDidUpdateSpy = jest.spyOn(Slider.prototype, `componentDidUpdate`);
 const componentWillUnmountSpy = jest.spyOn(Slider.prototype, `componentWillUnmount`);
-const touchStartSpy = jest.spyOn(Slider.prototype, `touchStart`);
-const touchMoveSpy = jest.spyOn(Slider.prototype, `touchMove`);
-const touchEndSpy = jest.spyOn(Slider.prototype, `touchEnd`);
+const touchStartSpy = jest.spyOn(Slider.prototype, `onTouchStart`);
+const touchMoveSpy = jest.spyOn(Slider.prototype, `onTouchMove`);
+const touchEndSpy = jest.spyOn(Slider.prototype, `onTouchEnd`);
 
 const setUp = () => mount(
     <Slider>
@@ -53,41 +53,52 @@ describe(`Lyfecycle methods`, () => {
 
 describe(`Mouse and touch events be fired`, () => {
   it(`Should mousedown be fired`, () => {
-    const slide = component.find(`div.slide`);
+    const slide = component.find(`div.slides`);
     slide.simulate(`mousedown`);
     expect(touchStartSpy).toHaveBeenCalled();
   });
   it(`Should mousemove be fired`, () => {
-    const slide = component.find(`div.slide`);
+    const slide = component.find(`div.slides`);
     slide.simulate(`mousemove`);
     expect(touchMoveSpy).toHaveBeenCalled();
   });
   it(`Should mouseup be fired`, () => {
-    const slide = component.find(`div.slide`);
+    const slide = component.find(`div.slides`);
     slide.simulate(`mouseup`);
     expect(touchEndSpy).toHaveBeenCalled();
   });
   it(`Should touchstart be fired`, () => {
-    const slide = component.find(`div.slide`);
+    const slide = component.find(`div.slides`);
     slide.simulate(`touchstart`);
     expect(touchStartSpy).toHaveBeenCalled();
   });
   it(`Should touchmove be fired`, () => {
-    const slide = component.find(`div.slide`);
+    const slide = component.find(`div.slides`);
     slide.simulate(`touchmove`);
     expect(touchMoveSpy).toHaveBeenCalled();
   });
   it(`Should touchend be fired`, () => {
-    const slide = component.find(`div.slide`);
+    const slide = component.find(`div.slides`);
     slide.simulate(`touchend`);
     expect(touchEndSpy).toHaveBeenCalled();
   });
 
-  it(`Should mouseout be fired`, () => {
-    const spy = jest.spyOn(Slider.prototype, `resumeAutoplay`);
-    const slide = component.find(`div.slide`);
+  // it(`Should mouseover be fired`, () => {
+  //   const onMouseOverPauseAutoplay = jest.fn();
+  //   const autoplay = true;
+  //   // const spy = jest.spyOn(Slider.prototype, `onMouseOverPauseAutoplay`);
+  //   const slider = component.find(`.slider`);
+  //   slider.simulate(`mouseover`);
+  //   if (autoplay) {
+  //     expect(onMouseOverPauseAutoplay).toHaveBeenCalled();
+  //   }
+  // });
 
-    slide.simulate(`mouseout`);
-    expect(spy).toHaveBeenCalled();
-  });
+  // it(`Should mouseout be fired`, () => {
+  //   const spy = jest.spyOn(Slider.prototype, `onMouseOutResumeAutoplay`);
+  //   const slider = component.find(`.slider`);
+
+  //   slider.simulate(`mouseout`);
+  //   expect(spy).toHaveBeenCalled();
+  // });
 });

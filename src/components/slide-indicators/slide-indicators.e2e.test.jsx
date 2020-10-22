@@ -28,8 +28,8 @@ it(`Should previous slide button be pressed`, () => {
       />
   );
 
-  const indicatorDots = main.find(`div.indicators__item`);
-  const indicatorInnerDots = main.find(`div.indicators__item-inner`);
+  const indicatorDots = main.find(`div.indicator`);
+  const indicatorInnerDots = main.find(`div.indicator`);
 
   indicatorDots.forEach((dot) => dot.props().onClick());
   indicatorInnerDots.forEach((innerDot) => innerDot.props().onClick());

@@ -2,44 +2,43 @@
 
 exports[`Should render Arrows component 1`] = `
 <div
-  className="slider__indicators  indicators
-      "
+  className="indicators"
 >
   <div
-    className="indicators__item
-            indicators__item--active"
+    className="indicator
+            indicator--active"
     id={0}
     onClick={[Function]}
   >
-    <div
-      className="indicators__item-inner
-              indicators__item-inner--active"
-      onClick={[Function]}
-    />
+    <span
+      className="visually-hidden"
+    >
+      1
+    </span>
   </div>
   <div
-    className="indicators__item
+    className="indicator
             "
     id={1}
     onClick={[Function]}
   >
-    <div
-      className="indicators__item-inner
-              "
-      onClick={[Function]}
-    />
+    <span
+      className="visually-hidden"
+    >
+      2
+    </span>
   </div>
   <div
-    className="indicators__item
+    className="indicator
             "
     id={2}
     onClick={[Function]}
   >
-    <div
-      className="indicators__item-inner
-              "
-      onClick={[Function]}
-    />
+    <span
+      className="visually-hidden"
+    >
+      3
+    </span>
   </div>
 </div>
 `;

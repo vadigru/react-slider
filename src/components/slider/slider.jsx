@@ -17,50 +17,128 @@ class Slider extends React.Component {
   constructor(props) {
     super(props);
 
+    this.indicators = [];
     this.initSlides = React.Children.toArray(this.props.children);
     this.modifiedSlides = [];
-    this.indicators = [];
-    this.slidesCount = this.props.adaptiveSlides ? getSlidesCount(this.props.slidesCount, window.innerWidth) : this.props.slidesCount;
-    this.slideRef = null;
-
-    this.timer = null;
-    this.touchTimeStart = null;
-    this.touchTimeEnd = null;
     this.positionDiff = null;
+    this.slidesCount = this.props.adaptiveSlides ? getSlidesCount(this.props.slidesCount, window.innerWidth) : this.props.slidesCount || 1;
+    this.slideRef = null;
     this.styleSheet = document.styleSheets[0];
+    this.timer = null;
+    this.touchTimeEnd = null;
+    this.touchTimeStart = null;
 
     this.state = {
       activeSlide: this.slidesCount,
       autoplayDelay: this.props.autoplayDelay || AUTOPLAY_DELAY,
-      isInfinite: this.props.infinite || false,
       isCaption: this.props.caption || false,
       isDisabled: false,
+      isAdaptive: this.props.adaptiveSlides || false,
+      isAnimatedSwipe: this.props.animatedSwipe || false,
+      isArrows: this.props.arrows || false,
       isAutoplay: this.props.autoplay || false,
       isIndicators: this.props.indicators || false,
-      isArrows: this.props.arrows || false,
-      isAdaptive: this.props.adaptiveSlides || false,
+      isInfinite: this.props.infinite || false,
       isReverse: false,
-      isAnimatedSwipe: this.props.animatedSwipe || false,
       isDragging: false,
+      slideAnimation: ``,
+      slidePosition: SlidePosition.INITIAL,
       sliderWidth: this.props.width || 0,
       sliderHeight: this.props.height || 0,
-      slidePosition: SlidePosition.INITIAL,
       slidesToShow: this.slidesCount,
-      slideAnimation: ``
     };
 
-    this.handlPrevSlideClick = this.handlPrevSlideClick.bind(this);
-    this.handlNextSlideClick = this.handlNextSlideClick.bind(this);
-    this.handleSlideIndicatorClick = this.handleSlideIndicatorClick.bind(this);
-    this.pauseAutoplay = this.pauseAutoplay.bind(this);
-    this.resumeAutoplay = this.resumeAutoplay.bind(this);
-    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-    this.touchStart = this.touchStart.bind(this);
-    this.touchMove = this.touchMove.bind(this);
-    this.touchEnd = this.touchEnd.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handlNextSlideClick = this.handlNextSlideClick.bind(this);
+    this.handlPrevSlideClick = this.handlPrevSlideClick.bind(this);
+    this.handleSlideIndicatorClick = this.handleSlideIndicatorClick.bind(this);
+    this.onTouchStart = this.onTouchStart.bind(this);
+    this.onTouchMove = this.onTouchMove.bind(this);
+    this.onTouchEnd = this.onTouchEnd.bind(this);
     this.onAnimationEnd = this.onAnimationEnd.bind(this);
+    this.onMouseOverPauseAutoplay = this.onMouseOverPauseAutoplay.bind(this);
+    this.onMouseOutResumeAutoplay = this.onMouseOutResumeAutoplay.bind(this);
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+
+    // refs for visualized settings -------------------------------------------
+    this.widthRef = React.createRef();
+    this.heigthRef = React.createRef();
+    this.infiniteRef = React.createRef();
+    this.autoplayRef = React.createRef();
+    this.autoplayDelayRef = React.createRef();
+    this.indicatorsRef = React.createRef();
+    this.arrowsRef = React.createRef();
+    this.adaptiveRef = React.createRef();
+    this.animatedSwipeRef = React.createRef();
+    this.captionRef = React.createRef();
+    this.slidesCountRef = React.createRef();
+    // bindings for visualized settings ---------------------------------------
+    this.setWidth = this.setWidth.bind(this);
+    this.setHeight = this.setHeight.bind(this);
+    this.toggleInfinite = this.toggleInfinite.bind(this);
+    this.toggleAutoplay = this.toggleAutoplay.bind(this);
+    this.changeAutoplayDelay = this.changeAutoplayDelay.bind(this);
+    this.toggleIndicators = this.toggleIndicators.bind(this);
+    this.toggleArrows = this.toggleArrows.bind(this);
+    this.toggleAdaptive = this.toggleAdaptive.bind(this);
+    this.toggleAnimatedSwipe = this.toggleAnimatedSwipe.bind(this);
+    this.toggleCaption = this.toggleCaption.bind(this);
+    this.changeSlidesCount = this.changeSlidesCount.bind(this);
   }
+
+  // togglers for isualised settings -----------------------------------------
+  setWidth(value) {
+    this.setState({sliderWidth: parseInt(value, 10)});
+  }
+  setHeight(value) {
+    this.setState({sliderHeight: parseInt(value, 10)});
+  }
+  toggleInfinite() {
+    this.setState({isInfinite: !this.state.isInfinite});
+  }
+  toggleAutoplay() {
+    if (this.state.isAutoplay === false) {
+      this.setState({isAutoplay: true});
+      this.timer = setInterval(this.handlNextSlideClick, this.autoplayDelay);
+    } else {
+      this.setState({isAutoplay: false});
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+  changeAutoplayDelay(value) {
+    if (this.state.isAutoplay === true) {
+      clearInterval(this.timer);
+      this.timer = null;
+      this.timer = setInterval(this.handlNextSlideClick, value);
+    }
+    this.setState({autoplayDelay: value});
+  }
+  toggleIndicators() {
+    this.setState({isIndicators: !this.state.isIndicators});
+  }
+  toggleArrows() {
+    this.setState({isArrows: !this.state.isArrows});
+  }
+  toggleAdaptive() {
+    this.setState({isAdaptive: !this.state.isAdaptive});
+  }
+  toggleAnimatedSwipe() {
+    this.setState({isAnimatedSwipe: !this.state.isAnimatedSwipe});
+  }
+  toggleCaption() {
+    this.setState({isCaption: !this.state.isCaption});
+  }
+  changeSlidesCount(value) {
+    this.slidesCount = parseInt(value, 10);
+    this.setState({
+      activeSlide: this.slidesCount,
+      slidesToShow: this.slidesCount
+    });
+    this.buildIndicators(this.slidesCount);
+    this.buildSlides(this.slidesCount);
+  }
+  // --------------------------------------------------------------------------
 
   componentDidMount() {
     this.setupSlider();
@@ -94,25 +172,25 @@ class Slider extends React.Component {
     this.timer = null;
   }
 
-  buildSlides() {
-    const {slidesToShow} = this.state;
+  buildSlides(count) {
+    const {isAdaptive} = this.state;
     const firstElement = this.initSlides[0];
     const lastElement = this.initSlides[this.initSlides.length - 1];
-    const firstCloneArray = this.initSlides.slice(0, slidesToShow + 1);
-    const lastCloneArray = this.initSlides.slice(this.initSlides.length - slidesToShow);
+    const firstCloneArray = this.initSlides.slice(0, count + 1);
+    const lastCloneArray = this.initSlides.slice(this.initSlides.length - count);
 
     if (this.modifiedSlides.length) {
       this.modifiedSlides = [];
     }
     switch (true) {
-      case slidesToShow > 1:
+      case count > 1:
         this.modifiedSlides = [...lastCloneArray, ...this.initSlides, ...firstCloneArray];
         break;
       default:
         if (this.initSlides.length === 1) {
           this.modifiedSlides = [...this.initSlides];
           this.setState({
-            activeSlide: slidesToShow - 1,
+            activeSlide: count - 1,
             slidePosition: 0
           });
           return;
@@ -121,26 +199,27 @@ class Slider extends React.Component {
         break;
     }
 
+    if (!isAdaptive && count !== 1) {
+      return;
+    }
     this.setState({
-      activeSlide: slidesToShow,
+      activeSlide: count,
       slidePosition: SlidePosition.INITIAL,
     });
   }
 
-  buildIndicators() {
-    const {slidesToShow} = this.state;
-
+  buildIndicators(count) {
     if (this.indicators !== []) {
       this.indicators = [];
     }
-    for (let i = 0; i < Math.ceil(this.initSlides.length / slidesToShow); i++) {
+    for (let i = 0; i < Math.ceil(this.initSlides.length / count); i++) {
       this.indicators.push(i);
     }
   }
 
   setupSlider() {
-    this.buildSlides();
-    this.buildIndicators();
+    this.buildSlides(this.state.slidesToShow);
+    this.buildIndicators(this.state.slidesToShow);
     this.startAutoplay();
     this.updateWindowDimensions();
     window.addEventListener(`resize`, this.updateWindowDimensions);
@@ -154,18 +233,16 @@ class Slider extends React.Component {
     const {isAdaptive, slidesToShow} = this.state;
     const updatedWidth = width < window.innerWidth ? width : window.innerWidth;
     const updatedHeight = height < window.innerHeight ? height : window.innerHeight;
-    const updatedSlidesToShow = getSlidesCount(this.props.slidesCount, window.innerWidth);
+    const updatedSlidesToShow = isAdaptive ? getSlidesCount(this.slidesCount, window.innerWidth) : slidesToShow;
 
     this.setState({
       isReverse: false,
-      slidesToShow: isAdaptive ? updatedSlidesToShow : slidesToShow,
+      slidesToShow: updatedSlidesToShow,
       sliderWidth: updatedWidth,
       sliderHeight: updatedHeight,
-      slidePosition: SlidePosition.INITIAL
     });
-
-    this.buildSlides();
-    this.buildIndicators();
+    this.buildSlides(updatedSlidesToShow);
+    this.buildIndicators(updatedSlidesToShow);
   }
 
   // atoplay handlers ---------------------------------------------------------
@@ -177,7 +254,7 @@ class Slider extends React.Component {
     }
   }
 
-  pauseAutoplay() {
+  onMouseOverPauseAutoplay() {
     const {isAutoplay} = this.state;
     if (isAutoplay) {
       clearInterval(this.timer);
@@ -185,7 +262,7 @@ class Slider extends React.Component {
     }
   }
 
-  resumeAutoplay() {
+  onMouseOutResumeAutoplay() {
     const {
       isAutoplay,
       isInfinite,
@@ -225,12 +302,12 @@ class Slider extends React.Component {
   // slider navigation handlers -----------------------------------------------
   handlPrevSlideClick(evt) {
     const {
-      sliderWidth,
       activeSlide,
+      isAnimatedSwipe,
       isInfinite,
       slidesToShow,
       slidePosition,
-      isAnimatedSwipe
+      sliderWidth,
     } = this.state;
 
     const positionCorrection = this.positionDiff ? this.positionDiff.x * 100 / sliderWidth : false;
@@ -266,12 +343,12 @@ class Slider extends React.Component {
 
   handlNextSlideClick(evt) {
     const {
-      sliderWidth,
       activeSlide,
+      isAnimatedSwipe,
       isInfinite,
       slidePosition,
       slidesToShow,
-      isAnimatedSwipe
+      sliderWidth,
     } = this.state;
 
     const positionCorrection = this.positionDiff ? this.positionDiff.x * 100 / sliderWidth : 0;
@@ -338,12 +415,12 @@ class Slider extends React.Component {
   setAnimation(evt) {
     const {
       sliderWidth,
-      isInfinite,
       isAutoplay,
+      isAnimatedSwipe,
+      isInfinite,
       isReverse,
       slidePosition,
       slidesToShow,
-      isAnimatedSwipe,
       activeSlide
     } = this.state;
     const slideAnimation = `animation${Math.round(Math.random() * 100)}`;
@@ -474,9 +551,9 @@ class Slider extends React.Component {
   // handle touchevents and mouseevents --------------------------------------
   checkAction(evt) {
     const {
+      isAnimatedSwipe,
       sliderWidth,
       slidePosition,
-      isAnimatedSwipe,
     } = this.state;
 
     this.positionDiff = {
@@ -510,14 +587,13 @@ class Slider extends React.Component {
       evt.clientX < this.slideRef.offsetWidth ||
       evt.clientY > this.slideRef.offsetHeight ||
       evt.clientY < this.slideRef.offsetHeight) {
-      this.touchEnd(evt);
+      this.onTouchEnd(evt);
     }
   }
 
-  touchStart(evt) {
+  onTouchStart(evt) {
     this.touchTimeStart = evt.timeStamp;
     if (evt.type === `mousedown`) {
-      // evt.preventDefault();
       this.touchPositionStart = {
         x: evt.clientX,
       };
@@ -532,15 +608,15 @@ class Slider extends React.Component {
         x: this.touchPositionStart.x,
       };
     }
-    this.pauseAutoplay();
+    this.onMouseOverPauseAutoplay();
   }
 
-  touchMove(evt) {
+  onTouchMove(evt) {
     const {
+      isAnimatedSwipe,
       sliderWidth,
       slidesToShow,
       slidePosition,
-      isAnimatedSwipe
     } = this.state;
     let shift;
 
@@ -570,7 +646,7 @@ class Slider extends React.Component {
     }
   }
 
-  touchEnd(evt) {
+  onTouchEnd(evt) {
     if (this.touchTimeStart) {
       this.touchTimeEnd = evt.timeStamp;
       this.checkAction(evt);
@@ -578,7 +654,7 @@ class Slider extends React.Component {
       this.touchPositionCurrent = null;
     }
 
-    this.resumeAutoplay();
+    this.onMouseOutResumeAutoplay();
   }
 
   handleClick(evt) {
@@ -594,12 +670,12 @@ class Slider extends React.Component {
   render() {
     const {
       activeSlide,
-      isDisabled,
-      isInfinite,
       isCaption,
+      isDisabled,
       isDragging,
-      isIndicators,
       isArrows,
+      isIndicators,
+      isInfinite,
       slidePosition,
       slidesToShow,
       sliderWidth,
@@ -610,14 +686,145 @@ class Slider extends React.Component {
     const slideData = getSlideData(this.modifiedSlides);
 
     return (
-      <>
+      <main>
+        <section className="slider-settings">
+          <label htmlFor="wrange">Width:
+            <input
+              id="wrange"
+              type="range"
+              min="320"
+              max="1920"
+              value={this.state.sliderWidth}
+              ref={this.widthRef}
+              onChange={(evt) => {
+                this.setWidth(evt.target.value);
+              }}
+            />
+            <span>{this.state.sliderWidth}</span>
+          </label>
+          <label htmlFor="hrange">Height:
+            <input
+              id="hrange"
+              type="range"
+              min="320"
+              max="1080"
+              value={this.state.sliderHeight}
+              ref={this.heightRef}
+              onChange={(evt) => {
+                this.setHeight(evt.target.value);
+              }}
+            />
+            <span>{this.state.sliderHeight}</span>
+          </label>
+          <label htmlFor="autoplay">Autoplay:
+            <input
+              id="autoplay"
+              type="checkbox"
+              name="autoplay"
+              ref={this.autoplayRef}
+              onChange={this.toggleAutoplay}
+              defaultChecked={this.state.isAutoplay ? `checked` : false}
+            />
+          </label>
+          <label htmlFor="autoplay-delay">Autoplay delay:
+            <input
+              id="autoplay-delay"
+              type="number"
+              name="autoplayDelay"
+              value={this.state.autoplayDelay}
+              readOnly={this.state.isAutoplay ? false : true}
+              style={{backgroundColor: !this.state.isAutoplay ? `#ccc` : ``}}
+              ref={this.autoplayDelayRef}
+              onChange={(evt) => {
+                this.changeAutoplayDelay(evt.target.value);
+              }}
+            />
+          </label>
+          <label htmlFor="indicators">Indicators:
+            <input
+              id="indicators"
+              type="checkbox"
+              name="indicators"
+              ref={this.indicatorsRef}
+              onChange={this.toggleIndicators}
+              defaultChecked={this.state.isIndicators ? `checked` : false}
+            />
+          </label>
+          <label htmlFor="arrows">Arrows:
+            <input
+              id="arrows"
+              type="checkbox"
+              name="arrows"
+              ref={this.arrowsRef}
+              onChange={this.toggleArrows}
+              defaultChecked={this.state.isArrows ? `checked` : false}
+            />
+          </label>
+          <label htmlFor="caption">Caption:
+            <input
+              id="caption"
+              type="checkbox"
+              name="caption"
+              ref={this.captionRef}
+              onChange={this.toggleCaption}
+              defaultChecked={this.state.isCaption ? `checked` : false}
+            />
+          </label>
+          <label htmlFor="animated">Animated swipe:
+            <input
+              id="animated"
+              type="checkbox"
+              name="animated"
+              ref={this.animatedSwipeRef}
+              onChange={this.toggleAnimatedSwipe}
+              defaultChecked={this.state.isAnimatedSwipe ? `checked` : false}
+            />
+          </label>
+
+          <label htmlFor="infinite">Infinte:
+            <input
+              id="infinite"
+              type="checkbox"
+              name="infinite"
+              ref={this.infiniteRef}
+              onChange={this.toggleInfinite}
+              defaultChecked={this.state.isInfinite ? `checked` : false}
+            />
+          </label>
+          <label htmlFor="adaptive">Adaptive:
+            <input
+              id="adaptive"
+              type="checkbox"
+              name="adaptive"
+              ref={this.adaptiveRef}
+              onChange={this.toggleAdaptive}
+              defaultChecked={this.state.isAdaptive ? `checked` : false}
+            />
+          </label>
+          <label htmlFor="slides-count">Max slides (3):
+            <input
+              id="slides-count"
+              type="number"
+              min="1"
+              max="3"
+              name="slides-count"
+              value={this.state.slidesToShow}
+              readOnly={this.state.isAdaptive ? false : true}
+              style={{backgroundColor: !this.state.isAdaptive ? `#ccc` : ``}}
+              ref={this.slidesCountRef}
+              onChange={(evt) => {
+                this.changeSlidesCount(evt.target.value > 3 ? 3 : evt.target.value);
+              }}
+            />
+          </label>
+        </section>
         <section
           className="slider"
           style={{
             maxWidth: sliderWidth,
           }}
-          onMouseOver={this.pauseAutoplay}
-          onMouseOut={this.resumeAutoplay}
+          onMouseOver={this.onMouseOverPauseAutoplay}
+          onMouseOut={this.onMouseOutResumeAutoplay}
           onClickCapture={this.handleClick}
         >
           <div
@@ -625,13 +832,13 @@ class Slider extends React.Component {
             onMouseDown={(evt) => {
               evt.preventDefault();
               evt.stopPropagation();
-              this.touchStart(evt);
+              this.onTouchStart(evt);
             }}
-            onMouseMove={(evt) => this.touchMove(evt)}
-            onMouseUp={(evt) => this.touchEnd(evt)}
-            onTouchStart={(evt) => this.touchStart(evt)}
-            onTouchMove={(evt) => this.touchMove(evt)}
-            onTouchEnd={(evt) => this.touchEnd(evt)}
+            onMouseMove={(evt) => this.onTouchMove(evt)}
+            onMouseUp={(evt) => this.onTouchEnd(evt)}
+            onTouchStart={(evt) => this.onTouchStart(evt)}
+            onTouchMove={(evt) => this.onTouchMove(evt)}
+            onTouchEnd={(evt) => this.onTouchEnd(evt)}
             onAnimationEnd={this.onAnimationEnd}
             ref={(ref) => {
               this.slideRef = ref;
@@ -647,12 +854,12 @@ class Slider extends React.Component {
             {slideData.map((it, index) => {
               let style = {
                 minWidth: `${100 / slidesToShow}%`,
-                height: sliderHeight - INDICATORS_HEIGHT,
+                height: isIndicators ? sliderHeight - INDICATORS_HEIGHT : sliderHeight,
                 backgroundImage: `url(${getBackground(it)})`,
               };
               let styleHidden = {
                 minWidth: `${100 / slidesToShow}%`,
-                height: sliderHeight - INDICATORS_HEIGHT,
+                height: isIndicators ? sliderHeight - INDICATORS_HEIGHT : sliderHeight,
                 visibility: `hidden`
               };
               return (
@@ -660,7 +867,7 @@ class Slider extends React.Component {
                   key={it + index}
                   className={`slide ${isCaption ? `` : `slide--no-caption`}`}
                   id={index}
-                  style={!isInfinite && index < slidesToShow ||
+                  style={this.initSlides.length !== 1 && !isInfinite && index < slidesToShow ||
                     !isInfinite && index > (this.initSlides.length - 1) + slidesToShow ?
                     styleHidden :
                     style}
@@ -692,8 +899,7 @@ class Slider extends React.Component {
               onIndicatorDotClick={this.handleSlideIndicatorClick}
             />}
         </section>
-
-      </>
+      </main>
     );
   }
 }

@@ -30,13 +30,13 @@ describe(`navigation buttons to be pressed`, () => {
   );
 
   it(`Should previous arrow button be pressed`, () => {
-    const prevButton = main.find(`button.arrows__prev`);
+    const prevButton = main.find(`button.arrow-prev`);
     prevButton.props().onClick();
     expect(onLeftArrowClick).toHaveBeenCalledTimes(1);
   });
 
   it(`Should next arrow button be pressed`, () => {
-    const nextButton = main.find(`button.arrows__next`);
+    const nextButton = main.find(`button.arrow-next`);
     nextButton.props().onClick();
     expect(onRightArrowClick).toHaveBeenCalledTimes(1);
   });

@@ -2,17 +2,18 @@
 
 exports[`Should render Arrows component 1`] = `
 <div
-  className="slider__buttons arrows"
+  className="arrows"
 >
   <button
-    className="arrows__btn arrows__prev
+    className="arrows-btn arrow-prev
           
           "
     disabled={false}
+    id="arrow-prev"
     onClick={[Function]}
   >
     <svg
-      className="arrows__prev-icon"
+      className="arrow-prev-icon"
       viewBox="0 0 20 20"
     >
       <path
@@ -22,14 +23,15 @@ exports[`Should render Arrows component 1`] = `
     </svg>
   </button>
   <button
-    className="arrows__btn arrows__next
+    className="arrows-btn arrow-next
           
           "
     disabled={false}
+    id="arrow-next"
     onClick={[Function]}
   >
     <svg
-      className="arrows__next-icon"
+      className="arrow-next-icon"
       viewBox="0 0 20 20"
     >
       <path

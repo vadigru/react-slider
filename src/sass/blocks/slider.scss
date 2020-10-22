@@ -1,6 +1,8 @@
 .slider {
   margin: auto;
+  margin-bottom: 30px;
   padding: 0;
   position: relative;
   overflow: hidden;
+  outline: 2px dashed $color-black-10;
 }
