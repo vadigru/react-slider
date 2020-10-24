@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Arrows from "../arrows/arrows.jsx";
 import SlideIndicators from "../slide-indicators/slide-indicators.jsx";
+import VisualizedSettings from "../visualized-settings/visualized-settings.jsx";
 import {
   getSlidesCount,
   getSlideData,
@@ -14,6 +15,7 @@ import {
   SwipeSensitivity,
   SlidePosition,
 } from "../../const.js";
+
 class Slider extends React.Component {
   constructor(props) {
     super(props);
@@ -63,19 +65,7 @@ class Slider extends React.Component {
     this.onMouseOutResumeAutoplay = this.onMouseOutResumeAutoplay.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
-    // refs for visualized settings -------------------------------------------
-    this.widthRef = React.createRef();
-    this.heigthRef = React.createRef();
-    this.infiniteRef = React.createRef();
-    this.autoplayRef = React.createRef();
-    this.autoplayDelayRef = React.createRef();
-    this.indicatorsRef = React.createRef();
-    this.arrowsRef = React.createRef();
-    this.adaptiveRef = React.createRef();
-    this.animatedSwipeRef = React.createRef();
-    this.animationTimeRef = React.createRef();
-    this.captionRef = React.createRef();
-    this.slidesCountRef = React.createRef();
+
     // bindings for visualized settings ---------------------------------------
     this.setWidth = this.setWidth.bind(this);
     this.setHeight = this.setHeight.bind(this);
@@ -116,7 +106,7 @@ class Slider extends React.Component {
       this.timer = null;
       this.timer = setInterval(this.handlNextSlideClick, value);
     }
-    this.setState({autoplayDelay: value});
+    this.setState({autoplayDelay: parseInt(value, 10)});
   }
   toggleIndicators() {
     this.setState({isIndicators: !this.state.isIndicators});
@@ -724,183 +714,33 @@ class Slider extends React.Component {
 
     return (
       <main>
-        {this.demoMode ? <section className="slider-settings">
-          <label htmlFor="wrange">
-            <span className="label-title">Width</span>
-            <input
-              id="wrange"
-              type="range"
-              min="320"
-              max="1920"
-              name="wrange"
-              value={this.state.sliderWidth}
-              ref={this.widthRef}
-              onChange={(evt) => {
-                this.setWidth(evt.target.value);
-              }}
-            />
-            <span>{this.state.sliderWidth}</span>
-          </label>
-          <label htmlFor="hrange">
-            <span className="label-title">Height</span>
-            <input
-              id="hrange"
-              type="range"
-              min="320"
-              max="1080"
-              name="hrange"
-              value={this.state.sliderHeight}
-              ref={this.heightRef}
-              onChange={(evt) => {
-                this.setHeight(evt.target.value);
-              }}
-            />
-            <span>{this.state.sliderHeight}</span>
-          </label>
-          <label htmlFor="animation-time">
-            <span className="label-title">Animation in ms</span>
-            <input
-              id="animated"
-              type="range"
-              min="100"
-              max="3000"
-              name="animation-time"
-              value={this.state.animationTime}
-              ref={this.animationTimeRef}
-              onChange={(evt) => this.changeAnimationTime(evt.target.value)}
-            />
-            <span>{this.state.animationTime}</span>
-          </label>
-          <div className="slider-settings-autoplay">
-            <label
-              htmlFor="autoplay"
-              className="label-connected label-autoplay"
-            >
-              <span className="label-title">Autoplay</span>
-              <input
-                id="autoplay"
-                type="checkbox"
-                name="autoplay"
-                ref={this.autoplayRef}
-                onChange={this.toggleAutoplay}
-                defaultChecked={this.state.isAutoplay ? `checked` : false}
-              />
-            </label>
-            <label
-              htmlFor="autoplay-delay"
-              className="label-connected label-autoplay-delay"
-            >
-              <span className="label-title">in ms</span>
-              <input
-                id="autoplay-delay"
-                type={isMobile.any() ? `number` : `range`}
-                min="1000"
-                max="10000"
-                name="autoplay-delay"
-                value={this.state.autoplayDelay}
-                disabled={this.state.isAutoplay ? false : true}
-                style={{backgroundColor: !this.state.isAutoplay ? `#ccc` : ``}}
-                ref={this.autoplayDelayRef}
-                onChange={(evt) => {
-                  this.changeAutoplayDelay(evt.target.value);
-                }}
-              />
-              {isMobile.any() ? `` : <span>{this.state.autoplayDelay}</span>}
-            </label>
-          </div>
-          <div className="slider-settings-adaptive">
-            <label
-              htmlFor="adaptive"
-              className="label-connected label-adaptive"
-            >
-              <span className="label-title">Adaptive</span>
-              <input
-                id="adaptive"
-                type="checkbox"
-                name="adaptive"
-                ref={this.adaptiveRef}
-                onChange={this.toggleAdaptive}
-                defaultChecked={this.state.isAdaptive ? `checked` : false}
-              />
-            </label>
-            <label
-              htmlFor="slides-count"
-              className="label-connected label-slides-count"
-            >
-              <span className="label-title">slides</span>
-              <input
-                id="slides-count"
-                type={isMobile.any() ? `number` : `range`}
-                min="1"
-                max="3"
-                name="slides-count"
-                value={this.state.slidesToShow}
-                disabled={this.state.isAdaptive ? false : true}
-                style={{backgroundColor: !this.state.isAdaptive ? `#ccc` : ``}}
-                ref={this.slidesCountRef}
-                onChange={(evt) => {
-                  this.changeSlidesCount(evt.target.value > 3 ? 3 : evt.target.value);
-                }}
-              />
-              {isMobile.any() ? `` : <span>{this.state.slidesToShow}</span>}
-            </label>
-          </div>
-          <label htmlFor="animated-swipe">
-            <span className="label-title">Animated swipe</span>
-            <input
-              id="animated-swipe"
-              type="checkbox"
-              name="animated-swipe"
-              ref={this.animatedSwipeRef}
-              onChange={this.toggleAnimatedSwipe}
-              defaultChecked={this.state.isAnimatedSwipe ? `checked` : false}
-            />
-          </label>
-          <label htmlFor="indicators">
-            <span className="label-title">Indicators</span>
-            <input
-              id="indicators"
-              type="checkbox"
-              name="indicators"
-              ref={this.indicatorsRef}
-              onChange={this.toggleIndicators}
-              defaultChecked={this.state.isIndicators ? `checked` : false}
-            />
-          </label>
-          <label htmlFor="arrows">
-            <span className="label-title">Arrows</span>
-            <input
-              id="arrows"
-              type="checkbox"
-              name="arrows"
-              ref={this.arrowsRef}
-              onChange={this.toggleArrows}
-              defaultChecked={this.state.isArrows ? `checked` : false}
-            />
-          </label>
-          <label htmlFor="caption">
-            <span className="label-title">Caption</span>
-            <input
-              id="caption"
-              type="checkbox"
-              name="caption"
-              ref={this.captionRef}
-              onChange={this.toggleCaption}
-              defaultChecked={this.state.isCaption ? `checked` : false}
-            />
-          </label>
-          <label htmlFor="infinite">
-            <span className="label-title">Infinte</span>
-            <input
-              id="infinite"
-              type="checkbox"
-              name="infinite"
-              ref={this.infiniteRef}
-              onChange={this.toggleInfinite}
-              defaultChecked={this.state.isInfinite ? `checked` : false}
-            />
-          </label>
-        </section> : ``}
+        {this.demoMode ?
+          <VisualizedSettings
+            setWidth={this.setWidth}
+            setHeight={this.setHeight}
+            toggleInfinite={this.toggleInfinite}
+            toggleAutoplay={this.toggleAutoplay}
+            changeAutoplayDelay={this.changeAutoplayDelay}
+            toggleIndicators={this.toggleIndicators}
+            toggleArrows={this.toggleArrows}
+            toggleAdaptive={this.toggleAdaptive}
+            toggleAnimatedSwipe={this.toggleAnimatedSwipe}
+            toggleCaption={this.toggleCaption}
+            changeSlidesCount={this.changeSlidesCount}
+            changeAnimationTime={this.changeAnimationTime}
+            animationTime={this.state.animationTime}
+            autoplayDelay={this.state.autoplayDelay}
+            isInfinite={this.state.isInfinite}
+            isAutoplay={this.state.isAutoplay}
+            isIndicators={this.state.isIndicators}
+            isArrows={this.state.isArrows}
+            isAdaptive={this.state.isAdaptive}
+            isAnimatedSwipe={this.state.isAnimatedSwipe}
+            isCaption={this.state.isCaption}
+            slidesToShow={this.state.slidesToShow}
+            sliderWidth={this.state.sliderWidth}
+            sliderHeight={this.state.sliderHeight}
+          /> : ``}
         <section
           className="slider"
           style={{
