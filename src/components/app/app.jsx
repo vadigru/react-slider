@@ -15,10 +15,11 @@ const App = () => {
       // arrows={true}
       // adaptiveSlides={true}
       // animatedSwipe={true}
+      animationTime={350}
       // slidesCount={1}
     >
       <div>
-        <h2>FIRST SLIDE 1</h2>
+        <h2>FIRST SLIDE</h2>
         <p>This is the most simple use.</p>
       </div>
 

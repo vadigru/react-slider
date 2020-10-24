@@ -6,6 +6,7 @@ import {
   getSlidesCount,
   getSlideData,
   getBackground,
+  isMobile
 } from "../../utils/common.js";
 import {
   AUTOPLAY_DELAY,
@@ -25,8 +26,8 @@ class Slider extends React.Component {
     this.slideRef = null;
     this.styleSheet = document.styleSheets[0];
     this.timer = null;
-    this.touchTimeEnd = null;
-    this.touchTimeStart = null;
+    // this.touchTimeEnd = null;
+    // this.touchTimeStart = null;
     this.demoMode = this.props.demoMode || false;
 
     this.state = {
@@ -36,6 +37,7 @@ class Slider extends React.Component {
       isDisabled: false,
       isAdaptive: this.props.adaptiveSlides || false,
       isAnimatedSwipe: this.props.animatedSwipe || false,
+      animationTime: this.props.animationTime || 350,
       isArrows: this.props.arrows || false,
       isAutoplay: this.props.autoplay || false,
       isIndicators: this.props.indicators || false,
@@ -71,6 +73,7 @@ class Slider extends React.Component {
     this.arrowsRef = React.createRef();
     this.adaptiveRef = React.createRef();
     this.animatedSwipeRef = React.createRef();
+    this.animationTimeRef = React.createRef();
     this.captionRef = React.createRef();
     this.slidesCountRef = React.createRef();
     // bindings for visualized settings ---------------------------------------
@@ -126,6 +129,9 @@ class Slider extends React.Component {
   }
   toggleAnimatedSwipe() {
     this.setState({isAnimatedSwipe: !this.state.isAnimatedSwipe});
+  }
+  changeAnimationTime(value) {
+    this.setState({animationTime: parseInt(value, 10)});
   }
   toggleCaption() {
     this.setState({isCaption: !this.state.isCaption});
@@ -223,7 +229,9 @@ class Slider extends React.Component {
     this.buildIndicators(this.state.slidesToShow);
     this.startAutoplay();
     this.updateWindowDimensions();
-    window.addEventListener(`resize`, this.updateWindowDimensions);
+    if (!isMobile.any()) {
+      window.addEventListener(`resize`, this.updateWindowDimensions);
+    }
     if (this.slideRef) {
       this.slideRef.addEventListener(`mouseleave`, (evt) => this.leaveSlideZone(evt));
     }
@@ -562,13 +570,7 @@ class Slider extends React.Component {
       y: this.touchPositionStart.y - this.touchPositionCurrent.y,
     };
 
-    if (this.positionDiff.y) {
-      window.removeEventListener(`resize`, this.updateWindowDimensions);
-      setTimeout(() => {
-        window.addEventListener(`resize`, this.updateWindowDimensions);
-      }, 1);
-    }
-    if (Math.abs(this.positionDiff.x) >= SwipeSensitivity.MAX && this.touchTimeEnd - this.touchTimeStart > 150) {
+    if (Math.abs(this.positionDiff.x) >= SwipeSensitivity.MAX/* && this.touchTimeEnd - this.touchTimeStart > 0*/) {
       if (this.positionDiff.x > SwipeSensitivity.MAX) {
         this.handlNextSlideClick();
       } else {
@@ -582,11 +584,15 @@ class Slider extends React.Component {
           slidePosition: position
         });
         this.setAnimation(evt);
+      } else {
+        this.setState({
+          isSwiping: true
+        });
       }
     }
 
-    this.touchTimeStart = null;
-    this.touchTimeEnd = null;
+    // this.touchTimeStart = null;
+    // this.touchTimeEnd = null;
     this.positionDiff = null;
   }
 
@@ -600,7 +606,17 @@ class Slider extends React.Component {
   }
 
   onTouchStart(evt) {
+    const {
+      isAnimatedSwipe,
+      isDisabled,
+    } = this.state;
+
     this.touchTimeStart = evt.timeStamp;
+    if (isAnimatedSwipe && isDisabled) {
+      this.setState({
+        isDisabled: false
+      });
+    }
     if (evt.type === `mousedown`) {
       this.touchPositionStart = {
         x: evt.clientX,
@@ -626,6 +642,7 @@ class Slider extends React.Component {
   onTouchMove(evt) {
     const {
       isAnimatedSwipe,
+      isDisabled,
       sliderWidth,
       slidesToShow,
       slidePosition,
@@ -633,24 +650,26 @@ class Slider extends React.Component {
     let shift;
 
     if (this.touchPositionStart && slidesToShow !== this.initSlides.length) {
-      if (evt.type === `mousemove`) {
-        shift = {
-          x: this.touchPositionCurrent.x - evt.clientX,
-          y: this.touchPositionCurrent.y - evt.clientY,
-        };
-        this.touchPositionCurrent = {
-          x: evt.clientX,
-          y: evt.clientY,
-        };
-      } else {
-        shift = {
-          x: this.touchPositionCurrent.x - evt.changedTouches[0].clientX,
-          y: this.touchPositionCurrent.y - evt.changedTouches[0].clientY,
-        };
-        this.touchPositionCurrent = {
-          x: evt.changedTouches[0].clientX,
-          y: evt.changedTouches[0].clientY,
-        };
+      if (!isDisabled) {
+        if (evt.type === `mousemove`) {
+          shift = {
+            x: this.touchPositionCurrent.x - evt.clientX,
+            y: this.touchPositionCurrent.y - evt.clientY,
+          };
+          this.touchPositionCurrent = {
+            x: evt.clientX,
+            y: evt.clientY,
+          };
+        } else {
+          shift = {
+            x: this.touchPositionCurrent.x - evt.changedTouches[0].clientX,
+            y: this.touchPositionCurrent.y - evt.changedTouches[0].clientY,
+          };
+          this.touchPositionCurrent = {
+            x: evt.changedTouches[0].clientX,
+            y: evt.changedTouches[0].clientY,
+          };
+        }
       }
 
       if (isAnimatedSwipe) {
@@ -664,8 +683,8 @@ class Slider extends React.Component {
   }
 
   onTouchEnd(evt) {
-    if (this.touchTimeStart) {
-      this.touchTimeEnd = evt.timeStamp;
+    if (this.touchPositionStart) {
+      // this.touchTimeEnd = evt.timeStamp;
       this.checkAction(evt);
       this.touchPositionStart = null;
       this.touchPositionCurrent = null;
@@ -687,6 +706,7 @@ class Slider extends React.Component {
   render() {
     const {
       activeSlide,
+      animationTime,
       isCaption,
       isDisabled,
       isDragging,
@@ -705,12 +725,14 @@ class Slider extends React.Component {
     return (
       <main>
         {this.demoMode ? <section className="slider-settings">
-          <label htmlFor="wrange">Width:
+          <label htmlFor="wrange">
+            <span className="label-title">Width</span>
             <input
               id="wrange"
               type="range"
               min="320"
               max="1920"
+              name="wrange"
               value={this.state.sliderWidth}
               ref={this.widthRef}
               onChange={(evt) => {
@@ -719,12 +741,14 @@ class Slider extends React.Component {
             />
             <span>{this.state.sliderWidth}</span>
           </label>
-          <label htmlFor="hrange">Height:
+          <label htmlFor="hrange">
+            <span className="label-title">Height</span>
             <input
               id="hrange"
               type="range"
               min="320"
               max="1080"
+              name="hrange"
               value={this.state.sliderHeight}
               ref={this.heightRef}
               onChange={(evt) => {
@@ -733,31 +757,107 @@ class Slider extends React.Component {
             />
             <span>{this.state.sliderHeight}</span>
           </label>
-          <label htmlFor="autoplay" className="label-autoplay">Autoplay:
+          <label htmlFor="animation-time">
+            <span className="label-title">Animation in ms</span>
             <input
-              id="autoplay"
+              id="animated"
+              type="range"
+              min="100"
+              max="3000"
+              name="animation-time"
+              value={this.state.animationTime}
+              ref={this.animationTimeRef}
+              onChange={(evt) => this.changeAnimationTime(evt.target.value)}
+            />
+            <span>{this.state.animationTime}</span>
+          </label>
+          <div className="slider-settings-autoplay">
+            <label
+              htmlFor="autoplay"
+              className="label-connected label-autoplay"
+            >
+              <span className="label-title">Autoplay</span>
+              <input
+                id="autoplay"
+                type="checkbox"
+                name="autoplay"
+                ref={this.autoplayRef}
+                onChange={this.toggleAutoplay}
+                defaultChecked={this.state.isAutoplay ? `checked` : false}
+              />
+            </label>
+            <label
+              htmlFor="autoplay-delay"
+              className="label-connected label-autoplay-delay"
+            >
+              <span className="label-title">in ms</span>
+              <input
+                id="autoplay-delay"
+                type={isMobile.any() ? `number` : `range`}
+                min="1000"
+                max="10000"
+                name="autoplay-delay"
+                value={this.state.autoplayDelay}
+                disabled={this.state.isAutoplay ? false : true}
+                style={{backgroundColor: !this.state.isAutoplay ? `#ccc` : ``}}
+                ref={this.autoplayDelayRef}
+                onChange={(evt) => {
+                  this.changeAutoplayDelay(evt.target.value);
+                }}
+              />
+              {isMobile.any() ? `` : <span>{this.state.autoplayDelay}</span>}
+            </label>
+          </div>
+          <div className="slider-settings-adaptive">
+            <label
+              htmlFor="adaptive"
+              className="label-connected label-adaptive"
+            >
+              <span className="label-title">Adaptive</span>
+              <input
+                id="adaptive"
+                type="checkbox"
+                name="adaptive"
+                ref={this.adaptiveRef}
+                onChange={this.toggleAdaptive}
+                defaultChecked={this.state.isAdaptive ? `checked` : false}
+              />
+            </label>
+            <label
+              htmlFor="slides-count"
+              className="label-connected label-slides-count"
+            >
+              <span className="label-title">slides</span>
+              <input
+                id="slides-count"
+                type={isMobile.any() ? `number` : `range`}
+                min="1"
+                max="3"
+                name="slides-count"
+                value={this.state.slidesToShow}
+                disabled={this.state.isAdaptive ? false : true}
+                style={{backgroundColor: !this.state.isAdaptive ? `#ccc` : ``}}
+                ref={this.slidesCountRef}
+                onChange={(evt) => {
+                  this.changeSlidesCount(evt.target.value > 3 ? 3 : evt.target.value);
+                }}
+              />
+              {isMobile.any() ? `` : <span>{this.state.slidesToShow}</span>}
+            </label>
+          </div>
+          <label htmlFor="animated-swipe">
+            <span className="label-title">Animated swipe</span>
+            <input
+              id="animated-swipe"
               type="checkbox"
-              name="autoplay"
-              ref={this.autoplayRef}
-              onChange={this.toggleAutoplay}
-              defaultChecked={this.state.isAutoplay ? `checked` : false}
+              name="animated-swipe"
+              ref={this.animatedSwipeRef}
+              onChange={this.toggleAnimatedSwipe}
+              defaultChecked={this.state.isAnimatedSwipe ? `checked` : false}
             />
           </label>
-          <label htmlFor="autoplay-delay" className="label-autoplay">Autoplay delay (ms):
-            <input
-              id="autoplay-delay"
-              type="number"
-              name="autoplayDelay"
-              value={this.state.autoplayDelay}
-              readOnly={this.state.isAutoplay ? false : true}
-              style={{backgroundColor: !this.state.isAutoplay ? `#ccc` : ``}}
-              ref={this.autoplayDelayRef}
-              onChange={(evt) => {
-                this.changeAutoplayDelay(evt.target.value);
-              }}
-            />
-          </label>
-          <label htmlFor="indicators">Indicators:
+          <label htmlFor="indicators">
+            <span className="label-title">Indicators</span>
             <input
               id="indicators"
               type="checkbox"
@@ -767,7 +867,8 @@ class Slider extends React.Component {
               defaultChecked={this.state.isIndicators ? `checked` : false}
             />
           </label>
-          <label htmlFor="arrows">Arrows:
+          <label htmlFor="arrows">
+            <span className="label-title">Arrows</span>
             <input
               id="arrows"
               type="checkbox"
@@ -777,7 +878,8 @@ class Slider extends React.Component {
               defaultChecked={this.state.isArrows ? `checked` : false}
             />
           </label>
-          <label htmlFor="caption">Caption:
+          <label htmlFor="caption">
+            <span className="label-title">Caption</span>
             <input
               id="caption"
               type="checkbox"
@@ -787,18 +889,8 @@ class Slider extends React.Component {
               defaultChecked={this.state.isCaption ? `checked` : false}
             />
           </label>
-          <label htmlFor="animated">Animated swipe:
-            <input
-              id="animated"
-              type="checkbox"
-              name="animated"
-              ref={this.animatedSwipeRef}
-              onChange={this.toggleAnimatedSwipe}
-              defaultChecked={this.state.isAnimatedSwipe ? `checked` : false}
-            />
-          </label>
-
-          <label htmlFor="infinite">Infinte:
+          <label htmlFor="infinite">
+            <span className="label-title">Infinte</span>
             <input
               id="infinite"
               type="checkbox"
@@ -806,32 +898,6 @@ class Slider extends React.Component {
               ref={this.infiniteRef}
               onChange={this.toggleInfinite}
               defaultChecked={this.state.isInfinite ? `checked` : false}
-            />
-          </label>
-          <label htmlFor="adaptive" className="label-adaptive">Adaptive:
-            <input
-              id="adaptive"
-              type="checkbox"
-              name="adaptive"
-              ref={this.adaptiveRef}
-              onChange={this.toggleAdaptive}
-              defaultChecked={this.state.isAdaptive ? `checked` : false}
-            />
-          </label>
-          <label htmlFor="slides-count" className="label-adaptive">Max slides (3):
-            <input
-              id="slides-count"
-              type="number"
-              min="1"
-              max="3"
-              name="slides-count"
-              value={this.state.slidesToShow}
-              readOnly={this.state.isAdaptive ? false : true}
-              style={{backgroundColor: !this.state.isAdaptive ? `#ccc` : ``}}
-              ref={this.slidesCountRef}
-              onChange={(evt) => {
-                this.changeSlidesCount(evt.target.value > 3 ? 3 : evt.target.value);
-              }}
             />
           </label>
         </section> : ``}
@@ -864,7 +930,7 @@ class Slider extends React.Component {
             style={{
               animationName: slideAnimation,
               animationTimingFunction: `ease`,
-              animationDuration: `0.75s`,
+              animationDuration: `${animationTime}ms`,
               left: `-${slidePosition}%`,
 
             }}
@@ -935,6 +1001,7 @@ Slider.propTypes = {
   arrows: PropTypes.bool,
   adaptiveSlides: PropTypes.bool,
   animatedSwipe: PropTypes.bool,
+  animationTime: PropTypes.number,
   slidesCount: PropTypes.number,
 };
 

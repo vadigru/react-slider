@@ -1,6 +1,5 @@
 export const AUTOPLAY_DELAY = 3000;
 export const INDICATORS_HEIGHT = 30;
-export const SENSITIVITY = 100;
 
 export const SlidePosition = {
   INITIAL: 100,
@@ -15,7 +14,7 @@ export const SlidesCount = {
 
 export const SwipeSensitivity = {
   MIN: 0,
-  MAX: 100,
+  MAX: 150,
 };
 
 export const WindowDimensions = {

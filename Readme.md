@@ -33,7 +33,7 @@ npm run build
 ### With background image, avatar image, translucent dark background, and caption:
 
 ```
-    <Slider props={props}>
+    <Slider props={...}>
       <div>
         <img className="background" src="" />
         <div className="content content--bg">
@@ -52,17 +52,19 @@ npm run build
 
 | property | type | default | description |
 |-|-|-|-|
+| **demoMode** | `boolean` | false | start application with visualized settings |
 | **width** | `string` | `` | if no props passed width will be 100%. example width={`1000`} heigth={`600`} |
 | **height** | `string` | `` | if no props passed height will be 100% |
 | **infinite** | `boolean` | false | simple slider or infinite |
 | **caption** | `boolean` | false | show/hide caption in the top of the slide |
 | **autoplay** | `boolean` | false | slider autoplay |
-| **autoplayDelay** | `number` | false | slider autoplay interval time in ms|
+| **autoplayDelay** | `number` | 3000 | slider autoplay interval time in ms|
 | **indicators** | `boolean` | false | show/hide slides indicators in the bottom of the slider|
 | **arrows** | `boolean` | false | show/hide navigation arrows |
-| **adaptiveSlides** | `boolean` | false | if true slider will change number of showed slides accordingly to the screen width. 1 for mobile, 2 for tablet, 3 for desktop. if false slider will always show number of slides based on slidesCount |
+| **adaptiveSlides** | `boolean` | false | if `true` is passed slider will change number of showed slides accordingly to the screen width. 1 for mobile, 2 for tablet, 3 for desktop. if false slider will always show number of slides based on slidesCount |
 | **animatedSwipe** | `boolean` | false | animate when dragging to next/previous slide |
-| **slidesCount** | `number` | 1 | if passed value exceeds the number of slides, the slider will show the maximum possible number of slides |
+| **animationTime** | `number` | 350 | speed of scrolling to next/previous slide |
+| **slidesCount** | `number` | 1 | if passed value exceeds the number of existing slides, the slider will show a maximum of 3 slides |
 
 ## Classnames
 

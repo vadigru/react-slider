@@ -43,3 +43,24 @@ export const getBackground = (arr) => {
   }
   return background;
 };
+
+export const isMobile = {
+  android: () => {
+    return navigator.userAgent.match(/android/i);
+  },
+  blackberry: () => {
+    return navigator.userAgent.match(/blackberry/i);
+  },
+  iOS: () => {
+    return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+  },
+  opera: () => {
+    return navigator.userAgent.match(/opera mini/i);
+  },
+  windows: () => {
+    return navigator.userAgent.match(/iemobile/i);
+  },
+  any: () => {
+    return (isMobile.android() || isMobile.blackberry() || isMobile.iOS() || isMobile.opera() || isMobile.windows());
+  }
+};
