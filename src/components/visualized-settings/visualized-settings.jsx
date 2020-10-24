@@ -86,14 +86,16 @@ class VisualizedSetting extends React.Component {
         <label htmlFor="animation-time">
           <span className="label-title">Animation in ms</span>
           <input
-            id="animated"
+            id="animation-time"
             type="range"
             min="100"
             max="3000"
             name="animation-time"
             value={animationTime}
             ref={this.animationTimeRef}
-            onChange={(evt) => changeAnimationTime(evt.target.value)}
+            onChange={(evt) => {
+              changeAnimationTime(evt.target.value);
+            }}
           />
           <span>{animationTime}</span>
         </label>

@@ -16,51 +16,63 @@ main {
   justify-content: center;
   align-items: stretch;
   order: 1;
-  & label {
-    white-space: nowrap;
-    margin: 5px;
-    padding: 5px 10px;
-    display: flex;
-    flex-direction: row;
-    flex-grow: 1;
-    justify-content: flex-start;
-    align-items: center;
-    border-radius: 5px;
-    background-color: $color-black-30;
-  }
-  & input[type=checkbox] {
-    transform: scale(1.2);
-    margin-left: 15px;
-  }
-  & input[type=number],
-  & input[type=number]{
-    width: 50px;
-    margin-left: 10px;
-    margin-right: 5px;
-    border: 0;
-    border-radius: 3px;
-  }
-  & input[type=range] {
-    width: 30%;
-    transform: scale(1.1);
-    margin-left: 15px;
-    margin-right: 10px;
-  }
-  & input[type=range][name=wrange],
-  & input[type=range][name=hrange] {
-    width: auto;
-  }
+}
 
-  & span {
-    display: block;
-    width: 30px;
-    text-align: right;
-    margin-right: 5px;
-  }
-  & span.label-title {
-    display: block;
-    width: auto;
-    margin-right: auto;
+.slider-settings label {
+  white-space: nowrap;
+  margin: 5px;
+  padding: 5px 10px;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 5px;
+  background-color: $color-black-30;
+  cursor: pointer;
+}
+.slider-settings input[type=checkbox] {
+  transform: scale(1.2);
+  margin-left: 15px;
+}
+
+.slider-settings input[type=number]{
+  width: 50px;
+  margin-left: 10px;
+  margin-right: 5px;
+  border: 0;
+  border-radius: 3px;
+}
+
+.slider-settings input[type=range] {
+  width: 30%;
+  transform: scale(1.1);
+  margin-left: 15px;
+  margin-right: 10px;
+}
+
+.slider-settings input[type=range][name=wrange],
+.slider-settings input[type=range][name=hrange] {
+  width: auto;
+}
+
+.slider-settings span {
+  display: block;
+  width: 30px;
+  text-align: right;
+  margin-right: 5px;
+}
+
+.slider-settings span.label-title {
+  display: block;
+  width: auto;
+  margin-right: auto;
+}
+
+.slider-settings label,
+.slider-settings input {
+  &:hover {
+    cursor: pointer;
   }
 }
 
@@ -96,24 +108,26 @@ label.label-slides-count {
   .slider {
     order: 1;
   }
+
   .slider-settings {
-  flex-direction: row;
+    flex-direction: row;
     flex-wrap: wrap;
     order: 0;
-    & label {
-      flex-grow: 0;
-    }
-    & input[type=range] {
-      width: auto;
-      transform: scale(1.1);
-      margin-left: 15px;
-      margin-right: 10px;
-    }
-    & span {
-      display: block;
-      width: 50px;
-      text-align: right;
-      margin-right: 5px;
-    }
+  }
+
+  .slider-settings label {
+    flex-grow: 0;
+  }
+  .slider-settings input[type=range] {
+    width: auto;
+    transform: scale(1.1);
+    margin-left: 15px;
+    margin-right: 10px;
+  }
+  .slider-settings span {
+    display: block;
+    width: 50px;
+    text-align: right;
+    margin-right: 5px;
   }
 }

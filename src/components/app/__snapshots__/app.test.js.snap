@@ -8,11 +8,16 @@ exports[`Should render App component 1`] = `
     <label
       htmlFor="wrange"
     >
-      Width:
+      <span
+        className="label-title"
+      >
+        Width
+      </span>
       <input
         id="wrange"
         max="1920"
         min="320"
+        name="wrange"
         onChange={[Function]}
         type="range"
         value={1024}
@@ -24,11 +29,16 @@ exports[`Should render App component 1`] = `
     <label
       htmlFor="hrange"
     >
-      Height:
+      <span
+        className="label-title"
+      >
+        Height
+      </span>
       <input
         id="hrange"
         max="1080"
         min="320"
+        name="hrange"
         onChange={[Function]}
         type="range"
         value={600}
@@ -38,41 +48,148 @@ exports[`Should render App component 1`] = `
       </span>
     </label>
     <label
-      className="label-autoplay"
-      htmlFor="autoplay"
+      htmlFor="animation-time"
     >
-      Autoplay:
+      <span
+        className="label-title"
+      >
+        Animation in ms
+      </span>
+      <input
+        id="animation-time"
+        max="3000"
+        min="100"
+        name="animation-time"
+        onChange={[Function]}
+        type="range"
+        value={350}
+      />
+      <span>
+        350
+      </span>
+    </label>
+    <div
+      className="slider-settings-autoplay"
+    >
+      <label
+        className="label-connected label-autoplay"
+        htmlFor="autoplay"
+      >
+        <span
+          className="label-title"
+        >
+          Autoplay
+        </span>
+        <input
+          defaultChecked={false}
+          id="autoplay"
+          name="autoplay"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </label>
+      <label
+        className="label-connected label-autoplay-delay"
+        htmlFor="autoplay-delay"
+      >
+        <span
+          className="label-title"
+        >
+          in ms
+        </span>
+        <input
+          disabled={true}
+          id="autoplay-delay"
+          max="10000"
+          min="1000"
+          name="autoplay-delay"
+          onChange={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#ccc",
+            }
+          }
+          type="range"
+          value={3000}
+        />
+        <span>
+          3000
+        </span>
+      </label>
+    </div>
+    <div
+      className="slider-settings-adaptive"
+    >
+      <label
+        className="label-connected label-adaptive"
+        htmlFor="adaptive"
+      >
+        <span
+          className="label-title"
+        >
+          Adaptive
+        </span>
+        <input
+          defaultChecked={false}
+          id="adaptive"
+          name="adaptive"
+          onChange={[Function]}
+          type="checkbox"
+        />
+      </label>
+      <label
+        className="label-connected label-slides-count"
+        htmlFor="slides-count"
+      >
+        <span
+          className="label-title"
+        >
+          slides
+        </span>
+        <input
+          disabled={true}
+          id="slides-count"
+          max="3"
+          min="1"
+          name="slides-count"
+          onChange={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#ccc",
+            }
+          }
+          type="range"
+          value={1}
+        />
+        <span>
+          1
+        </span>
+      </label>
+    </div>
+    <label
+      htmlFor="animated-swipe"
+    >
+      <span
+        className="label-title"
+      >
+        Animated swipe
+      </span>
       <input
         defaultChecked={false}
-        id="autoplay"
-        name="autoplay"
+        id="animated-swipe"
+        name="animated-swipe"
         onChange={[Function]}
         type="checkbox"
       />
     </label>
     <label
-      className="label-autoplay"
-      htmlFor="autoplay-delay"
-    >
-      Autoplay delay (ms):
-      <input
-        id="autoplay-delay"
-        name="autoplayDelay"
-        onChange={[Function]}
-        readOnly={true}
-        style={
-          Object {
-            "backgroundColor": "#ccc",
-          }
-        }
-        type="number"
-        value={3000}
-      />
-    </label>
-    <label
       htmlFor="indicators"
     >
-      Indicators:
+      <span
+        className="label-title"
+      >
+        Indicators
+      </span>
       <input
         defaultChecked={false}
         id="indicators"
@@ -84,7 +201,11 @@ exports[`Should render App component 1`] = `
     <label
       htmlFor="arrows"
     >
-      Arrows:
+      <span
+        className="label-title"
+      >
+        Arrows
+      </span>
       <input
         defaultChecked={false}
         id="arrows"
@@ -96,7 +217,11 @@ exports[`Should render App component 1`] = `
     <label
       htmlFor="caption"
     >
-      Caption:
+      <span
+        className="label-title"
+      >
+        Caption
+      </span>
       <input
         defaultChecked={false}
         id="caption"
@@ -106,61 +231,19 @@ exports[`Should render App component 1`] = `
       />
     </label>
     <label
-      htmlFor="animated"
-    >
-      Animated swipe:
-      <input
-        defaultChecked={false}
-        id="animated"
-        name="animated"
-        onChange={[Function]}
-        type="checkbox"
-      />
-    </label>
-    <label
       htmlFor="infinite"
     >
-      Infinte:
+      <span
+        className="label-title"
+      >
+        Infinte
+      </span>
       <input
         defaultChecked={false}
         id="infinite"
         name="infinite"
         onChange={[Function]}
         type="checkbox"
-      />
-    </label>
-    <label
-      className="label-adaptive"
-      htmlFor="adaptive"
-    >
-      Adaptive:
-      <input
-        defaultChecked={false}
-        id="adaptive"
-        name="adaptive"
-        onChange={[Function]}
-        type="checkbox"
-      />
-    </label>
-    <label
-      className="label-adaptive"
-      htmlFor="slides-count"
-    >
-      Max slides (3):
-      <input
-        id="slides-count"
-        max="3"
-        min="1"
-        name="slides-count"
-        onChange={[Function]}
-        readOnly={true}
-        style={
-          Object {
-            "backgroundColor": "#ccc",
-          }
-        }
-        type="number"
-        value={1}
       />
     </label>
   </section>
@@ -187,7 +270,7 @@ exports[`Should render App component 1`] = `
       onTouchStart={[Function]}
       style={
         Object {
-          "animationDuration": "0.75s",
+          "animationDuration": "350ms",
           "animationName": "",
           "animationTimingFunction": "ease",
           "left": "-100%",
@@ -230,7 +313,7 @@ exports[`Should render App component 1`] = `
         }
       >
         <h2>
-          FIRST SLIDE 1
+          FIRST SLIDE
         </h2>
         <p>
           This is the most simple use.
@@ -390,7 +473,7 @@ exports[`Should render App component 1`] = `
         }
       >
         <h2>
-          FIRST SLIDE 1
+          FIRST SLIDE
         </h2>
         <p>
           This is the most simple use.

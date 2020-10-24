@@ -26,7 +26,7 @@ exports[`Should render Slider component 1`] = `
       onTouchStart={[Function]}
       style={
         Object {
-          "animationDuration": "0.75s",
+          "animationDuration": "350ms",
           "animationName": "",
           "animationTimingFunction": "ease",
           "left": "-0%",

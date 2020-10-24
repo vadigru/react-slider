@@ -15,7 +15,7 @@ const App = () => {
       // arrows={true}
       // adaptiveSlides={true}
       // animatedSwipe={true}
-      animationTime={350}
+      // animationTime={350}
       // slidesCount={1}
     >
       <div>
