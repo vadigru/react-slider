@@ -46,8 +46,8 @@ class Slider extends React.Component {
       isDragging: false,
       slideAnimation: ``,
       slidePosition: SlidePosition.INITIAL,
-      sliderWidth: this.props.width || 0,
-      sliderHeight: this.props.height || 0,
+      sliderWidth: this.props.width || window.innerWidth,
+      sliderHeight: this.props.height || window.innerHeight,
       slidesToShow: this.slidesCount,
     };
 
@@ -267,9 +267,6 @@ class Slider extends React.Component {
       }
     }
     if (isAutoplay && isInfinite) {
-      this.setState({
-        isReverse: false
-      });
       this.resetAutoplayNextInterval();
     }
   }
@@ -440,6 +437,13 @@ class Slider extends React.Component {
         }
       }
 
+      if (isAutoplay && isInfinite) {
+        this.setState({
+          isReverse: false
+        });
+        a = startAnimationPosition;
+      }
+
       // navigation arrows click handle -----------------------------------
       if ((evt && evt.currentTarget.id === `arrow-next`) ||
           (this.positionDiff && this.positionDiff.x > SwipeSensitivity.MIN) ||
@@ -540,7 +544,6 @@ class Slider extends React.Component {
       slideAnimation
     });
   }
-
 
   // handle touchevents and mouseevents --------------------------------------
   checkAction(evt) {
@@ -705,7 +708,7 @@ class Slider extends React.Component {
     const slideData = getSlideData(this.modifiedSlides);
 
     return (
-      <main>
+      <div className="slider-wrapper">
         {this.demoMode ?
           <VisualizedSettings
             setWidth={this.setWidth}
@@ -792,9 +795,7 @@ class Slider extends React.Component {
                 </div>
               );
             })}
-
           </div>
-
           {!isArrows || this.initSlides.length <= slidesToShow || slidesToShow === this.initSlides.length ? `` :
             <Arrows
               activeSlide={activeSlide}
@@ -815,7 +816,7 @@ class Slider extends React.Component {
               onIndicatorDotClick={this.handleSlideIndicatorClick}
             />}
         </section>
-      </main>
+      </div>
     );
   }
 }

@@ -24,9 +24,6 @@ export const getBackground = (arr) => {
   switch (true) {
     case Array.isArray(arr):
       arr.some((it) => {
-        // if (typeof it !== `object`) {
-        //   return;
-        // } else
         if (it.props.src) {
           background = it.props.src;
         }

@@ -83,8 +83,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  z-index: 999;
+  z-index: 99;
 }
 
 .content-btn {
@@ -130,7 +129,7 @@
 }
 
 .image {
-  max-width: 100%;
+  width: 80%;
 }
 
 .caption-btn {

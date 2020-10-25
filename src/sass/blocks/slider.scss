@@ -1,3 +1,11 @@
+.slider-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
 .slider {
   margin: 15px auto;
   order: 0;

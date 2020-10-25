@@ -16,7 +16,18 @@ const touchMoveSpy = jest.spyOn(Slider.prototype, `onTouchMove`);
 const touchEndSpy = jest.spyOn(Slider.prototype, `onTouchEnd`);
 
 const setUp = () => mount(
-    <Slider>
+    <Slider
+      demoMode={true}
+      caption={true}
+      autoplay={true}
+      autoplayDelay={5000}
+      indicators={true}
+      arrows={true}
+      adaptiveSlides={true}
+      animatedSwipe={true}
+      animationTime={350}
+      slidesCount={1}
+    >
       <div>
         <h2>slide 1</h2>
       </div>
@@ -82,23 +93,4 @@ describe(`Mouse and touch events be fired`, () => {
     slide.simulate(`touchend`);
     expect(touchEndSpy).toHaveBeenCalled();
   });
-
-  // it(`Should mouseover be fired`, () => {
-  //   const onMouseOverPauseAutoplay = jest.fn();
-  //   const autoplay = true;
-  //   // const spy = jest.spyOn(Slider.prototype, `onMouseOverPauseAutoplay`);
-  //   const slider = component.find(`.slider`);
-  //   slider.simulate(`mouseover`);
-  //   if (autoplay) {
-  //     expect(onMouseOverPauseAutoplay).toHaveBeenCalled();
-  //   }
-  // });
-
-  // it(`Should mouseout be fired`, () => {
-  //   const spy = jest.spyOn(Slider.prototype, `onMouseOutResumeAutoplay`);
-  //   const slider = component.find(`.slider`);
-
-  //   slider.simulate(`mouseout`);
-  //   expect(spy).toHaveBeenCalled();
-  // });
 });

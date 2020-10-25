@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Should render App component 1`] = `
-<main>
+<div
+  className="slider-wrapper"
+>
   <section
     className="slider-settings"
   >
@@ -483,5 +485,5 @@ exports[`Should render App component 1`] = `
     
     
   </section>
-</main>
+</div>
 `;
