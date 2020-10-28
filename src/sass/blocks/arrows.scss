@@ -2,12 +2,11 @@
   width: 50px;
   height: 50px;
   border: 0;
-  padding: 0;
   background-color: transparent;
   position: absolute;
   cursor: pointer;
   z-index: 999;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.15s ease-in-out;
   &:focus {
     outline: none;
   }

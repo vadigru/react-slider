@@ -256,8 +256,8 @@ VisualizedSetting.propTypes = {
   isAnimatedSwipe: PropTypes.bool.isRequired,
   isCaption: PropTypes.bool.isRequired,
   slidesToShow: PropTypes.number.isRequired,
-  sliderWidth: PropTypes.number.isRequired,
-  sliderHeight: PropTypes.number.isRequired,
+  sliderWidth: PropTypes.number,
+  sliderHeight: PropTypes.number,
 };
 
 export default VisualizedSetting;

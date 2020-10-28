@@ -43,10 +43,10 @@ exports[`Should render App component 1`] = `
         name="hrange"
         onChange={[Function]}
         type="range"
-        value={600}
+        value={768}
       />
       <span>
-        600
+        768
       </span>
     </label>
     <label
@@ -284,7 +284,7 @@ exports[`Should render App component 1`] = `
         id={0}
         style={
           Object {
-            "height": 600,
+            "height": 768,
             "minWidth": "100%",
             "visibility": "hidden",
           }
@@ -309,7 +309,7 @@ exports[`Should render App component 1`] = `
         style={
           Object {
             "backgroundImage": "url()",
-            "height": 600,
+            "height": 768,
             "minWidth": "100%",
           }
         }
@@ -327,7 +327,7 @@ exports[`Should render App component 1`] = `
         style={
           Object {
             "backgroundImage": "url(img/blackhole.jpg)",
-            "height": 600,
+            "height": 768,
             "minWidth": "100%",
           }
         }
@@ -354,7 +354,7 @@ exports[`Should render App component 1`] = `
         style={
           Object {
             "backgroundImage": "url()",
-            "height": 600,
+            "height": 768,
             "minWidth": "100%",
           }
         }
@@ -378,7 +378,7 @@ exports[`Should render App component 1`] = `
         style={
           Object {
             "backgroundImage": "url(img/iron-man-home.jpg)",
-            "height": 600,
+            "height": 768,
             "minWidth": "100%",
           }
         }
@@ -415,7 +415,7 @@ exports[`Should render App component 1`] = `
         style={
           Object {
             "backgroundImage": "url()",
-            "height": 600,
+            "height": 768,
             "minWidth": "100%",
           }
         }
@@ -445,7 +445,7 @@ exports[`Should render App component 1`] = `
         style={
           Object {
             "backgroundImage": "url(img/elbrus.jpg)",
-            "height": 600,
+            "height": 768,
             "minWidth": "100%",
           }
         }
@@ -468,7 +468,7 @@ exports[`Should render App component 1`] = `
         id={7}
         style={
           Object {
-            "height": 600,
+            "height": 768,
             "minWidth": "100%",
             "visibility": "hidden",
           }

@@ -1,10 +1,21 @@
-# react-common-slider
+# react-slider
 
-A Slider/Carousel component for React. Designed and developed by [Vadim Grunenko](https://github.com/vadigru)
+A Slider app written on React. Designed and developed by [Vadim Grunenko](https://github.com/vadigru)
 
 [Demo](https://react-common-slider.vercel.app/)
+## Features
+- Work for mobile and desktop devices
+- Support swipes
+- Work for any HTML content
+- Supports multiple slides on screen
+- Supports infinite option
+- Supports scrolling to a selected slide
 
 # How to start a project locally:
+Download or clone:
+```sh
+git@github.com:vadigru/react-slider.git
+```
 Install project on local computer (node.js required):
 ```sh
 npm install
@@ -21,22 +32,28 @@ npm run build
 # Usage
 ### Most simple use:
 
-```
-      <Slider props={...}>
-        <div>
-          <h2>Some title</h2>
-          <p>Some text</p>
-        </div>
-      </Slider>
+```jsx
+const App = () => {
+  return (
+    <Slider>
+      <div>
+        <h2>FIRST SLIDE</h2>
+        <p>This is the most simple use.</p>
+      </div>
+    </Slider>
+  );
+};
 ```
 
-### With background image, avatar image, translucent dark background, and caption:
+### With background image, avatar image, semi-transparent dark background and caption:
 
-```
-    <Slider props={...}>
+```jsx
+const App = () => {
+  return (
+    <Slider>
       <div>
         <img className="background" src="" />
-        <div className="content content--bg">
+        <div className="content--bg">
           <img className="avatar" src="" alt="" />
           <h4>Some title</h4>
           <p>Some text</p>
@@ -46,6 +63,8 @@ npm run build
         </div>
       </div>
     </Slider>
+  );
+};
 ```
 
 ## Properties
@@ -53,39 +72,34 @@ npm run build
 | property | type | default | description |
 |-|-|-|-|
 | **demoMode** | `boolean` | false | start application with visualized settings |
-| **width** | `string` | `` | if no props passed width will be 100%. example width={`1000`} heigth={`600`} |
-| **height** | `string` | `` | if no props passed height will be 100% |
-| **infinite** | `boolean` | false | simple slider or infinite |
+| **width** | `number` | window.innerWidth | if no prop is passed, slider will take full width of the screen |
+| **height** | `number` | window.innerHeight | if no prop is passed, slider will take full height of the screen |
+| **infinite** | `boolean` | false | simple or infinite slider |
 | **caption** | `boolean` | false | show/hide caption in the top of the slide |
 | **autoplay** | `boolean` | false | slider autoplay |
 | **autoplayDelay** | `number` | 3000 | slider autoplay interval time in ms|
 | **indicators** | `boolean` | false | show/hide slides indicators in the bottom of the slider|
 | **arrows** | `boolean` | false | show/hide navigation arrows |
-| **adaptiveSlides** | `boolean` | false | if `true` is passed slider will change number of showed slides accordingly to the screen width. 1 for mobile, 2 for tablet, 3 for desktop. if false slider will always show number of slides based on slidesCount |
-| **animatedSwipe** | `boolean` | false | animate when dragging to next/previous slide |
-| **animationTime** | `number` | 350 | speed of scrolling to next/previous slide |
-| **slidesCount** | `number` | 1 | if passed value exceeds the number of existing slides, the slider will show a maximum of 3 slides |
+| **adaptiveSlides** | `boolean` | false | if `true` is passed slider will change number of showed slides on screen resize  |
+| **animatedSwipe** | `boolean` | false | animate when dragging to a next/previous slide |
+| **animationTime** | `number` | 350 | speed of scrolling to a next/previous slide |
+| **slidesCount** | `number` | 1 | number of displayed slides. maximum number of displayed slides is limited to a three* |
 
-## Classnames
+> *if `adaptiveSlides` is on, the number of displayed slides will be changed accordingly to the screen width and value passed in `slidesCount`.
+> - if 1 is passed slider will show 1 for all screen sizes
+> - if 2 is passed slider will show 1 for a mobile, 2 for both a tablet and desktop
+> - if 3 is passed slider will show to 1 for a mobile, 2 for a tablet, 3 for a desktop
+
+## Class names that can be used when adding a new slide
 
 | class | description |
 |-|-|
-| **slider** | element wrapping the whole Slider |
-| **slides** | element wrapping all slides |
-|-|-|
-| **slide** | apllied to every child item |
-| **slide--no-caption** | apllied to every child item if captions are turned off |
-| **avatar** | add small rounded image |
-| **image** | add image to slide |
-| **background** | add image as slide background |
-| **content--bg** | add main slide content with 50% translucent dark background |
-| **content--no-bg** | add main slide content without background |
-| **caption** | add caption for slide |
-| **caption--forced** | will show slide caption even if all captions are turned off |
-|-|-|
-| **arrows** | element wrapping navigation buttons |
-| **arrow-prev** | previous button |
-| **arrow-next** | next button |
-|-|-|
-| **indicators** | element wrapping all slide indicators |
-| **indicator** | indicator element |
+| **avatar** | add a small rounded image |
+| **background** | add image as slide background. image used for background should not be wrapped to any tag |
+| **caption** | add caption for a slide |
+| **caption-btn** | add link as caption for a slide |
+| **caption--forced** | will show a slide caption even if all captions are turned off |
+| **content--bg-dark** | add a main slide content with 50% semi-transparent dark background and white text. content width 80% |
+| **content--bg-light** | add a main slide content with 50% semi-transparent dark background and black text. content width 80% |
+| **content-btn** | add a link as a grey button |
+| **image** | add an image to slide |

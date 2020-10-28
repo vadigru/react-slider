@@ -1,6 +1,15 @@
 import {WindowDimensions, SlidesCount} from "../const.js";
 
-export const getSlidesCount = (count = 1, width) => {
+export const getSlidesCount = (count = 1) => {
+  switch (true) {
+    case count > SlidesCount.DESKTOP:
+      return SlidesCount.DESKTOP;
+    default:
+      return count;
+  }
+};
+
+export const getAdaptiveSlidesCount = (count = 1, width) => {
   switch (true) {
     case count === 0:
       return SlidesCount.MOBILE;

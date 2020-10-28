@@ -7,10 +7,15 @@
 }
 
 .slider {
-  margin: 15px auto;
   order: 0;
-  padding: 0;
   position: relative;
   overflow: hidden;
   outline: 2px dashed $color-black-10;
+  background-color: $color-black-05;
+}
+
+@media (min-width: $tablet-width) {
+  .slider {
+    margin-top: 15px;
+  }
 }

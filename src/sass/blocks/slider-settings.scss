@@ -1,7 +1,7 @@
 .slider-settings {
   font-size: 14px;
-  margin: 0;
-  padding: 0;
+  width: 90%;
+  margin: 15px 0 15px;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -20,7 +20,7 @@
   justify-content: flex-start;
   align-items: center;
   border-radius: 5px;
-  background-color: $color-black-30;
+  background-color: $color-silver;
   cursor: pointer;
 }
 .slider-settings input[type=checkbox] {
@@ -37,15 +37,10 @@
 }
 
 .slider-settings input[type=range] {
-  width: 30%;
+  width: 50%;
   transform: scale(1.1);
   margin-left: 15px;
   margin-right: 10px;
-}
-
-.slider-settings input[type=range][name=wrange],
-.slider-settings input[type=range][name=hrange] {
-  width: auto;
 }
 
 .slider-settings span {
@@ -66,10 +61,6 @@
   &:hover {
     cursor: pointer;
   }
-}
-
-label.label-connected {
-  margin: 0;
 }
 
 label.label-autoplay,
