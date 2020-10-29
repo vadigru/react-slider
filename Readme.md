@@ -2,11 +2,12 @@
 
 A Slider app written on React. Designed and developed by [Vadim Grunenko](https://github.com/vadigru)
 
-[Demo](https://react-common-slider.vercel.app/)
+- [Demo](https://react-slider-six.vercel.app)
+
 ## Features
 - Work for mobile and desktop devices
-- Support swipes
 - Work for any HTML content
+- Supports swipes
 - Supports multiple slides on screen
 - Supports infinite option
 - Supports scrolling to a selected slide

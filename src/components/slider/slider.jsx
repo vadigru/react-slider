@@ -32,6 +32,7 @@ class Slider extends React.Component {
     this.styleSheet = document.styleSheets[0];
     this.timer = null;
     this.demoMode = this.props.demoMode || false;
+    this.winWidth = null;
 
     this.state = {
       activeSlide: this.slidesCount,
@@ -65,6 +66,7 @@ class Slider extends React.Component {
     this.onMouseOverPauseAutoplay = this.onMouseOverPauseAutoplay.bind(this);
     this.onMouseOutResumeAutoplay = this.onMouseOutResumeAutoplay.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    this.checkWidth = this.checkWidth.bind(this);
 
 
     // bindings for visualized settings ---------------------------------------
@@ -161,7 +163,7 @@ class Slider extends React.Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener(`resize`, this.updateWindowDimensions);
+    window.removeEventListener(`resize`, this.checkWidth);
     this.slideRef.removeEventListener(`mouseleave`, (evt) => this.leaveSlideZone(evt));
     clearInterval(this.timer);
     this.timer = null;
@@ -212,13 +214,17 @@ class Slider extends React.Component {
     }
   }
 
+  checkWidth() {
+    if (this.winWidth !== window.innerWidth) {
+      this.updateWindowDimensions();
+    }
+  }
+
   setupSlider() {
     this.buildSlides(this.state.slidesToShow);
     this.buildIndicators(this.state.slidesToShow);
     this.updateWindowDimensions();
-    if (!isMobile.any()) {
-      window.addEventListener(`resize`, this.updateWindowDimensions);
-    }
+    window.addEventListener(`resize`, this.checkWidth);
     if (this.slideRef) {
       this.slideRef.addEventListener(`mouseleave`, (evt) => this.leaveSlideZone(evt));
     }
@@ -237,6 +243,7 @@ class Slider extends React.Component {
       sliderWidth: updatedWidth,
       sliderHeight: updatedHeight,
     });
+    this.winWidth = window.innerWidth;
     this.buildSlides(updatedSlidesToShow);
     this.buildIndicators(updatedSlidesToShow);
   }
