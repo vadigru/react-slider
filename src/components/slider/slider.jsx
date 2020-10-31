@@ -7,12 +7,10 @@ import {
   getSlidesCount,
   getAdaptiveSlidesCount,
   getSlideData,
-  getBackground,
-  isMobile
+  getBackground
 } from "../../utils/common.js";
 import {
   AUTOPLAY_DELAY,
-  INDICATORS_HEIGHT,
   SwipeSensitivity,
   SlidePosition,
 } from "../../const.js";
@@ -53,6 +51,7 @@ class Slider extends React.Component {
       sliderWidth: this.props.width || window.innerWidth,
       sliderHeight: this.props.height || window.innerHeight,
       slidesToShow: this.slidesCount,
+      ratio: this.props.width / this.props.height || 1,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -86,10 +85,16 @@ class Slider extends React.Component {
 
   // togglers for isualised settings -----------------------------------------
   setWidth(value) {
-    this.setState({sliderWidth: parseInt(value, 10)});
+    this.setState({
+      sliderWidth: parseInt(value, 10),
+      ratio: parseInt(value, 10) / this.state.sliderHeight
+    });
   }
   setHeight(value) {
-    this.setState({sliderHeight: parseInt(value, 10)});
+    this.setState({
+      sliderHeight: parseInt(value, 10),
+      ratio: this.state.sliderWidth / parseInt(value, 10)
+    });
   }
   toggleInfinite() {
     this.setState({isInfinite: !this.state.isInfinite});
@@ -230,19 +235,61 @@ class Slider extends React.Component {
     }
   }
 
-  updateWindowDimensions() {
+  updateWidth() {
+    const {width = window.innerWidth} = this.props;
+    let newWidth = window.innerWidth;
+
+    if (this.winWidth > window.innerWidth) {
+      if (this.state.sliderWidth <= window.innerWidth) {
+        newWidth = this.state.sliderWidth;
+      } else if (window.innerWidth <= width) {
+        newWidth = window.innerWidth;
+      }
+    }
+    if (this.winWidth < window.innerWidth) {
+      if (window.innerWidth < width) {
+        newWidth = window.innerWidth;
+      } else {
+        newWidth = width;
+      }
+    }
+    return newWidth;
+  }
+
+  updateHeight(updatedWidth) {
     const {width, height} = this.props;
+    let newHeight;
+
+    if (!height) {
+      newHeight = window.innerHeight;
+    } else {
+      newHeight = updatedWidth / this.state.ratio;
+      if (newHeight < height) {
+        newHeight = newHeight;
+      }
+      if (newHeight > height) {
+        newHeight = height;
+      }
+      if (newHeight === height && this.state.sliderWidth === width) {
+        this.setState({ratio: width / height});
+      }
+    }
+    return newHeight;
+  }
+
+  updateWindowDimensions() {
     const {isAdaptive, slidesToShow} = this.state;
-    const updatedWidth = width < window.innerWidth ? width : window.innerWidth;
-    const updatedHeight = height < window.innerHeight ? height : window.innerHeight;
+    const updatedWidth = this.updateWidth();
+    const updatedHeight = this.updateHeight(updatedWidth);
     const updatedSlidesToShow = isAdaptive ? getAdaptiveSlidesCount(this.slidesCount, window.innerWidth) : slidesToShow;
 
     this.setState({
       isReverse: false,
       slidesToShow: updatedSlidesToShow,
       sliderWidth: updatedWidth,
-      sliderHeight: updatedHeight,
+      sliderHeight: updatedHeight
     });
+
     this.winWidth = window.innerWidth;
     this.buildSlides(updatedSlidesToShow);
     this.buildIndicators(updatedSlidesToShow);
@@ -748,6 +795,7 @@ class Slider extends React.Component {
           style={{
             maxWidth: sliderWidth,
             width: `100%`,
+            height: sliderHeight,
           }}
           onMouseOver={this.onMouseOverPauseAutoplay}
           onMouseOut={this.onMouseOutResumeAutoplay}
@@ -780,12 +828,10 @@ class Slider extends React.Component {
             {slideData.map((it, index) => {
               let style = {
                 minWidth: `${100 / slidesToShow}%`,
-                height: isIndicators ? sliderHeight - INDICATORS_HEIGHT : sliderHeight,
                 backgroundImage: `url(${getBackground(it)})`,
               };
               let styleHidden = {
                 minWidth: `${100 / slidesToShow}%`,
-                height: isIndicators ? sliderHeight - INDICATORS_HEIGHT : sliderHeight,
                 visibility: `hidden`
               };
               return (

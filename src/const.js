@@ -1,5 +1,4 @@
 export const AUTOPLAY_DELAY = 3000;
-export const INDICATORS_HEIGHT = 30;
 
 export const SlidePosition = {
   INITIAL: 100,

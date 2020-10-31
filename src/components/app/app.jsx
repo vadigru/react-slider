@@ -26,7 +26,7 @@ const App = () => {
       <div>
         <img className="background" src="img/blackhole.jpg" alt="Black Hole"/>
         <div className="caption--forced">
-          <a className="caption-btn" href="https://www.space.com/where-do-black-holes-lead.html">Where Do Black Holes Lead?</a>
+          <a className="caption-link" href="https://www.space.com/where-do-black-holes-lead.html">Where Do Black Holes Lead?</a>
         </div>
       </div>
 

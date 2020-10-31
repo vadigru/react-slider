@@ -5,12 +5,12 @@ A Slider app written on React. Designed and developed by [Vadim Grunenko](https:
 - [Demo](https://react-slider-six.vercel.app)
 
 ## Features
-- Work for mobile and desktop devices
-- Work for any HTML content
-- Supports swipes
-- Supports multiple slides on screen
-- Supports infinite option
-- Supports scrolling to a selected slide
+- for mobile and desktop
+- any HTML content
+- swipes
+- multiple slides on screen
+- infinite option
+- scrolling to a selected slide
 
 # How to start a project locally:
 Download or clone:
@@ -97,10 +97,10 @@ const App = () => {
 |-|-|
 | **avatar** | add a small rounded image |
 | **background** | add image as slide background. image used for background should not be wrapped to any tag |
-| **caption** | add caption for a slide |
-| **caption-btn** | add link as caption for a slide |
+| **caption** | add caption for a slide in the top of the slide |
+| **caption-link** | add link as caption for a slide |
 | **caption--forced** | will show a slide caption even if all captions are turned off |
-| **content--bg-dark** | add a main slide content with 50% semi-transparent dark background and white text. content width 80% |
-| **content--bg-light** | add a main slide content with 50% semi-transparent dark background and black text. content width 80% |
+| **content--bg-dark** | add a main slide content with 50% semi-transparent dark background and white text |
+| **content--bg-light** | add a main slide content with 50% semi-transparent dark background and black text |
 | **content-btn** | add a link as a grey button |
 | **image** | add an image to slide |

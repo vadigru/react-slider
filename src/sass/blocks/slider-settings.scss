@@ -1,12 +1,8 @@
 .slider-settings {
   font-size: 14px;
-  width: 90%;
   margin: 15px 0 15px;
   display: flex;
   flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: stretch;
   order: 1;
 }
 
@@ -37,7 +33,6 @@
 }
 
 .slider-settings input[type=range] {
-  width: 50%;
   transform: scale(1.1);
   margin-left: 15px;
   margin-right: 10px;
@@ -98,6 +93,7 @@ label.label-slides-count {
 
   .slider-settings {
     flex-direction: row;
+    justify-content: center;
     flex-wrap: wrap;
     order: 0;
   }
@@ -105,12 +101,7 @@ label.label-slides-count {
   .slider-settings label {
     flex-grow: 0;
   }
-  .slider-settings input[type=range] {
-    width: auto;
-    transform: scale(1.1);
-    margin-left: 15px;
-    margin-right: 10px;
-  }
+  
   .slider-settings span {
     display: block;
     width: 50px;

@@ -6,7 +6,6 @@ class VisualizedSetting extends React.Component {
   constructor(props) {
     super(props);
 
-    // refs for visualized settings -------------------------------------------
     this.widthRef = React.createRef();
     this.heigthRef = React.createRef();
     this.infiniteRef = React.createRef();
@@ -81,7 +80,7 @@ class VisualizedSetting extends React.Component {
               setHeight(evt.target.value);
             }}
           />
-          <span>{sliderHeight}</span>
+          <span>{(sliderHeight).toFixed(0)}</span>
         </label>
         <label htmlFor="animation-time">
           <span className="label-title">Animation in ms</span>
