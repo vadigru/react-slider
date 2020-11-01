@@ -1,6 +1,7 @@
 .slider-settings {
   font-size: 14px;
   margin: 15px 0 15px;
+  max-width: $desktop-width;
   display: flex;
   flex-direction: column;
   order: 1;
@@ -12,43 +13,10 @@
   padding: 5px 10px;
   display: flex;
   flex-direction: row;
-  flex-grow: 1;
   justify-content: flex-start;
   align-items: center;
   border-radius: 5px;
-  background-color: $color-silver;
-  cursor: pointer;
-}
-.slider-settings input[type=checkbox] {
-  transform: scale(1.2);
-  margin-left: 15px;
-}
-
-.slider-settings input[type=number]{
-  width: 50px;
-  margin-left: 10px;
-  margin-right: 5px;
-  border: 0;
-  border-radius: 3px;
-}
-
-.slider-settings input[type=range] {
-  transform: scale(1.1);
-  margin-left: 15px;
-  margin-right: 10px;
-}
-
-.slider-settings span {
-  display: block;
-  width: 30px;
-  text-align: right;
-  margin-right: 5px;
-}
-
-.slider-settings span.label-title {
-  display: block;
-  width: auto;
-  margin-right: auto;
+  background-color: $color-skyblue;
 }
 
 .slider-settings label,
@@ -58,32 +26,45 @@
   }
 }
 
-label.label-connected {
-  margin: 0;
+.slider-settings input[type=checkbox] {
+  &:not(:checked) + label {
+    color: $color-dimgray;
+    background-color: $color-silver;
+  }
+  &:checked + label {
+    background-color: $color-skyblue;
+  }
 }
 
-label.label-autoplay,
-label.label-adaptive {
-  margin-top: 5px;
-  margin-bottom: 5px;
+.slider-settings input[type=number]{
+  font-size: 14px;
+  padding: 3px;
+  text-align: right;
+  color: $color-grey;
+  width: 40px;
+  margin-left: 10px;
+  border: 0;
+  border-radius: 2.5px;
+}
+
+.slider-settings input[type=range] {
+  width: 100px;
   margin-left: 5px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  margin-right: 10px;
 }
 
-label.label-autoplay-delay,
-label.label-slides-count {
-  margin-top: 5px;
-  margin-right: 5px;
-  margin-bottom: 5px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+.slider-settings span {
+  display: block;
 }
 
-.slider-settings-adaptive,
-.slider-settings-autoplay {
-  display: flex;
-  flex-wrap: nowrap;
+.slider-settings span.label-text {
+  width: auto;
+  margin-right: auto;
+}
+
+.slider-settings span.label-text-output {
+  width: 40px;
+  text-align: right;
 }
 
 @media (min-width: $tablet-width) {
@@ -96,16 +77,5 @@ label.label-slides-count {
     justify-content: center;
     flex-wrap: wrap;
     order: 0;
-  }
-
-  .slider-settings label {
-    flex-grow: 0;
-  }
-  
-  .slider-settings span {
-    display: block;
-    width: 50px;
-    text-align: right;
-    margin-right: 5px;
   }
 }

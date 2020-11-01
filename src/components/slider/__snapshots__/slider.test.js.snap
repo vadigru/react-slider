@@ -12,6 +12,7 @@ exports[`Should render Slider component 1`] = `
     onMouseOver={[Function]}
     style={
       Object {
+        "height": 600,
         "maxWidth": 1024,
         "width": "100%",
       }
@@ -36,12 +37,12 @@ exports[`Should render Slider component 1`] = `
       }
     >
       <div
-        className="slide "
-        id={0}
+        className="slide
+                    
+                    "
         style={
           Object {
             "backgroundImage": "url()",
-            "height": 570,
             "minWidth": "50%",
           }
         }
@@ -51,12 +52,12 @@ exports[`Should render Slider component 1`] = `
         </h2>
       </div>
       <div
-        className="slide "
-        id={1}
+        className="slide
+                    
+                    "
         style={
           Object {
             "backgroundImage": "url()",
-            "height": 570,
             "minWidth": "50%",
           }
         }
@@ -66,12 +67,12 @@ exports[`Should render Slider component 1`] = `
         </h2>
       </div>
       <div
-        className="slide "
-        id={2}
+        className="slide
+                    slide-1
+                    "
         style={
           Object {
             "backgroundImage": "url()",
-            "height": 570,
             "minWidth": "50%",
           }
         }

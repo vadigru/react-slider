@@ -7,97 +7,98 @@ exports[`Should render App component 1`] = `
   <section
     className="slider-settings"
   >
-    <label
-      htmlFor="wrange"
-    >
-      <span
-        className="label-title"
-      >
-        Width
-      </span>
-      <input
-        id="wrange"
-        max="1920"
-        min="320"
-        name="wrange"
-        onChange={[Function]}
-        type="range"
-        value={1024}
-      />
-      <span>
-        1024
-      </span>
-    </label>
-    <label
-      htmlFor="hrange"
-    >
-      <span
-        className="label-title"
-      >
-        Height
-      </span>
-      <input
-        id="hrange"
-        max="1080"
-        min="320"
-        name="hrange"
-        onChange={[Function]}
-        type="range"
-        value={768}
-      />
-      <span>
-        768
-      </span>
-    </label>
-    <label
-      htmlFor="animation-time"
-    >
-      <span
-        className="label-title"
-      >
-        Animation in ms
-      </span>
-      <input
-        id="animation-time"
-        max="3000"
-        min="100"
-        name="animation-time"
-        onChange={[Function]}
-        type="range"
-        value={350}
-      />
-      <span>
-        350
-      </span>
-    </label>
-    <div
-      className="slider-settings-autoplay"
-    >
+    <div>
       <label
-        className="label-connected label-autoplay"
+        htmlFor="wrange"
+      >
+        <span
+          className="label-text"
+        >
+          Width
+        </span>
+        <input
+          id="wrange"
+          max="1920"
+          min="320"
+          name="wrange"
+          onChange={[Function]}
+          type="range"
+          value={1024}
+        />
+        <span
+          className="label-text-output"
+        >
+          1024
+        </span>
+      </label>
+    </div>
+    <div>
+      <label
+        htmlFor="hrange"
+      >
+        <span
+          className="label-text"
+        >
+          Height
+        </span>
+        <input
+          id="hrange"
+          max="1080"
+          min="320"
+          name="hrange"
+          onChange={[Function]}
+          type="range"
+          value={600}
+        />
+        <span
+          className="label-text-output"
+        >
+          600
+        </span>
+      </label>
+    </div>
+    <div>
+      <label
+        htmlFor="animation-time"
+      >
+        <span
+          className="label-text"
+        >
+          Animation/Speed
+        </span>
+        <input
+          id="animation-time"
+          max="3000"
+          min="100"
+          name="animation-time"
+          onChange={[Function]}
+          type="range"
+          value={350}
+        />
+        <span
+          className="label-text-output"
+        >
+          350
+        </span>
+      </label>
+    </div>
+    <div>
+      <input
+        className="visually-hidden"
+        defaultChecked={false}
+        id="autoplay"
+        name="autoplay"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <label
+        className="label-autoplay"
         htmlFor="autoplay"
       >
         <span
-          className="label-title"
+          className="label-text"
         >
-          Autoplay
-        </span>
-        <input
-          defaultChecked={false}
-          id="autoplay"
-          name="autoplay"
-          onChange={[Function]}
-          type="checkbox"
-        />
-      </label>
-      <label
-        className="label-connected label-autoplay-delay"
-        htmlFor="autoplay-delay"
-      >
-        <span
-          className="label-title"
-        >
-          in ms
+          Autoplay/Interval
         </span>
         <input
           disabled={true}
@@ -106,47 +107,33 @@ exports[`Should render App component 1`] = `
           min="1000"
           name="autoplay-delay"
           onChange={[Function]}
-          style={
-            Object {
-              "backgroundColor": "#ccc",
-            }
-          }
           type="range"
           value={3000}
         />
-        <span>
+        <span
+          className="label-text-output"
+        >
           3000
         </span>
       </label>
     </div>
-    <div
-      className="slider-settings-adaptive"
-    >
+    <div>
+      <input
+        className="visually-hidden"
+        defaultChecked={false}
+        id="adaptive"
+        name="adaptive"
+        onChange={[Function]}
+        type="checkbox"
+      />
       <label
-        className="label-connected label-adaptive"
+        className="label-adaptive"
         htmlFor="adaptive"
       >
         <span
-          className="label-title"
+          className="label-text"
         >
-          Adaptive
-        </span>
-        <input
-          defaultChecked={false}
-          id="adaptive"
-          name="adaptive"
-          onChange={[Function]}
-          type="checkbox"
-        />
-      </label>
-      <label
-        className="label-connected label-slides-count"
-        htmlFor="slides-count"
-      >
-        <span
-          className="label-title"
-        >
-          slides
+          Adaptive/Slides
         </span>
         <input
           disabled={true}
@@ -155,99 +142,111 @@ exports[`Should render App component 1`] = `
           min="1"
           name="slides-count"
           onChange={[Function]}
-          style={
-            Object {
-              "backgroundColor": "#ccc",
-            }
-          }
           type="range"
           value={1}
         />
-        <span>
+        <span
+          className="label-text-output"
+        >
           1
         </span>
       </label>
     </div>
-    <label
-      htmlFor="animated-swipe"
-    >
-      <span
-        className="label-title"
-      >
-        Animated swipe
-      </span>
+    <div>
       <input
+        className="visually-hidden"
         defaultChecked={false}
         id="animated-swipe"
         name="animated-swipe"
         onChange={[Function]}
         type="checkbox"
       />
-    </label>
-    <label
-      htmlFor="indicators"
-    >
-      <span
-        className="label-title"
+      <label
+        htmlFor="animated-swipe"
       >
-        Indicators
-      </span>
+        <span
+          className="label-text"
+        >
+          Animated swipe
+        </span>
+      </label>
+    </div>
+    <div>
       <input
+        className="visually-hidden"
         defaultChecked={false}
         id="indicators"
         name="indicators"
         onChange={[Function]}
         type="checkbox"
       />
-    </label>
-    <label
-      htmlFor="arrows"
-    >
-      <span
-        className="label-title"
+      <label
+        htmlFor="indicators"
       >
-        Arrows
-      </span>
+        <span
+          className="label-text"
+        >
+          Indicators
+        </span>
+      </label>
+    </div>
+    <div>
       <input
+        className="visually-hidden"
         defaultChecked={false}
         id="arrows"
         name="arrows"
         onChange={[Function]}
         type="checkbox"
       />
-    </label>
-    <label
-      htmlFor="caption"
-    >
-      <span
-        className="label-title"
+      <label
+        htmlFor="arrows"
       >
-        Caption
-      </span>
+        <span
+          className="label-text"
+        >
+          Arrows
+        </span>
+      </label>
+    </div>
+    <div>
       <input
+        className="visually-hidden"
         defaultChecked={false}
         id="caption"
         name="caption"
         onChange={[Function]}
         type="checkbox"
       />
-    </label>
-    <label
-      htmlFor="infinite"
-    >
-      <span
-        className="label-title"
+      <label
+        htmlFor="caption"
       >
-        Infinte
-      </span>
+        <span
+          className="label-text"
+        >
+          Caption
+        </span>
+      </label>
+    </div>
+    <div>
       <input
+        className="visually-hidden"
         defaultChecked={false}
         id="infinite"
         name="infinite"
         onChange={[Function]}
         type="checkbox"
       />
-    </label>
+      <label
+        htmlFor="infinite"
+      >
+        <span
+          className="label-text"
+        >
+          Infinte
+        </span>
+      </label>
+    </div>
   </section>
   <section
     className="slider"
@@ -256,6 +255,7 @@ exports[`Should render App component 1`] = `
     onMouseOver={[Function]}
     style={
       Object {
+        "height": 600,
         "maxWidth": 1024,
         "width": "100%",
       }
@@ -280,11 +280,11 @@ exports[`Should render App component 1`] = `
       }
     >
       <div
-        className="slide slide--no-caption"
-        id={0}
+        className="slide
+                    
+                    slide--no-caption"
         style={
           Object {
-            "height": 768,
             "minWidth": "100%",
             "visibility": "hidden",
           }
@@ -296,20 +296,20 @@ exports[`Should render App component 1`] = `
           src="img/elbrus.jpg"
         />
         <div
-          className="content--bg"
+          className="content--bg-dark"
         >
           <h2>
-            Beautiful Elbrus
+            Elbrus
           </h2>
         </div>
       </div>
       <div
-        className="slide slide--no-caption"
-        id={1}
+        className="slide
+                    slide-1
+                    slide--no-caption"
         style={
           Object {
             "backgroundImage": "url()",
-            "height": 768,
             "minWidth": "100%",
           }
         }
@@ -322,12 +322,12 @@ exports[`Should render App component 1`] = `
         </p>
       </div>
       <div
-        className="slide slide--no-caption"
-        id={2}
+        className="slide
+                    slide-2
+                    slide--no-caption"
         style={
           Object {
             "backgroundImage": "url(img/blackhole.jpg)",
-            "height": 768,
             "minWidth": "100%",
           }
         }
@@ -338,29 +338,29 @@ exports[`Should render App component 1`] = `
           src="img/blackhole.jpg"
         />
         <div
-          className="caption"
+          className="caption--forced"
         >
           <a
-            className="caption-btn"
-            href="https://www.livescience.com/whats-inside-black-hole.html"
+            className="caption-link"
+            href="https://www.space.com/where-do-black-holes-lead.html"
           >
-            What's Inside a Black Hole?
+            Where Do Black Holes Lead?
           </a>
         </div>
       </div>
       <div
-        className="slide slide--no-caption"
-        id={3}
+        className="slide
+                    slide-3
+                    slide--no-caption"
         style={
           Object {
             "backgroundImage": "url()",
-            "height": 768,
             "minWidth": "100%",
           }
         }
       >
         <div
-          className="content--no-bg"
+          className="content--bg-light"
         >
           <h3>
             Hello, World!
@@ -373,12 +373,12 @@ exports[`Should render App component 1`] = `
         </div>
       </div>
       <div
-        className="slide slide--no-caption"
-        id={4}
+        className="slide
+                    slide-4
+                    slide--no-caption"
         style={
           Object {
             "backgroundImage": "url(img/iron-man-home.jpg)",
-            "height": 768,
             "minWidth": "100%",
           }
         }
@@ -389,7 +389,7 @@ exports[`Should render App component 1`] = `
           src="img/iron-man-home.jpg"
         />
         <div
-          className="content--bg"
+          className="content--bg-dark"
         >
           <img
             alt="Iron Man"
@@ -410,29 +410,34 @@ exports[`Should render App component 1`] = `
         </div>
       </div>
       <div
-        className="slide slide--no-caption"
-        id={5}
+        className="slide
+                    slide-5
+                    slide--no-caption"
         style={
           Object {
-            "backgroundImage": "url()",
-            "height": 768,
+            "backgroundImage": "url(img/covid19-dashboard.jpg)",
             "minWidth": "100%",
           }
         }
       >
+        <img
+          alt="COVID-19 dashboard"
+          className="background"
+          src="img/covid19-dashboard.jpg"
+        />
         <div
           className="caption"
         >
           COVID-19 is an infectious disease.
         </div>
         <div
-          className="content--no-bg"
+          className="content--bg-light"
         >
           <p>
             Most people who fall sick with COVID-19 will experience mild to moderate symptoms and recover without special treatment.
           </p>
           <a
-            className="content-btn content-btn--alert"
+            className="content-btn"
             href="https://covid19.who.int/"
           >
             COVID-19 Dashboard
@@ -440,12 +445,12 @@ exports[`Should render App component 1`] = `
         </div>
       </div>
       <div
-        className="slide slide--no-caption"
-        id={6}
+        className="slide
+                    slide-6
+                    slide--no-caption"
         style={
           Object {
             "backgroundImage": "url(img/elbrus.jpg)",
-            "height": 768,
             "minWidth": "100%",
           }
         }
@@ -456,19 +461,19 @@ exports[`Should render App component 1`] = `
           src="img/elbrus.jpg"
         />
         <div
-          className="content--bg"
+          className="content--bg-dark"
         >
           <h2>
-            Beautiful Elbrus
+            Elbrus
           </h2>
         </div>
       </div>
       <div
-        className="slide slide--no-caption"
-        id={7}
+        className="slide
+                    
+                    slide--no-caption"
         style={
           Object {
-            "height": 768,
             "minWidth": "100%",
             "visibility": "hidden",
           }

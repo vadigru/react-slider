@@ -10,13 +10,13 @@ const App = () => {
       // infinite={true}
       // caption={true}
       // autoplay={true}
-      // autoplayDelay={5000}
+      // autoplayDelay={2000}
       // indicators={true}
       // arrows={true}
       // adaptiveSlides={true}
       // animatedSwipe={true}
       // animationTime={350}
-      // slidesCount={3}
+      // slidesCount={1}
     >
       <div>
         <h2>FIRST SLIDE</h2>
