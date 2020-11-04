@@ -902,7 +902,8 @@ class Slider extends React.Component {
               return (
                 <div
                   key={it + index}
-                  className={`slide ${index - slidesToShow >= 0 && index - slidesToShow < this.initSlides.length ? `slide-${(index - slidesToShow) + 1}` : ``} ${isCaption ? `` : `slide--no-caption`}`}
+                  className={`slide ${isCaption ? `` : `slide--no-caption`}`}
+                  id={`${index - slidesToShow >= 0 && index - slidesToShow < this.initSlides.length ? `slide-${(index - slidesToShow) + 1}` : ``}`}
                   style={this.initSlides.length !== 1 && !isInfinite && index < slidesToShow ||
                     !isInfinite && index > (this.initSlides.length - 1) + slidesToShow ?
                     styleHidden :
