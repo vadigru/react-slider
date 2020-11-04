@@ -8,6 +8,11 @@ configure({
   adapter: new Adapter(),
 });
 
+const initSlides = [
+  {},
+  {},
+  {}
+];
 const setWidth = jest.fn(() => {});
 const setHeight = jest.fn(() => {});
 const changeAnimationTime = jest.fn(() => {});
@@ -30,6 +35,7 @@ const main = mount(
       changeAnimationTime={changeAnimationTime}
       animationTime={1000}
       autoplayDelay={3000}
+      initSlides={initSlides}
       isInfinite={true}
       isAutoplay={true}
       isIndicators={true}

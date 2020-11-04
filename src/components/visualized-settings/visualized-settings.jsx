@@ -17,6 +17,7 @@ const VisualizedSetting = (props) => {
     changeAnimationTime,
     animationTime,
     autoplayDelay,
+    initSlides,
     isInfinite,
     isAutoplay,
     isIndicators,
@@ -133,7 +134,7 @@ const VisualizedSetting = (props) => {
             id="slides-count"
             type="range"
             min="1"
-            max="3"
+            max={initSlides.length > 3 ? 3 : initSlides.length}
             name="slides-count"
             value={slidesToShow}
             disabled={isAdaptive ? false : true}
@@ -142,6 +143,20 @@ const VisualizedSetting = (props) => {
             }}
           />
           <span className="label-text-output">{slidesToShow}</span>
+        </label>
+      </div>
+
+      <div>
+        <input
+          id="infinite"
+          className="visually-hidden"
+          type="checkbox"
+          name="infinite"
+          onChange={toggleInfinite}
+          defaultChecked={isInfinite ? `checked` : false}
+        />
+        <label htmlFor="infinite">
+          <span className="label-text">Infinte</span>
         </label>
       </div>
 
@@ -201,19 +216,6 @@ const VisualizedSetting = (props) => {
         </label>
       </div>
 
-      <div>
-        <input
-          id="infinite"
-          className="visually-hidden"
-          type="checkbox"
-          name="infinite"
-          onChange={toggleInfinite}
-          defaultChecked={isInfinite ? `checked` : false}
-        />
-        <label htmlFor="infinite">
-          <span className="label-text">Infinte</span>
-        </label>
-      </div>
     </section>
   );
 };
@@ -233,13 +235,14 @@ VisualizedSetting.propTypes = {
   changeAnimationTime: PropTypes.func.isRequired,
   animationTime: PropTypes.number.isRequired,
   autoplayDelay: PropTypes.number.isRequired,
-  isInfinite: PropTypes.bool.isRequired,
-  isAutoplay: PropTypes.bool.isRequired,
+  initSlides: PropTypes.arrayOf(PropTypes.object).isRequired,
   isIndicators: PropTypes.bool.isRequired,
   isArrows: PropTypes.bool.isRequired,
   isAdaptive: PropTypes.bool.isRequired,
   isAnimatedSwipe: PropTypes.bool.isRequired,
+  isAutoplay: PropTypes.bool.isRequired,
   isCaption: PropTypes.bool.isRequired,
+  isInfinite: PropTypes.bool.isRequired,
   slidesToShow: PropTypes.number.isRequired,
   sliderWidth: PropTypes.number,
   sliderHeight: PropTypes.number,

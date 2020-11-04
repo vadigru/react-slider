@@ -1,7 +1,7 @@
 {
-  "name": "react-common-slider",
+  "name": "react-slider",
   "version": "1.0.0",
-  "description": "A Slider/Carousel component for React.",
+  "description": "A Slider/Carousel app written on React.",
   "scripts": {
     "build": "webpack --mode production",
     "editorconfig": "editorconfig-cli",
@@ -14,7 +14,7 @@
   "author": "Vadim Grunenko - https://github.com/vadigru",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vadigru/react-common-slider.git"
+    "url": "git+https://github.com/vadigru/react-slider.git"
   },
   "license": "MIT",
   "browserslist": [
@@ -64,9 +64,9 @@
     "react": "react"
   },
   "dependencies": {
-    "babel-plugin-emotion": "^10.0.33",
-    "copy-webpack-plugin": "^6.1.1",
-    "imagemin-webpack-plugin": "^2.4.2",
+    "babel-plugin-emotion": "10.0.33",
+    "copy-webpack-plugin": "6.1.1",
+    "imagemin-webpack-plugin": "2.4.2",
     "prop-types": "15.7.2",
     "react": "16.13.1",
     "react-dom": "16.13.1"

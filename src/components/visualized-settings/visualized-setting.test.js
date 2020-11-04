@@ -21,6 +21,7 @@ it(`Should render VisualizedSettings component`, () => {
           changeAnimationTime={() => {}}
           animationTime={1000}
           autoplayDelay={3000}
+          initSlides={[{}, {}, {}]}
           isInfinite={true}
           isAutoplay={false}
           isIndicators={true}

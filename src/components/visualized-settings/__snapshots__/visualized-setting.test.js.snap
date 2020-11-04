@@ -135,7 +135,7 @@ exports[`Should render VisualizedSettings component 1`] = `
       <input
         disabled={true}
         id="slides-count"
-        max="3"
+        max={3}
         min="1"
         name="slides-count"
         onChange={[Function]}
@@ -146,6 +146,25 @@ exports[`Should render VisualizedSettings component 1`] = `
         className="label-text-output"
       >
         1
+      </span>
+    </label>
+  </div>
+  <div>
+    <input
+      className="visually-hidden"
+      defaultChecked="checked"
+      id="infinite"
+      name="infinite"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <label
+      htmlFor="infinite"
+    >
+      <span
+        className="label-text"
+      >
+        Infinte
       </span>
     </label>
   </div>
@@ -222,25 +241,6 @@ exports[`Should render VisualizedSettings component 1`] = `
         className="label-text"
       >
         Caption
-      </span>
-    </label>
-  </div>
-  <div>
-    <input
-      className="visually-hidden"
-      defaultChecked="checked"
-      id="infinite"
-      name="infinite"
-      onChange={[Function]}
-      type="checkbox"
-    />
-    <label
-      htmlFor="infinite"
-    >
-      <span
-        className="label-text"
-      >
-        Infinte
       </span>
     </label>
   </div>

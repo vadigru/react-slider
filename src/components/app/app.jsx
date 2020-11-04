@@ -11,15 +11,15 @@ const App = () => {
       // caption={true}
       // autoplay={true}
       // autoplayDelay={2000}
-      // indicators={true}
-      // arrows={true}
+      indicators={true}
+      arrows={true}
       // adaptiveSlides={true}
-      // animatedSwipe={true}
+      animatedSwipe={true}
       // animationTime={350}
-      // slidesCount={1}
+      slidesCount={1}
     >
       <div>
-        <h2>FIRST SLIDE</h2>
+        {/* <img className="background" src="img/blackhole.jpg" alt=""/> */}
         <p>This is the most simple use.</p>
       </div>
 
@@ -68,6 +68,20 @@ const App = () => {
           <h2>Elbrus</h2>
         </div>
       </div>
+
+      <div>
+        <div style={{
+          backgroundColor: `lightyellow`,
+          width: `100%`,
+          height: `100%`,
+          display: `flex`,
+          justifyContent: `center`,
+          alignItems: `center`
+        }}>
+          <h2>LAST SLIDE</h2>
+        </div>
+      </div>
+
     </Slider>
   );
 };

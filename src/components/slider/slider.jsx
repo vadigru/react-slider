@@ -102,10 +102,20 @@ class Slider extends React.Component {
     this.ratio = this.state.sliderWidth / value;
   }
   toggleInfinite() {
-    this.setState({isInfinite: !this.state.isInfinite});
+    this.setState({
+      isInfinite: !this.state.isInfinite,
+      activeSlide: this.state.slidesToShow,
+      isReverse: false,
+      slidePosition: SlidePosition.INITIAL
+    });
   }
   toggleAutoplay() {
-    this.setState({isAutoplay: !this.state.isAutoplay});
+    this.setState({
+      isAutoplay: !this.state.isAutoplay,
+      activeSlide: this.state.slidesToShow,
+      isReverse: false,
+      slidePosition: SlidePosition.INITIAL
+    });
   }
   changeAutoplayDelay(value) {
     if (this.state.isAutoplay === true) {
@@ -191,6 +201,7 @@ class Slider extends React.Component {
     }
     this.setState({
       activeSlide: count,
+      isReverse: false,
       slidePosition: SlidePosition.INITIAL,
     });
   }
@@ -280,13 +291,14 @@ class Slider extends React.Component {
       isAutoplay,
       isInfinite,
       isReverse,
+      slidesToShow,
     } = this.state;
 
     if (!isAutoplay) {
       clearInterval(this.timer);
       this.timer = null;
     }
-    if (isAutoplay) {
+    if (isAutoplay && this.initSlides.length > slidesToShow) {
       if (isReverse && !isInfinite) {
         this.resetAutoplayPrevInterval();
       }
@@ -294,7 +306,7 @@ class Slider extends React.Component {
         this.resetAutoplayNextInterval();
       }
     }
-    if (isAutoplay && isInfinite) {
+    if (isAutoplay && isInfinite && this.initSlides.length > slidesToShow) {
       this.resetAutoplayNextInterval();
     }
   }
@@ -337,7 +349,9 @@ class Slider extends React.Component {
     } = this.state;
 
     const positionCorrection = this.positionDiff ? this.positionDiff.x * 100 / sliderWidth : false;
+    const alternativeAnimationPosition = (SlidePosition.STEP - (SlidePosition.STEP / slidesToShow) * (slidesToShow - this.initSlides.length % slidesToShow));
     const lastSlide = (this.indicators.length - 1) + slidesToShow;
+    const slidesRemainder = this.initSlides.length % slidesToShow !== 0;
 
     let position = this.positionDiff && isAnimatedSwipe ? Math.round(slidePosition - positionCorrection) : slidePosition;
     let currentSlide = activeSlide;
@@ -356,9 +370,16 @@ class Slider extends React.Component {
         break;
       default:
         currentSlide = currentSlide - 1;
-        position -= SlidePosition.STEP;
+        if (currentSlide + 1 === lastSlide && slidesRemainder && !isInfinite) {
+          position -= alternativeAnimationPosition;
+        } else if (currentSlide + 1 === lastSlide && slidesRemainder && isInfinite) {
+          position -= SlidePosition.STEP;
+        } else {
+          position -= SlidePosition.STEP;
+        }
         break;
     }
+
     this.setAnimation(evt);
     this.setState({
       activeSlide: currentSlide,
@@ -379,6 +400,10 @@ class Slider extends React.Component {
     } = this.state;
 
     const positionCorrection = this.positionDiff ? this.positionDiff.x * 100 / sliderWidth : 0;
+    const alternativeAnimationPosition = (SlidePosition.STEP - (SlidePosition.STEP / slidesToShow) * (slidesToShow - this.initSlides.length % slidesToShow));
+    const lastSlide = (this.indicators.length - 1) + slidesToShow;
+    const slidesRemainder = this.initSlides.length % slidesToShow !== 0;
+
     let position = this.positionDiff && isAnimatedSwipe ? Math.round(slidePosition - positionCorrection) : slidePosition;
     let currentSlide = activeSlide;
 
@@ -396,9 +421,16 @@ class Slider extends React.Component {
         break;
       default:
         currentSlide = currentSlide + 1;
-        position += SlidePosition.STEP;
+        if (currentSlide === lastSlide && slidesRemainder && !isInfinite) {
+          position += alternativeAnimationPosition;
+        } else if (currentSlide === lastSlide && slidesRemainder && isInfinite) {
+          position += SlidePosition.STEP;
+        } else {
+          position += SlidePosition.STEP;
+        }
         break;
     }
+
     this.setAnimation(evt);
     this.setState({
       activeSlide: currentSlide,
@@ -409,6 +441,8 @@ class Slider extends React.Component {
 
   handleSlideIndicatorClick(evt) {
     const {activeSlide, slidesToShow} = this.state;
+    const slidesRemainder = this.initSlides.length % slidesToShow !== 0;
+
     const target = evt.target;
     const id = parseInt(target.id, 10) + slidesToShow;
 
@@ -416,7 +450,9 @@ class Slider extends React.Component {
       case id === activeSlide:
         return;
       default:
-        const position = ((id - slidesToShow + 1) * SlidePosition.STEP);
+        const position = slidesRemainder && id - slidesToShow === this.indicators.length - 1 ?
+          (SlidePosition.STEP * (id - slidesToShow + 1)) - ((SlidePosition.STEP / slidesToShow) * (slidesToShow - this.initSlides.length % slidesToShow)) :
+          ((id - slidesToShow + 1) * SlidePosition.STEP);
         this.setState({
           activeSlide: id,
           slidePosition: position,
@@ -438,142 +474,183 @@ class Slider extends React.Component {
     });
   }
 
-  animateSlide(evt) {
-    const {
-      sliderWidth,
-      isAutoplay,
-      isAnimatedSwipe,
-      isInfinite,
-      isReverse,
-      slidePosition,
-      slidesToShow,
-      activeSlide
-    } = this.state;
-    const lastSlide = (this.indicators.length - 1) + slidesToShow;
-    const alternativeAnimationPosition = (this.initSlides.length - (Math.floor(this.initSlides.length / slidesToShow) * slidesToShow)) * 100;
-    let a = ``;
+  setAnimation(evt) {
+    const slideAnimation = `animation${Math.round(Math.random() * 100)}`;
 
-    // autoplay animation -----------------------------------------------------
-    if (isAutoplay && !isInfinite) {
-      if (!isReverse) {
-        if (!evt && activeSlide === lastSlide - 1) {
+    const animateSlide = () => {
+      const {
+        sliderWidth,
+        isAutoplay,
+        isAnimatedSwipe,
+        isInfinite,
+        isReverse,
+        slidePosition,
+        slidesToShow,
+        activeSlide
+      } = this.state;
+      const slidesRemainder = this.initSlides.length % slidesToShow !== 0;
+      const lastSlide = (this.indicators.length - 1) + slidesToShow;
+      const alternativeAnimationPosition = (SlidePosition.STEP - (SlidePosition.STEP / slidesToShow) * (slidesToShow - this.initSlides.length % slidesToShow));
+      const selectAnimationPosition = () => {
+        return slidesRemainder ?
+          alternativeAnimationPosition :
+          SlidePosition.STEP;
+      };
+      let a = ``;
+
+      // autoplay animation -----------------------------------------------------
+      if (isAutoplay && !isInfinite && this.initSlides.length > slidesToShow) {
+        if (!isReverse) {
+          a = SlidePosition.STEP;
+          if (!evt && activeSlide + 1 === lastSlide) {
+            a = selectAnimationPosition();
+          }
+          if (!evt && activeSlide === lastSlide - 1) {
+            this.setState({
+              isReverse: true
+            });
+          }
+        }
+        if (isReverse) {
+          a = -SlidePosition.STEP;
+          if (!evt && activeSlide === lastSlide) {
+            a = -selectAnimationPosition();
+          }
+          if (!evt && activeSlide === slidesToShow + 1) {
+            this.setState({
+              isReverse: false
+            });
+          }
+        }
+      }
+
+      if (isAutoplay && isInfinite && this.initSlides.length > slidesToShow) {
+        a = SlidePosition.STEP;
+        this.setState({
+          isReverse: false
+        });
+        if (activeSlide === lastSlide) {
+          a = selectAnimationPosition();
+        }
+      }
+
+      // navigation arrows click animation --------------------------------------
+      if ((evt && evt.currentTarget.id === `arrow-next`) ||
+          (this.positionDiff && this.positionDiff.x > SwipeSensitivity.MIN) &&
+          this.initSlides.length > slidesToShow) {
+        a = SlidePosition.STEP;
+        if (slidesRemainder && activeSlide + 1 === lastSlide && !isInfinite) {
+          this.setState({
+            isReverse: true
+          });
+          a = alternativeAnimationPosition;
+        }
+        if (slidesRemainder && activeSlide === lastSlide && isInfinite) {
+          this.setState({
+            isReverse: true
+          });
+          a = alternativeAnimationPosition;
+        }
+      }
+      if ((evt && evt.currentTarget.id === `arrow-prev`) ||
+          (this.positionDiff && this.positionDiff.x < SwipeSensitivity.MIN) &&
+          this.initSlides.length > slidesToShow) {
+        a = -SlidePosition.STEP;
+        if (slidesRemainder && activeSlide === lastSlide && !isInfinite) {
+          a = -((SlidePosition.STEP / slidesToShow) * (slidesToShow - this.initSlides.length % slidesToShow));
+        }
+        if (slidesRemainder && activeSlide === lastSlide && isInfinite) {
+          a = -SlidePosition.STEP;
+        }
+        if (activeSlide === slidesToShow) {
+          this.setState({
+            isReverse: false
+          });
+          a = -selectAnimationPosition();
+        }
+      }
+
+      // slide indicators click animation ---------------------------------------
+      if (evt) {
+        const target = evt.target;
+        const id = parseInt(target.id, 10);
+
+        if (id + slidesToShow - activeSlide === 1) {
+          a = slidesRemainder && activeSlide + 1 === lastSlide ?
+            alternativeAnimationPosition :
+            SlidePosition.STEP;
+        }
+        if (id + slidesToShow - activeSlide === -1) {
+          a = slidesRemainder && activeSlide === lastSlide ?
+            -alternativeAnimationPosition :
+            -SlidePosition.STEP;
+        }
+        if (id + slidesToShow - activeSlide > 1) {
+          a = slidesRemainder && id === this.indicators.length - 1 ?
+            (SlidePosition.STEP * ((id + slidesToShow) - activeSlide)) - (SlidePosition.STEP - (SlidePosition.STEP / slidesToShow)) :
+            (SlidePosition.STEP * ((id + slidesToShow) - activeSlide));
+        }
+        if ((id + slidesToShow - activeSlide < -1)) {
+          a = slidesRemainder && activeSlide === lastSlide ?
+            (SlidePosition.STEP * ((id + slidesToShow) - activeSlide)) + (SlidePosition.STEP - (SlidePosition.STEP / slidesToShow)) :
+            (SlidePosition.STEP * ((id + slidesToShow) - activeSlide));
+        }
+        if (id + slidesToShow - activeSlide >= 1 && id === this.indicators.length - 1) {
           this.setState({
             isReverse: true
           });
         }
-        a = SlidePosition.STEP;
-      }
-      if (isReverse) {
-        if (!evt && activeSlide === slidesToShow + 1) {
+        if (id + slidesToShow - activeSlide <= -1 && id + slidesToShow === slidesToShow) {
           this.setState({
             isReverse: false
           });
         }
-        a = -SlidePosition.STEP;
       }
-    }
 
-    if (isAutoplay && isInfinite) {
-      this.setState({
-        isReverse: false
-      });
-      a = SlidePosition.STEP;
-    }
-
-    // navigation arrows click animation --------------------------------------
-    if ((evt && evt.currentTarget.id === `arrow-next`) ||
-        (this.positionDiff && this.positionDiff.x > SwipeSensitivity.MIN) ||
-        (isAutoplay && !isReverse && isInfinite)) {
-      if (activeSlide === lastSlide - 1) {
-        this.setState({
-          isReverse: true
-        });
-        a = this.initSlides.length % slidesToShow !== 0 ?
-          alternativeAnimationPosition :
-          SlidePosition.STEP;
-      }
-      a = SlidePosition.STEP;
-    }
-    if ((evt && evt.currentTarget.id === `arrow-prev`) ||
-        (this.positionDiff && this.positionDiff.x < SwipeSensitivity.MIN)) {
-      if (activeSlide === slidesToShow + 1) {
-        this.setState({
-          isReverse: false
-        });
-        a = this.initSlides.length % slidesToShow !== 0 ?
-          -alternativeAnimationPosition :
-          -SlidePosition.STEP;
-      }
-      a = -SlidePosition.STEP;
-    }
-
-    // slide indicators click animation ---------------------------------------
-    if (evt) {
-      const target = evt.target;
-      const id = parseInt(target.id, 10);
-      if (id + slidesToShow - activeSlide === 1) {
-        a = SlidePosition.STEP;
-      } else if (id + slidesToShow - activeSlide === -1) {
-        a = -SlidePosition.STEP;
-      }
-      if (id + slidesToShow - activeSlide > 1 ||
-                 id + slidesToShow - activeSlide < -1) {
-        a = slidesToShow === 1 ?
-          (((id + 1) - activeSlide)) * 100 :
-          ((id - (activeSlide - slidesToShow))) * 100;
-      }
-      if (id + slidesToShow - activeSlide >= 1 && id === this.indicators.length - 1) {
-        this.setState({
-          isReverse: true
-        });
-      }
-      if (id + slidesToShow - activeSlide <= -1 && id + slidesToShow === slidesToShow) {
-        this.setState({
-          isReverse: false
-        });
-      }
-    }
-
-    // swipe animation --------------------------------------------------------
-    if (this.positionDiff && isAnimatedSwipe) {
-      const positionCorrection = Math.round(this.positionDiff.x * 100 / sliderWidth);
-      // stop switching slides on the first or last slide when animatedSwipe is on
-      if (this.positionDiff.x < SwipeSensitivity.MAX && this.positionDiff.x > -SwipeSensitivity.MAX ||
-        !isInfinite && slidePosition < SlidePosition.INITIAL ||
-        !isInfinite && slidePosition > (this.indicators.length * 100)) {
-        a = -positionCorrection;
-      } else {
-        // next/prev slide switching ------------------------------------------
-        if (this.positionDiff.x > SwipeSensitivity.MIN) {
-          a = SlidePosition.STEP - positionCorrection;
-          if (this.initSlides.length % slidesToShow !== 0 && activeSlide === lastSlide) {
-            a = alternativeAnimationPosition - positionCorrection * slidesToShow;
+      // swipe animation --------------------------------------------------------
+      if (this.positionDiff && isAnimatedSwipe) {
+        const positionCorrection = Math.round(this.positionDiff.x * 100 / sliderWidth);
+        // stop switching slides on the first or last slide when animatedSwipe is on
+        if ((this.positionDiff.x < SwipeSensitivity.MAX) &&
+            (this.positionDiff.x > -SwipeSensitivity.MAX) ||
+            (!isInfinite && slidePosition < SlidePosition.INITIAL) ||
+            (!isInfinite && slidePosition > (this.indicators.length * 100))) {
+          a = (slidesRemainder && activeSlide === slidesToShow && isInfinite) ||
+              (slidesRemainder && activeSlide === lastSlide && slidePosition < SlidePosition.INITIAL) ?
+            -alternativeAnimationPosition - positionCorrection :
+            -positionCorrection;
+        } else {
+          // next/prev slide switching ------------------------------------------
+          if (this.positionDiff.x > SwipeSensitivity.MIN) {
+            a = ((slidesRemainder && activeSlide + 1 === lastSlide && !isInfinite) ||
+                 (slidesRemainder && activeSlide === lastSlide && isInfinite)) ?
+              alternativeAnimationPosition - positionCorrection :
+              SlidePosition.STEP - positionCorrection;
+            if (slidesRemainder && activeSlide === lastSlide && !isInfinite) {
+              a = -positionCorrection;
+            }
           }
-        }
-        if (this.positionDiff.x < SwipeSensitivity.MIN) {
-          a = -SlidePosition.STEP - positionCorrection;
-          if (this.initSlides.length % slidesToShow !== 0 && activeSlide === slidesToShow) {
-            a = -alternativeAnimationPosition - positionCorrection * slidesToShow;
+          if (this.positionDiff.x < SwipeSensitivity.MIN) {
+            a = (slidesRemainder && activeSlide === lastSlide && !isInfinite) ||
+                (slidesRemainder && activeSlide === slidesToShow && isInfinite) ?
+              -alternativeAnimationPosition - positionCorrection :
+              -SlidePosition.STEP - positionCorrection;
           }
         }
       }
-    }
 
-    // stop switching slides on the first or last slide when animatedSwipe is off ------
-    if (this.positionDiff && !isAnimatedSwipe && !isInfinite) {
-      if (activeSlide === slidesToShow && this.positionDiff.x < SwipeSensitivity.MIN ||
-        activeSlide === lastSlide && this.positionDiff.x > SwipeSensitivity.MIN) {
-        a = false;
+      // stop switching slides on the first or last slide when animatedSwipe is off ------
+      if (this.positionDiff && !isAnimatedSwipe && !isInfinite) {
+        if ((activeSlide === slidesToShow && this.positionDiff.x < SwipeSensitivity.MIN) ||
+            (activeSlide === lastSlide && this.positionDiff.x > SwipeSensitivity.MIN)) {
+          a = false;
+        }
       }
-    }
+      return a;
+    };
 
-    return a;
-  }
-
-  setAnimation(evt) {
-    const slideAnimation = `animation${Math.round(Math.random() * 100)}`;
     const keyframes = `@keyframes ${slideAnimation} {
-      0% {transform:translate(${this.animateSlide(evt)}%)}
+      0% {transform:translate(${animateSlide()}%)}
       100% {transform:translate(${0}%)}
     }`;
     this.styleSheet.insertRule(keyframes, this.styleSheet.cssRules.length);
@@ -667,12 +744,11 @@ class Slider extends React.Component {
       isAnimatedSwipe,
       isDisabled,
       sliderWidth,
-      slidesToShow,
       slidePosition,
     } = this.state;
     let shift;
 
-    if (this.touchPositionStart && slidesToShow !== this.initSlides.length) {
+    if (this.touchPositionStart/* && slidesToShow !== this.initSlides.length*/) {
       if (!isDisabled) {
         if (evt.type === `mousemove`) {
           shift = {
@@ -766,6 +842,7 @@ class Slider extends React.Component {
             changeAnimationTime={this.changeAnimationTime}
             animationTime={animationTime}
             autoplayDelay={autoplayDelay}
+            initSlides={this.initSlides}
             isAdaptive={isAdaptive}
             isAnimatedSwipe={isAnimatedSwipe}
             isArrows={isArrows}
@@ -783,6 +860,7 @@ class Slider extends React.Component {
             maxWidth: sliderWidth,
             width: `100%`,
             height: sliderHeight,
+            outline: this.demoMode ? `2px dashed skyblue` : ``
           }}
           onMouseOver={this.onMouseOverPauseAutoplay}
           onMouseOut={this.onMouseOutResumeAutoplay}
@@ -824,10 +902,7 @@ class Slider extends React.Component {
               return (
                 <div
                   key={it + index}
-                  className={`slide
-                    ${index - slidesToShow >= 0 && index - slidesToShow < this.initSlides.length ?
-                  `slide-${(index - slidesToShow) + 1}` : ``}
-                    ${isCaption ? `` : `slide--no-caption`}`}
+                  className={`slide ${index - slidesToShow >= 0 && index - slidesToShow < this.initSlides.length ? `slide-${(index - slidesToShow) + 1}` : ``} ${isCaption ? `` : `slide--no-caption`}`}
                   style={this.initSlides.length !== 1 && !isInfinite && index < slidesToShow ||
                     !isInfinite && index > (this.initSlides.length - 1) + slidesToShow ?
                     styleHidden :
