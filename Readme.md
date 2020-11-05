@@ -46,12 +46,15 @@ const App = () => {
 };
 ```
 
-### With background image, avatar image, semi-transparent dark background and caption:
+### With background image, avatar image, semi-transparent dark background, caption and setted slider size:
 
 ```jsx
 const App = () => {
   return (
-    <Slider>
+    <Slider
+      width={1200}
+      height={600}
+    >
       <div>
         <img className="background" src="" />
         <div className="content--bg">
@@ -89,7 +92,7 @@ const App = () => {
 > *if `adaptiveSlides` is on, the number of displayed slides will be changed accordingly to the screen width and value passed in `slidesCount`.
 > - if 1 is passed slider will show 1 for all screen sizes
 > - if 2 is passed slider will show 1 for a mobile, 2 for both a tablet and desktop
-> - if 3 is passed slider will show to 1 for a mobile, 2 for a tablet, 3 for a desktop
+> - if 3 is passed slider will show 1 for a mobile, 2 for a tablet, 3 for a desktop
 
 ## Class names that can be used when adding a new slide
 
