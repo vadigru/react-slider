@@ -13,6 +13,12 @@ exports[`Should render VisualizedSettings component 1`] = `
       >
         Width
       </span>
+      <span
+        className="label-text-output"
+      >
+        1200
+         px
+      </span>
       <input
         id="wrange"
         max="1920"
@@ -22,11 +28,6 @@ exports[`Should render VisualizedSettings component 1`] = `
         type="range"
         value={1200}
       />
-      <span
-        className="label-text-output"
-      >
-        1200
-      </span>
     </label>
   </div>
   <div>
@@ -38,6 +39,12 @@ exports[`Should render VisualizedSettings component 1`] = `
       >
         Height
       </span>
+      <span
+        className="label-text-output"
+      >
+        600
+         px
+      </span>
       <input
         id="hrange"
         max="1080"
@@ -47,11 +54,6 @@ exports[`Should render VisualizedSettings component 1`] = `
         type="range"
         value={600}
       />
-      <span
-        className="label-text-output"
-      >
-        600
-      </span>
     </label>
   </div>
   <div>
@@ -63,6 +65,12 @@ exports[`Should render VisualizedSettings component 1`] = `
       >
         Animation/Speed
       </span>
+      <span
+        className="label-text-output"
+      >
+        1000
+         ms
+      </span>
       <input
         id="animation-time"
         max="3000"
@@ -72,11 +80,6 @@ exports[`Should render VisualizedSettings component 1`] = `
         type="range"
         value={1000}
       />
-      <span
-        className="label-text-output"
-      >
-        1000
-      </span>
     </label>
   </div>
   <div>
@@ -97,6 +100,12 @@ exports[`Should render VisualizedSettings component 1`] = `
       >
         Autoplay/Interval
       </span>
+      <span
+        className="label-text-output"
+      >
+        3000
+         ms
+      </span>
       <input
         disabled={true}
         id="autoplay-delay"
@@ -107,11 +116,6 @@ exports[`Should render VisualizedSettings component 1`] = `
         type="range"
         value={3000}
       />
-      <span
-        className="label-text-output"
-      >
-        3000
-      </span>
     </label>
   </div>
   <div>
@@ -132,6 +136,11 @@ exports[`Should render VisualizedSettings component 1`] = `
       >
         Adaptive/Slides
       </span>
+      <span
+        className="label-text-output"
+      >
+        1
+      </span>
       <input
         disabled={true}
         id="slides-count"
@@ -142,11 +151,6 @@ exports[`Should render VisualizedSettings component 1`] = `
         type="range"
         value={1}
       />
-      <span
-        className="label-text-output"
-      >
-        1
-      </span>
     </label>
   </div>
   <div>

@@ -38,7 +38,8 @@ exports[`Should render Slider component 1`] = `
       }
     >
       <div
-        className="slide  "
+        className="slide "
+        id=""
         style={
           Object {
             "backgroundImage": "url()",
@@ -51,7 +52,8 @@ exports[`Should render Slider component 1`] = `
         </h2>
       </div>
       <div
-        className="slide  "
+        className="slide "
+        id=""
         style={
           Object {
             "backgroundImage": "url()",
@@ -64,7 +66,8 @@ exports[`Should render Slider component 1`] = `
         </h2>
       </div>
       <div
-        className="slide slide-1 "
+        className="slide "
+        id="slide-1"
         style={
           Object {
             "backgroundImage": "url()",

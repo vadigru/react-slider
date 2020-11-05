@@ -10,7 +10,7 @@
 .slider-settings label {
   white-space: nowrap;
   margin: 5px;
-  padding: 5px 10px;
+  padding: 0 10px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -49,8 +49,8 @@
 
 .slider-settings input[type=range] {
   width: 100px;
-  margin-left: 5px;
-  margin-right: 10px;
+  margin-left: auto;
+  padding: 5px 0;
 }
 
 .slider-settings span {
@@ -59,12 +59,18 @@
 
 .slider-settings span.label-text {
   width: auto;
-  margin-right: auto;
+  padding: 5px 0;
+  margin-right: 5px;
 }
 
 .slider-settings span.label-text-output {
-  width: 40px;
+  width: 65px;
   text-align: right;
+  margin-right: 10px;
+}
+
+.slider-settings .label-adaptive .label-text-output {
+  width: 20px;
 }
 
 @media (min-width: $tablet-width) {

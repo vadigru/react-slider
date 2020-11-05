@@ -35,6 +35,7 @@ const VisualizedSetting = (props) => {
       <div>
         <label htmlFor="wrange">
           <span className="label-text">Width</span>
+          <span className="label-text-output">{(sliderWidth).toFixed(0)} px</span>
           <input
             id="wrange"
             type="range"
@@ -46,13 +47,13 @@ const VisualizedSetting = (props) => {
               setWidth(Math.ceil(parseInt(evt.target.value, 10)));
             }}
           />
-          <span className="label-text-output">{(sliderWidth).toFixed(0)}</span>
         </label>
       </div>
 
       <div>
         <label htmlFor="hrange">
           <span className="label-text">Height</span>
+          <span className="label-text-output">{(sliderHeight).toFixed(0)} px</span>
           <input
             id="hrange"
             type="range"
@@ -64,13 +65,13 @@ const VisualizedSetting = (props) => {
               setHeight(Math.ceil(parseInt(evt.target.value, 10)));
             }}
           />
-          <span className="label-text-output">{(sliderHeight).toFixed(0)}</span>
         </label>
       </div>
 
       <div>
         <label htmlFor="animation-time">
           <span className="label-text">Animation/Speed</span>
+          <span className="label-text-output">{animationTime} ms</span>
           <input
             id="animation-time"
             type="range"
@@ -82,7 +83,6 @@ const VisualizedSetting = (props) => {
               changeAnimationTime(parseInt(evt.target.value, 10));
             }}
           />
-          <span className="label-text-output">{animationTime}</span>
         </label>
       </div>
 
@@ -100,6 +100,7 @@ const VisualizedSetting = (props) => {
           className="label-autoplay"
         >
           <span className="label-text">Autoplay/Interval</span>
+          <span className="label-text-output">{autoplayDelay} ms</span>
           <input
             id="autoplay-delay"
             type="range"
@@ -112,7 +113,6 @@ const VisualizedSetting = (props) => {
               changeAutoplayDelay(parseInt(evt.target.value, 10));
             }}
           />
-          <span className="label-text-output">{autoplayDelay}</span>
         </label>
       </div>
 
@@ -130,6 +130,7 @@ const VisualizedSetting = (props) => {
           className="label-adaptive"
         >
           <span className="label-text">Adaptive/Slides</span>
+          <span className="label-text-output">{slidesToShow}</span>
           <input
             id="slides-count"
             type="range"
@@ -142,7 +143,6 @@ const VisualizedSetting = (props) => {
               changeSlidesCount(parseInt(evt.target.value, 10));
             }}
           />
-          <span className="label-text-output">{slidesToShow}</span>
         </label>
       </div>
 
