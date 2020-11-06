@@ -38,7 +38,6 @@ const App = () => {
   return (
     <Slider>
       <div>
-        <h2>FIRST SLIDE</h2>
         <p>This is the most simple use.</p>
       </div>
     </Slider>
