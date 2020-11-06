@@ -11,8 +11,8 @@ const App = () => {
       // caption={true}
       // autoplay={true}
       // autoplayDelay={2000}
-      // indicators={true}
-      // arrows={true}
+      indicators={true}
+      arrows={true}
       // adaptiveSlides={true}
       // animatedSwipe={true}
       // animationTime={350}
