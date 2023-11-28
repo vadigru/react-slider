@@ -57,6 +57,9 @@
     "markup/img/**/*.svg",
     "markup/css/**/*.css"
   ],
+  "engines": {
+    "node": "18.x"
+  },
   "externals": {
     "react": "react"
   },
