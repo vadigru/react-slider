@@ -3,6 +3,12 @@ const MiniCssExtractPlugin = require(`mini-css-extract-plugin`);
 const CopyWebpackPlugin = require(`copy-webpack-plugin`);
 const ImageminPlugin = require(`imagemin-webpack-plugin`).default;
 
+// need to fix Error: error:0308010C:digital envelope routines::unsupported
+const crypto = require('crypto');
+const crypto_orig_createHash = crypto.createHash;
+crypto.createHash = algorithm => crypto_orig_createHash(algorithm === 'md4' ? 'sha256' : algorithm);
+// ------------------------------------------------------------------------
+
 module.exports = {
   entry: {
     app: `./src/index.js`
